@@ -1,0 +1,272 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/lib/server/generated/prisma"
+}
+
+datasource db {
+  provider = "postgres"
+}
+
+// --- UTILISATEURS & AUTH (Better Auth) ---
+model User {
+  id            String      @id @default(cuid())
+  name          String
+  email         String      @unique
+  emailVerified Boolean     @default(false)
+  telephone     String?     @unique
+  image         String?
+  role          String?     @default("user") // "user", "admin", "employee"
+  banned        Boolean?    @default(false)
+  banReason     String?
+  banExpires    DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  certifStep    Int         @default(0)
+  type          UserType    @default(GUEST)
+  cardID        String?     @unique
+  typeID        UserIDType?
+  pin           Int?
+  loyaltyPoint  Int         @default(0)
+  certified     Boolean     @default(false)
+
+  // Relations
+  sessions              Session[]
+  accounts              Account[]
+  plots                 Plot[]
+  conversations         Conversation[] @relation("UserConversations")
+  assignedConversations Conversation[] @relation("AssignedAdmin")
+  messages              Message[]      @relation("SentMessages")
+  notifications         Notification[]
+  visits                Visit[]        @relation("UserVisits")
+  purchases             Buying[]       @relation("BuyerRelation")
+  sales                 Buying[]       @relation("ProprioRelation")
+  legalAssistance       Buying[]       @relation("LawyerRelation")
+  agentVisits           Visit[]        @relation("AssignedVisits")
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("accounts")
+}
+
+// --- PARCELLES & IMMOBILIER ---
+model Plot {
+  id         String         @id @default(cuid())
+  categoryId PlotCategories
+  proprioId  String
+  proprio    User           @relation(fields: [proprioId], references: [id])
+  width      Int?
+  height     Int?
+  country    String?
+  city       String?
+  address    String?
+  certified  Boolean        @default(false)
+  certifStep Int            @default(0) // Max 4
+  price      Int?
+  likes      Int            @default(0)
+  canSell    Boolean        @default(false)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+
+  images    ImagePlot[]
+  documents ImageDocumentPlot[]
+  visits    Visit[]
+  messages  Message[] // Relation inverse ajoutée
+
+  @@index([proprioId])
+  @@index([certified, certifStep])
+  @@map("plots")
+}
+
+model ImagePlot {
+  id       String @id @default(uuid())
+  url      String
+  publicId String
+  plotId   String
+  plot     Plot   @relation(fields: [plotId], references: [id], onDelete: Cascade)
+}
+
+model ImageDocumentPlot {
+  id       String @id @default(uuid())
+  url      String
+  publicId String
+  plotId   String
+  plot     Plot   @relation(fields: [plotId], references: [id], onDelete: Cascade)
+}
+
+// --- MESSAGERIE ---
+model Conversation {
+  id               String             @id @default(cuid())
+  userId           String             @map("user_id")
+  assignedToId     String?            @map("assigned_to_id")
+  status           ConversationStatus @default(UNASSIGNED)
+  lastMessageAt    DateTime           @default(now())
+  unreadAdminCount Int                @default(0)
+  unreadUserCount  Int                @default(0)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+
+  user       User      @relation("UserConversations", fields: [userId], references: [id], onDelete: Cascade)
+  assignedTo User?     @relation("AssignedAdmin", fields: [assignedToId], references: [id], onDelete: SetNull)
+  messages   Message[]
+
+  @@map("conversations")
+}
+
+model Message {
+  id             String      @id @default(cuid())
+  conversationId String
+  senderId       String
+  type           MessageType @default(TEXT)
+  content        String      @db.Text
+  plotId         String? // Parcelle attachée en référence
+  plot           Plot?       @relation(fields: [plotId], references: [id], onDelete: SetNull)
+  isRead         Boolean     @default(false)
+  createdAt      DateTime    @default(now())
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender       User         @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId, createdAt])
+  @@map("messages")
+}
+
+// --- OPÉRATIONS (Visites, Achats, Notifications, Finances) ---
+model Visit {
+  id          String    @id @default(cuid())
+  userId      String?
+  user        User?     @relation("UserVisits", fields: [userId], references: [id])
+  agentId     String? // Employé/Agent en charge de la descente
+  agent       User?     @relation("AssignedVisits", fields: [agentId], references: [id])
+  plotId      String
+  plot        Plot      @relation(fields: [plotId], references: [id])
+  date        DateTime?
+  type        VisitType
+  paid        Boolean   @default(false)
+  isCompleted Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([plotId])
+  @@index([agentId])
+  @@map("visits")
+}
+
+model Buying {
+  id               String   @id @default(cuid())
+  proprioId        String
+  proprio          User     @relation("ProprioRelation", fields: [proprioId], references: [id])
+  buyerId          String
+  buyer            User     @relation("BuyerRelation", fields: [buyerId], references: [id])
+  amount           Int
+  amountCommission Int
+  legalLawyerId    String?
+  lawyer           User?    @relation("LawyerRelation", fields: [legalLawyerId], references: [id])
+  comment          String?  @db.Text
+  witnessA         String?
+  witnessB         String?
+  createdAt        DateTime @default(now())
+
+  @@map("buyings")
+}
+
+model FinanceTransaction {
+  id         String          @id @default(cuid())
+  type       TransactionType
+  amount     Int
+  motif      String
+  recordedBy String // Admin ID
+  createdAt  DateTime        @default(now())
+
+  @@map("finance_transactions")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  content   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("notifications")
+}
+
+// --- ENUMS ---
+enum PlotCategories {
+  HOUSE
+  COMPANY
+  GROUND
+  OTHER
+}
+
+enum UserIDType {
+  PASSPORT
+  NATIONAL
+  DRIVING
+}
+
+enum UserType {
+  AGENT
+  GUEST
+  PROPRIO
+  LAWYER
+  EMPLOYEE
+}
+
+enum ConversationStatus {
+  UNASSIGNED
+  IN_PROGRESS
+  WAITING_USER
+  RESOLVED
+  CLOSED
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  FILE
+  SYSTEM
+  INTERNAL_NOTE
+  VALIDATION
+}
+
+enum VisitType {
+  CERTIFICATION
+  FORCLIENT
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}

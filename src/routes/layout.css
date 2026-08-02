@@ -1,0 +1,32 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@theme {
+	--animate-meteor: meteor 5s linear infinite;
+	--animate-bounce: bounce 1s linear infinite;
+	--color-proprios-dark: #070b14; /* Fond très sombre */
+	--color-proprios-card: #0f1626; /* Fond des cartes */
+	--color-proprios-mint: #02e1b1; /* Le vert/cyan de ton bouton "Suivant" */
+	--color-proprios-mint-hover: #01c79c;
+
+	 @keyframes meteor {0% {transform: rotate(215deg) translateX(0) ; opacity: 1;} 70%
+			{opacity: 1;} 100% {transform: rotate(215deg) translateX(-500px) ; opacity: 0;}} @keyframes
+			bounce {0%,
+		100% {transform: scale(1) ;} 50% {transform: scale(1.1) ;}}
+			/* Définit Inter comme la police sans-serif par défaut */ --font-sans: 'Inter',
+		sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-proprios-dark text-slate-200 font-sans antialiased;
+  }
+
+   /* Scrollbar custom */
+  ::-webkit-scrollbar {
+    @apply w-1.5 h-1.5;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-700 rounded-full;
+  }
+}
