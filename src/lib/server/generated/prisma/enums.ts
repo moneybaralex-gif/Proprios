@@ -9,6 +9,16 @@
 * 🟢 You can import this file directly.
 */
 
+export const CertificationStatus = {
+  ATTENTE: 'ATTENTE',
+  EN_COURS: 'EN_COURS',
+  CERTIFIE: 'CERTIFIE',
+  REJETE: 'REJETE'
+} as const
+
+export type CertificationStatus = (typeof CertificationStatus)[keyof typeof CertificationStatus]
+
+
 export const PlotCategories = {
   HOUSE: 'HOUSE',
   COMPANY: 'COMPANY',
@@ -26,6 +36,15 @@ export const UserIDType = {
 } as const
 
 export type UserIDType = (typeof UserIDType)[keyof typeof UserIDType]
+
+
+export const Gender = {
+  MALE: 'MALE',
+  FEMALE: 'FEMALE',
+  OTHER: 'OTHER'
+} as const
+
+export type Gender = (typeof Gender)[keyof typeof Gender]
 
 
 export const UserType = {

@@ -28,6 +28,7 @@ export type ImageDocumentPlotMinAggregateOutputType = {
   id: string | null
   url: string | null
   publicId: string | null
+  name: string | null
   plotId: string | null
 }
 
@@ -35,6 +36,7 @@ export type ImageDocumentPlotMaxAggregateOutputType = {
   id: string | null
   url: string | null
   publicId: string | null
+  name: string | null
   plotId: string | null
 }
 
@@ -42,6 +44,7 @@ export type ImageDocumentPlotCountAggregateOutputType = {
   id: number
   url: number
   publicId: number
+  name: number
   plotId: number
   _all: number
 }
@@ -51,6 +54,7 @@ export type ImageDocumentPlotMinAggregateInputType = {
   id?: true
   url?: true
   publicId?: true
+  name?: true
   plotId?: true
 }
 
@@ -58,6 +62,7 @@ export type ImageDocumentPlotMaxAggregateInputType = {
   id?: true
   url?: true
   publicId?: true
+  name?: true
   plotId?: true
 }
 
@@ -65,6 +70,7 @@ export type ImageDocumentPlotCountAggregateInputType = {
   id?: true
   url?: true
   publicId?: true
+  name?: true
   plotId?: true
   _all?: true
 }
@@ -145,6 +151,7 @@ export type ImageDocumentPlotGroupByOutputType = {
   id: string
   url: string
   publicId: string
+  name: string | null
   plotId: string
   _count: ImageDocumentPlotCountAggregateOutputType | null
   _min: ImageDocumentPlotMinAggregateOutputType | null
@@ -173,6 +180,7 @@ export type ImageDocumentPlotWhereInput = {
   id?: Prisma.StringFilter<"ImageDocumentPlot"> | string
   url?: Prisma.StringFilter<"ImageDocumentPlot"> | string
   publicId?: Prisma.StringFilter<"ImageDocumentPlot"> | string
+  name?: Prisma.StringNullableFilter<"ImageDocumentPlot"> | string | null
   plotId?: Prisma.StringFilter<"ImageDocumentPlot"> | string
   plot?: Prisma.XOR<Prisma.PlotScalarRelationFilter, Prisma.PlotWhereInput>
 }
@@ -181,6 +189,7 @@ export type ImageDocumentPlotOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   url?: Prisma.SortOrder
   publicId?: Prisma.SortOrder
+  name?: Prisma.SortOrderInput | Prisma.SortOrder
   plotId?: Prisma.SortOrder
   plot?: Prisma.PlotOrderByWithRelationInput
 }
@@ -192,6 +201,7 @@ export type ImageDocumentPlotWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ImageDocumentPlotWhereInput | Prisma.ImageDocumentPlotWhereInput[]
   url?: Prisma.StringFilter<"ImageDocumentPlot"> | string
   publicId?: Prisma.StringFilter<"ImageDocumentPlot"> | string
+  name?: Prisma.StringNullableFilter<"ImageDocumentPlot"> | string | null
   plotId?: Prisma.StringFilter<"ImageDocumentPlot"> | string
   plot?: Prisma.XOR<Prisma.PlotScalarRelationFilter, Prisma.PlotWhereInput>
 }, "id">
@@ -200,6 +210,7 @@ export type ImageDocumentPlotOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   url?: Prisma.SortOrder
   publicId?: Prisma.SortOrder
+  name?: Prisma.SortOrderInput | Prisma.SortOrder
   plotId?: Prisma.SortOrder
   _count?: Prisma.ImageDocumentPlotCountOrderByAggregateInput
   _max?: Prisma.ImageDocumentPlotMaxOrderByAggregateInput
@@ -213,6 +224,7 @@ export type ImageDocumentPlotScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"ImageDocumentPlot"> | string
   url?: Prisma.StringWithAggregatesFilter<"ImageDocumentPlot"> | string
   publicId?: Prisma.StringWithAggregatesFilter<"ImageDocumentPlot"> | string
+  name?: Prisma.StringNullableWithAggregatesFilter<"ImageDocumentPlot"> | string | null
   plotId?: Prisma.StringWithAggregatesFilter<"ImageDocumentPlot"> | string
 }
 
@@ -220,6 +232,7 @@ export type ImageDocumentPlotCreateInput = {
   id?: string
   url: string
   publicId: string
+  name?: string | null
   plot: Prisma.PlotCreateNestedOneWithoutDocumentsInput
 }
 
@@ -227,6 +240,7 @@ export type ImageDocumentPlotUncheckedCreateInput = {
   id?: string
   url: string
   publicId: string
+  name?: string | null
   plotId: string
 }
 
@@ -234,6 +248,7 @@ export type ImageDocumentPlotUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   publicId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plot?: Prisma.PlotUpdateOneRequiredWithoutDocumentsNestedInput
 }
 
@@ -241,6 +256,7 @@ export type ImageDocumentPlotUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   publicId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plotId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -248,6 +264,7 @@ export type ImageDocumentPlotCreateManyInput = {
   id?: string
   url: string
   publicId: string
+  name?: string | null
   plotId: string
 }
 
@@ -255,12 +272,14 @@ export type ImageDocumentPlotUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   publicId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ImageDocumentPlotUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   publicId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plotId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -278,6 +297,7 @@ export type ImageDocumentPlotCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   url?: Prisma.SortOrder
   publicId?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   plotId?: Prisma.SortOrder
 }
 
@@ -285,6 +305,7 @@ export type ImageDocumentPlotMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   url?: Prisma.SortOrder
   publicId?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   plotId?: Prisma.SortOrder
 }
 
@@ -292,6 +313,7 @@ export type ImageDocumentPlotMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   url?: Prisma.SortOrder
   publicId?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   plotId?: Prisma.SortOrder
 }
 
@@ -341,12 +363,14 @@ export type ImageDocumentPlotCreateWithoutPlotInput = {
   id?: string
   url: string
   publicId: string
+  name?: string | null
 }
 
 export type ImageDocumentPlotUncheckedCreateWithoutPlotInput = {
   id?: string
   url: string
   publicId: string
+  name?: string | null
 }
 
 export type ImageDocumentPlotCreateOrConnectWithoutPlotInput = {
@@ -382,6 +406,7 @@ export type ImageDocumentPlotScalarWhereInput = {
   id?: Prisma.StringFilter<"ImageDocumentPlot"> | string
   url?: Prisma.StringFilter<"ImageDocumentPlot"> | string
   publicId?: Prisma.StringFilter<"ImageDocumentPlot"> | string
+  name?: Prisma.StringNullableFilter<"ImageDocumentPlot"> | string | null
   plotId?: Prisma.StringFilter<"ImageDocumentPlot"> | string
 }
 
@@ -389,24 +414,28 @@ export type ImageDocumentPlotCreateManyPlotInput = {
   id?: string
   url: string
   publicId: string
+  name?: string | null
 }
 
 export type ImageDocumentPlotUpdateWithoutPlotInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   publicId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ImageDocumentPlotUncheckedUpdateWithoutPlotInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   publicId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ImageDocumentPlotUncheckedUpdateManyWithoutPlotInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   publicId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -415,6 +444,7 @@ export type ImageDocumentPlotSelect<ExtArgs extends runtime.Types.Extensions.Int
   id?: boolean
   url?: boolean
   publicId?: boolean
+  name?: boolean
   plotId?: boolean
   plot?: boolean | Prisma.PlotDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["imageDocumentPlot"]>
@@ -423,6 +453,7 @@ export type ImageDocumentPlotSelectCreateManyAndReturn<ExtArgs extends runtime.T
   id?: boolean
   url?: boolean
   publicId?: boolean
+  name?: boolean
   plotId?: boolean
   plot?: boolean | Prisma.PlotDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["imageDocumentPlot"]>
@@ -431,6 +462,7 @@ export type ImageDocumentPlotSelectUpdateManyAndReturn<ExtArgs extends runtime.T
   id?: boolean
   url?: boolean
   publicId?: boolean
+  name?: boolean
   plotId?: boolean
   plot?: boolean | Prisma.PlotDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["imageDocumentPlot"]>
@@ -439,10 +471,11 @@ export type ImageDocumentPlotSelectScalar = {
   id?: boolean
   url?: boolean
   publicId?: boolean
+  name?: boolean
   plotId?: boolean
 }
 
-export type ImageDocumentPlotOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "url" | "publicId" | "plotId", ExtArgs["result"]["imageDocumentPlot"]>
+export type ImageDocumentPlotOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "url" | "publicId" | "name" | "plotId", ExtArgs["result"]["imageDocumentPlot"]>
 export type ImageDocumentPlotInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   plot?: boolean | Prisma.PlotDefaultArgs<ExtArgs>
 }
@@ -462,6 +495,7 @@ export type $ImageDocumentPlotPayload<ExtArgs extends runtime.Types.Extensions.I
     id: string
     url: string
     publicId: string
+    name: string | null
     plotId: string
   }, ExtArgs["result"]["imageDocumentPlot"]>
   composites: {}
@@ -890,6 +924,7 @@ export interface ImageDocumentPlotFieldRefs {
   readonly id: Prisma.FieldRef<"ImageDocumentPlot", 'String'>
   readonly url: Prisma.FieldRef<"ImageDocumentPlot", 'String'>
   readonly publicId: Prisma.FieldRef<"ImageDocumentPlot", 'String'>
+  readonly name: Prisma.FieldRef<"ImageDocumentPlot", 'String'>
   readonly plotId: Prisma.FieldRef<"ImageDocumentPlot", 'String'>
 }
     

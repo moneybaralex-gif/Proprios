@@ -5,7 +5,7 @@ import { createAuthClient } from "better-auth/svelte";
 import { PUBLIC_GOOGLE_CLIENT_ID } from "$env/static/public";
 
 export const authClient = createAuthClient({
-  baseURL: "http://localhost:5173", // Doit correspondre à BETTER_AUTH_URL
+  baseURL: typeof window !== "undefined" ? window.location.origin : undefined,
   plugins: [
     adminClient(),
     oneTapClient({

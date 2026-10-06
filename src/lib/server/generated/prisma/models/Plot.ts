@@ -31,6 +31,7 @@ export type PlotAvgAggregateOutputType = {
   height: number | null
   certifStep: number | null
   price: number | null
+  pin: number | null
   likes: number | null
 }
 
@@ -39,21 +40,26 @@ export type PlotSumAggregateOutputType = {
   height: number | null
   certifStep: number | null
   price: number | null
+  pin: number | null
   likes: number | null
 }
 
 export type PlotMinAggregateOutputType = {
   id: string | null
   categoryId: $Enums.PlotCategories | null
+  description: string | null
   proprioId: string | null
+  lawyerId: string | null
   width: number | null
   height: number | null
   country: string | null
   city: string | null
   address: string | null
+  certificationStatus: $Enums.CertificationStatus | null
   certified: boolean | null
   certifStep: number | null
   price: number | null
+  pin: number | null
   likes: number | null
   canSell: boolean | null
   createdAt: Date | null
@@ -63,15 +69,19 @@ export type PlotMinAggregateOutputType = {
 export type PlotMaxAggregateOutputType = {
   id: string | null
   categoryId: $Enums.PlotCategories | null
+  description: string | null
   proprioId: string | null
+  lawyerId: string | null
   width: number | null
   height: number | null
   country: string | null
   city: string | null
   address: string | null
+  certificationStatus: $Enums.CertificationStatus | null
   certified: boolean | null
   certifStep: number | null
   price: number | null
+  pin: number | null
   likes: number | null
   canSell: boolean | null
   createdAt: Date | null
@@ -81,15 +91,19 @@ export type PlotMaxAggregateOutputType = {
 export type PlotCountAggregateOutputType = {
   id: number
   categoryId: number
+  description: number
   proprioId: number
+  lawyerId: number
   width: number
   height: number
   country: number
   city: number
   address: number
+  certificationStatus: number
   certified: number
   certifStep: number
   price: number
+  pin: number
   likes: number
   canSell: number
   createdAt: number
@@ -103,6 +117,7 @@ export type PlotAvgAggregateInputType = {
   height?: true
   certifStep?: true
   price?: true
+  pin?: true
   likes?: true
 }
 
@@ -111,21 +126,26 @@ export type PlotSumAggregateInputType = {
   height?: true
   certifStep?: true
   price?: true
+  pin?: true
   likes?: true
 }
 
 export type PlotMinAggregateInputType = {
   id?: true
   categoryId?: true
+  description?: true
   proprioId?: true
+  lawyerId?: true
   width?: true
   height?: true
   country?: true
   city?: true
   address?: true
+  certificationStatus?: true
   certified?: true
   certifStep?: true
   price?: true
+  pin?: true
   likes?: true
   canSell?: true
   createdAt?: true
@@ -135,15 +155,19 @@ export type PlotMinAggregateInputType = {
 export type PlotMaxAggregateInputType = {
   id?: true
   categoryId?: true
+  description?: true
   proprioId?: true
+  lawyerId?: true
   width?: true
   height?: true
   country?: true
   city?: true
   address?: true
+  certificationStatus?: true
   certified?: true
   certifStep?: true
   price?: true
+  pin?: true
   likes?: true
   canSell?: true
   createdAt?: true
@@ -153,15 +177,19 @@ export type PlotMaxAggregateInputType = {
 export type PlotCountAggregateInputType = {
   id?: true
   categoryId?: true
+  description?: true
   proprioId?: true
+  lawyerId?: true
   width?: true
   height?: true
   country?: true
   city?: true
   address?: true
+  certificationStatus?: true
   certified?: true
   certifStep?: true
   price?: true
+  pin?: true
   likes?: true
   canSell?: true
   createdAt?: true
@@ -258,15 +286,19 @@ export type PlotGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type PlotGroupByOutputType = {
   id: string
   categoryId: $Enums.PlotCategories
+  description: string | null
   proprioId: string
+  lawyerId: string | null
   width: number | null
   height: number | null
   country: string | null
   city: string | null
   address: string | null
+  certificationStatus: $Enums.CertificationStatus
   certified: boolean
   certifStep: number
   price: number | null
+  pin: number | null
   likes: number
   canSell: boolean
   createdAt: Date
@@ -299,20 +331,26 @@ export type PlotWhereInput = {
   NOT?: Prisma.PlotWhereInput | Prisma.PlotWhereInput[]
   id?: Prisma.StringFilter<"Plot"> | string
   categoryId?: Prisma.EnumPlotCategoriesFilter<"Plot"> | $Enums.PlotCategories
+  description?: Prisma.StringNullableFilter<"Plot"> | string | null
   proprioId?: Prisma.StringFilter<"Plot"> | string
+  lawyerId?: Prisma.StringNullableFilter<"Plot"> | string | null
   width?: Prisma.IntNullableFilter<"Plot"> | number | null
   height?: Prisma.IntNullableFilter<"Plot"> | number | null
   country?: Prisma.StringNullableFilter<"Plot"> | string | null
   city?: Prisma.StringNullableFilter<"Plot"> | string | null
   address?: Prisma.StringNullableFilter<"Plot"> | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFilter<"Plot"> | $Enums.CertificationStatus
   certified?: Prisma.BoolFilter<"Plot"> | boolean
   certifStep?: Prisma.IntFilter<"Plot"> | number
   price?: Prisma.IntNullableFilter<"Plot"> | number | null
+  pin?: Prisma.IntNullableFilter<"Plot"> | number | null
   likes?: Prisma.IntFilter<"Plot"> | number
   canSell?: Prisma.BoolFilter<"Plot"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Plot"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Plot"> | Date | string
   proprio?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  lawyer?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  favoritedBy?: Prisma.UserListRelationFilter
   images?: Prisma.ImagePlotListRelationFilter
   documents?: Prisma.ImageDocumentPlotListRelationFilter
   visits?: Prisma.VisitListRelationFilter
@@ -322,20 +360,26 @@ export type PlotWhereInput = {
 export type PlotOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   proprioId?: Prisma.SortOrder
+  lawyerId?: Prisma.SortOrderInput | Prisma.SortOrder
   width?: Prisma.SortOrderInput | Prisma.SortOrder
   height?: Prisma.SortOrderInput | Prisma.SortOrder
   country?: Prisma.SortOrderInput | Prisma.SortOrder
   city?: Prisma.SortOrderInput | Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
+  certificationStatus?: Prisma.SortOrder
   certified?: Prisma.SortOrder
   certifStep?: Prisma.SortOrder
   price?: Prisma.SortOrderInput | Prisma.SortOrder
+  pin?: Prisma.SortOrderInput | Prisma.SortOrder
   likes?: Prisma.SortOrder
   canSell?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   proprio?: Prisma.UserOrderByWithRelationInput
+  lawyer?: Prisma.UserOrderByWithRelationInput
+  favoritedBy?: Prisma.UserOrderByRelationAggregateInput
   images?: Prisma.ImagePlotOrderByRelationAggregateInput
   documents?: Prisma.ImageDocumentPlotOrderByRelationAggregateInput
   visits?: Prisma.VisitOrderByRelationAggregateInput
@@ -344,16 +388,20 @@ export type PlotOrderByWithRelationInput = {
 
 export type PlotWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  pin?: number
   AND?: Prisma.PlotWhereInput | Prisma.PlotWhereInput[]
   OR?: Prisma.PlotWhereInput[]
   NOT?: Prisma.PlotWhereInput | Prisma.PlotWhereInput[]
   categoryId?: Prisma.EnumPlotCategoriesFilter<"Plot"> | $Enums.PlotCategories
+  description?: Prisma.StringNullableFilter<"Plot"> | string | null
   proprioId?: Prisma.StringFilter<"Plot"> | string
+  lawyerId?: Prisma.StringNullableFilter<"Plot"> | string | null
   width?: Prisma.IntNullableFilter<"Plot"> | number | null
   height?: Prisma.IntNullableFilter<"Plot"> | number | null
   country?: Prisma.StringNullableFilter<"Plot"> | string | null
   city?: Prisma.StringNullableFilter<"Plot"> | string | null
   address?: Prisma.StringNullableFilter<"Plot"> | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFilter<"Plot"> | $Enums.CertificationStatus
   certified?: Prisma.BoolFilter<"Plot"> | boolean
   certifStep?: Prisma.IntFilter<"Plot"> | number
   price?: Prisma.IntNullableFilter<"Plot"> | number | null
@@ -362,24 +410,30 @@ export type PlotWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Plot"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Plot"> | Date | string
   proprio?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  lawyer?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  favoritedBy?: Prisma.UserListRelationFilter
   images?: Prisma.ImagePlotListRelationFilter
   documents?: Prisma.ImageDocumentPlotListRelationFilter
   visits?: Prisma.VisitListRelationFilter
   messages?: Prisma.MessageListRelationFilter
-}, "id">
+}, "id" | "pin">
 
 export type PlotOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   proprioId?: Prisma.SortOrder
+  lawyerId?: Prisma.SortOrderInput | Prisma.SortOrder
   width?: Prisma.SortOrderInput | Prisma.SortOrder
   height?: Prisma.SortOrderInput | Prisma.SortOrder
   country?: Prisma.SortOrderInput | Prisma.SortOrder
   city?: Prisma.SortOrderInput | Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
+  certificationStatus?: Prisma.SortOrder
   certified?: Prisma.SortOrder
   certifStep?: Prisma.SortOrder
   price?: Prisma.SortOrderInput | Prisma.SortOrder
+  pin?: Prisma.SortOrderInput | Prisma.SortOrder
   likes?: Prisma.SortOrder
   canSell?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -397,15 +451,19 @@ export type PlotScalarWhereWithAggregatesInput = {
   NOT?: Prisma.PlotScalarWhereWithAggregatesInput | Prisma.PlotScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Plot"> | string
   categoryId?: Prisma.EnumPlotCategoriesWithAggregatesFilter<"Plot"> | $Enums.PlotCategories
+  description?: Prisma.StringNullableWithAggregatesFilter<"Plot"> | string | null
   proprioId?: Prisma.StringWithAggregatesFilter<"Plot"> | string
+  lawyerId?: Prisma.StringNullableWithAggregatesFilter<"Plot"> | string | null
   width?: Prisma.IntNullableWithAggregatesFilter<"Plot"> | number | null
   height?: Prisma.IntNullableWithAggregatesFilter<"Plot"> | number | null
   country?: Prisma.StringNullableWithAggregatesFilter<"Plot"> | string | null
   city?: Prisma.StringNullableWithAggregatesFilter<"Plot"> | string | null
   address?: Prisma.StringNullableWithAggregatesFilter<"Plot"> | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusWithAggregatesFilter<"Plot"> | $Enums.CertificationStatus
   certified?: Prisma.BoolWithAggregatesFilter<"Plot"> | boolean
   certifStep?: Prisma.IntWithAggregatesFilter<"Plot"> | number
   price?: Prisma.IntNullableWithAggregatesFilter<"Plot"> | number | null
+  pin?: Prisma.IntNullableWithAggregatesFilter<"Plot"> | number | null
   likes?: Prisma.IntWithAggregatesFilter<"Plot"> | number
   canSell?: Prisma.BoolWithAggregatesFilter<"Plot"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Plot"> | Date | string
@@ -415,19 +473,24 @@ export type PlotScalarWhereWithAggregatesInput = {
 export type PlotCreateInput = {
   id?: string
   categoryId: $Enums.PlotCategories
+  description?: string | null
   width?: number | null
   height?: number | null
   country?: string | null
   city?: string | null
   address?: string | null
+  certificationStatus?: $Enums.CertificationStatus
   certified?: boolean
   certifStep?: number
   price?: number | null
+  pin?: number | null
   likes?: number
   canSell?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   proprio: Prisma.UserCreateNestedOneWithoutPlotsInput
+  lawyer?: Prisma.UserCreateNestedOneWithoutLawyeredPlotsInput
+  favoritedBy?: Prisma.UserCreateNestedManyWithoutFavoritePlotsInput
   images?: Prisma.ImagePlotCreateNestedManyWithoutPlotInput
   documents?: Prisma.ImageDocumentPlotCreateNestedManyWithoutPlotInput
   visits?: Prisma.VisitCreateNestedManyWithoutPlotInput
@@ -437,19 +500,24 @@ export type PlotCreateInput = {
 export type PlotUncheckedCreateInput = {
   id?: string
   categoryId: $Enums.PlotCategories
+  description?: string | null
   proprioId: string
+  lawyerId?: string | null
   width?: number | null
   height?: number | null
   country?: string | null
   city?: string | null
   address?: string | null
+  certificationStatus?: $Enums.CertificationStatus
   certified?: boolean
   certifStep?: number
   price?: number | null
+  pin?: number | null
   likes?: number
   canSell?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  favoritedBy?: Prisma.UserUncheckedCreateNestedManyWithoutFavoritePlotsInput
   images?: Prisma.ImagePlotUncheckedCreateNestedManyWithoutPlotInput
   documents?: Prisma.ImageDocumentPlotUncheckedCreateNestedManyWithoutPlotInput
   visits?: Prisma.VisitUncheckedCreateNestedManyWithoutPlotInput
@@ -459,19 +527,24 @@ export type PlotUncheckedCreateInput = {
 export type PlotUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.EnumPlotCategoriesFieldUpdateOperationsInput | $Enums.PlotCategories
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFieldUpdateOperationsInput | $Enums.CertificationStatus
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   certifStep?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   likes?: Prisma.IntFieldUpdateOperationsInput | number
   canSell?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   proprio?: Prisma.UserUpdateOneRequiredWithoutPlotsNestedInput
+  lawyer?: Prisma.UserUpdateOneWithoutLawyeredPlotsNestedInput
+  favoritedBy?: Prisma.UserUpdateManyWithoutFavoritePlotsNestedInput
   images?: Prisma.ImagePlotUpdateManyWithoutPlotNestedInput
   documents?: Prisma.ImageDocumentPlotUpdateManyWithoutPlotNestedInput
   visits?: Prisma.VisitUpdateManyWithoutPlotNestedInput
@@ -481,19 +554,24 @@ export type PlotUpdateInput = {
 export type PlotUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.EnumPlotCategoriesFieldUpdateOperationsInput | $Enums.PlotCategories
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proprioId?: Prisma.StringFieldUpdateOperationsInput | string
+  lawyerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFieldUpdateOperationsInput | $Enums.CertificationStatus
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   certifStep?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   likes?: Prisma.IntFieldUpdateOperationsInput | number
   canSell?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  favoritedBy?: Prisma.UserUncheckedUpdateManyWithoutFavoritePlotsNestedInput
   images?: Prisma.ImagePlotUncheckedUpdateManyWithoutPlotNestedInput
   documents?: Prisma.ImageDocumentPlotUncheckedUpdateManyWithoutPlotNestedInput
   visits?: Prisma.VisitUncheckedUpdateManyWithoutPlotNestedInput
@@ -503,15 +581,19 @@ export type PlotUncheckedUpdateInput = {
 export type PlotCreateManyInput = {
   id?: string
   categoryId: $Enums.PlotCategories
+  description?: string | null
   proprioId: string
+  lawyerId?: string | null
   width?: number | null
   height?: number | null
   country?: string | null
   city?: string | null
   address?: string | null
+  certificationStatus?: $Enums.CertificationStatus
   certified?: boolean
   certifStep?: number
   price?: number | null
+  pin?: number | null
   likes?: number
   canSell?: boolean
   createdAt?: Date | string
@@ -521,14 +603,17 @@ export type PlotCreateManyInput = {
 export type PlotUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.EnumPlotCategoriesFieldUpdateOperationsInput | $Enums.PlotCategories
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFieldUpdateOperationsInput | $Enums.CertificationStatus
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   certifStep?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   likes?: Prisma.IntFieldUpdateOperationsInput | number
   canSell?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -538,15 +623,19 @@ export type PlotUpdateManyMutationInput = {
 export type PlotUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.EnumPlotCategoriesFieldUpdateOperationsInput | $Enums.PlotCategories
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proprioId?: Prisma.StringFieldUpdateOperationsInput | string
+  lawyerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFieldUpdateOperationsInput | $Enums.CertificationStatus
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   certifStep?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   likes?: Prisma.IntFieldUpdateOperationsInput | number
   canSell?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -566,15 +655,19 @@ export type PlotOrderByRelationAggregateInput = {
 export type PlotCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   proprioId?: Prisma.SortOrder
+  lawyerId?: Prisma.SortOrder
   width?: Prisma.SortOrder
   height?: Prisma.SortOrder
   country?: Prisma.SortOrder
   city?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  certificationStatus?: Prisma.SortOrder
   certified?: Prisma.SortOrder
   certifStep?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  pin?: Prisma.SortOrder
   likes?: Prisma.SortOrder
   canSell?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -586,21 +679,26 @@ export type PlotAvgOrderByAggregateInput = {
   height?: Prisma.SortOrder
   certifStep?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  pin?: Prisma.SortOrder
   likes?: Prisma.SortOrder
 }
 
 export type PlotMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   proprioId?: Prisma.SortOrder
+  lawyerId?: Prisma.SortOrder
   width?: Prisma.SortOrder
   height?: Prisma.SortOrder
   country?: Prisma.SortOrder
   city?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  certificationStatus?: Prisma.SortOrder
   certified?: Prisma.SortOrder
   certifStep?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  pin?: Prisma.SortOrder
   likes?: Prisma.SortOrder
   canSell?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -610,15 +708,19 @@ export type PlotMaxOrderByAggregateInput = {
 export type PlotMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   proprioId?: Prisma.SortOrder
+  lawyerId?: Prisma.SortOrder
   width?: Prisma.SortOrder
   height?: Prisma.SortOrder
   country?: Prisma.SortOrder
   city?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  certificationStatus?: Prisma.SortOrder
   certified?: Prisma.SortOrder
   certifStep?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  pin?: Prisma.SortOrder
   likes?: Prisma.SortOrder
   canSell?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -630,6 +732,7 @@ export type PlotSumOrderByAggregateInput = {
   height?: Prisma.SortOrder
   certifStep?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  pin?: Prisma.SortOrder
   likes?: Prisma.SortOrder
 }
 
@@ -650,10 +753,36 @@ export type PlotCreateNestedManyWithoutProprioInput = {
   connect?: Prisma.PlotWhereUniqueInput | Prisma.PlotWhereUniqueInput[]
 }
 
+export type PlotCreateNestedManyWithoutFavoritedByInput = {
+  create?: Prisma.XOR<Prisma.PlotCreateWithoutFavoritedByInput, Prisma.PlotUncheckedCreateWithoutFavoritedByInput> | Prisma.PlotCreateWithoutFavoritedByInput[] | Prisma.PlotUncheckedCreateWithoutFavoritedByInput[]
+  connectOrCreate?: Prisma.PlotCreateOrConnectWithoutFavoritedByInput | Prisma.PlotCreateOrConnectWithoutFavoritedByInput[]
+  connect?: Prisma.PlotWhereUniqueInput | Prisma.PlotWhereUniqueInput[]
+}
+
+export type PlotCreateNestedManyWithoutLawyerInput = {
+  create?: Prisma.XOR<Prisma.PlotCreateWithoutLawyerInput, Prisma.PlotUncheckedCreateWithoutLawyerInput> | Prisma.PlotCreateWithoutLawyerInput[] | Prisma.PlotUncheckedCreateWithoutLawyerInput[]
+  connectOrCreate?: Prisma.PlotCreateOrConnectWithoutLawyerInput | Prisma.PlotCreateOrConnectWithoutLawyerInput[]
+  createMany?: Prisma.PlotCreateManyLawyerInputEnvelope
+  connect?: Prisma.PlotWhereUniqueInput | Prisma.PlotWhereUniqueInput[]
+}
+
 export type PlotUncheckedCreateNestedManyWithoutProprioInput = {
   create?: Prisma.XOR<Prisma.PlotCreateWithoutProprioInput, Prisma.PlotUncheckedCreateWithoutProprioInput> | Prisma.PlotCreateWithoutProprioInput[] | Prisma.PlotUncheckedCreateWithoutProprioInput[]
   connectOrCreate?: Prisma.PlotCreateOrConnectWithoutProprioInput | Prisma.PlotCreateOrConnectWithoutProprioInput[]
   createMany?: Prisma.PlotCreateManyProprioInputEnvelope
+  connect?: Prisma.PlotWhereUniqueInput | Prisma.PlotWhereUniqueInput[]
+}
+
+export type PlotUncheckedCreateNestedManyWithoutFavoritedByInput = {
+  create?: Prisma.XOR<Prisma.PlotCreateWithoutFavoritedByInput, Prisma.PlotUncheckedCreateWithoutFavoritedByInput> | Prisma.PlotCreateWithoutFavoritedByInput[] | Prisma.PlotUncheckedCreateWithoutFavoritedByInput[]
+  connectOrCreate?: Prisma.PlotCreateOrConnectWithoutFavoritedByInput | Prisma.PlotCreateOrConnectWithoutFavoritedByInput[]
+  connect?: Prisma.PlotWhereUniqueInput | Prisma.PlotWhereUniqueInput[]
+}
+
+export type PlotUncheckedCreateNestedManyWithoutLawyerInput = {
+  create?: Prisma.XOR<Prisma.PlotCreateWithoutLawyerInput, Prisma.PlotUncheckedCreateWithoutLawyerInput> | Prisma.PlotCreateWithoutLawyerInput[] | Prisma.PlotUncheckedCreateWithoutLawyerInput[]
+  connectOrCreate?: Prisma.PlotCreateOrConnectWithoutLawyerInput | Prisma.PlotCreateOrConnectWithoutLawyerInput[]
+  createMany?: Prisma.PlotCreateManyLawyerInputEnvelope
   connect?: Prisma.PlotWhereUniqueInput | Prisma.PlotWhereUniqueInput[]
 }
 
@@ -671,6 +800,33 @@ export type PlotUpdateManyWithoutProprioNestedInput = {
   deleteMany?: Prisma.PlotScalarWhereInput | Prisma.PlotScalarWhereInput[]
 }
 
+export type PlotUpdateManyWithoutFavoritedByNestedInput = {
+  create?: Prisma.XOR<Prisma.PlotCreateWithoutFavoritedByInput, Prisma.PlotUncheckedCreateWithoutFavoritedByInput> | Prisma.PlotCreateWithoutFavoritedByInput[] | Prisma.PlotUncheckedCreateWithoutFavoritedByInput[]
+  connectOrCreate?: Prisma.PlotCreateOrConnectWithoutFavoritedByInput | Prisma.PlotCreateOrConnectWithoutFavoritedByInput[]
+  upsert?: Prisma.PlotUpsertWithWhereUniqueWithoutFavoritedByInput | Prisma.PlotUpsertWithWhereUniqueWithoutFavoritedByInput[]
+  set?: Prisma.PlotWhereUniqueInput | Prisma.PlotWhereUniqueInput[]
+  disconnect?: Prisma.PlotWhereUniqueInput | Prisma.PlotWhereUniqueInput[]
+  delete?: Prisma.PlotWhereUniqueInput | Prisma.PlotWhereUniqueInput[]
+  connect?: Prisma.PlotWhereUniqueInput | Prisma.PlotWhereUniqueInput[]
+  update?: Prisma.PlotUpdateWithWhereUniqueWithoutFavoritedByInput | Prisma.PlotUpdateWithWhereUniqueWithoutFavoritedByInput[]
+  updateMany?: Prisma.PlotUpdateManyWithWhereWithoutFavoritedByInput | Prisma.PlotUpdateManyWithWhereWithoutFavoritedByInput[]
+  deleteMany?: Prisma.PlotScalarWhereInput | Prisma.PlotScalarWhereInput[]
+}
+
+export type PlotUpdateManyWithoutLawyerNestedInput = {
+  create?: Prisma.XOR<Prisma.PlotCreateWithoutLawyerInput, Prisma.PlotUncheckedCreateWithoutLawyerInput> | Prisma.PlotCreateWithoutLawyerInput[] | Prisma.PlotUncheckedCreateWithoutLawyerInput[]
+  connectOrCreate?: Prisma.PlotCreateOrConnectWithoutLawyerInput | Prisma.PlotCreateOrConnectWithoutLawyerInput[]
+  upsert?: Prisma.PlotUpsertWithWhereUniqueWithoutLawyerInput | Prisma.PlotUpsertWithWhereUniqueWithoutLawyerInput[]
+  createMany?: Prisma.PlotCreateManyLawyerInputEnvelope
+  set?: Prisma.PlotWhereUniqueInput | Prisma.PlotWhereUniqueInput[]
+  disconnect?: Prisma.PlotWhereUniqueInput | Prisma.PlotWhereUniqueInput[]
+  delete?: Prisma.PlotWhereUniqueInput | Prisma.PlotWhereUniqueInput[]
+  connect?: Prisma.PlotWhereUniqueInput | Prisma.PlotWhereUniqueInput[]
+  update?: Prisma.PlotUpdateWithWhereUniqueWithoutLawyerInput | Prisma.PlotUpdateWithWhereUniqueWithoutLawyerInput[]
+  updateMany?: Prisma.PlotUpdateManyWithWhereWithoutLawyerInput | Prisma.PlotUpdateManyWithWhereWithoutLawyerInput[]
+  deleteMany?: Prisma.PlotScalarWhereInput | Prisma.PlotScalarWhereInput[]
+}
+
 export type PlotUncheckedUpdateManyWithoutProprioNestedInput = {
   create?: Prisma.XOR<Prisma.PlotCreateWithoutProprioInput, Prisma.PlotUncheckedCreateWithoutProprioInput> | Prisma.PlotCreateWithoutProprioInput[] | Prisma.PlotUncheckedCreateWithoutProprioInput[]
   connectOrCreate?: Prisma.PlotCreateOrConnectWithoutProprioInput | Prisma.PlotCreateOrConnectWithoutProprioInput[]
@@ -685,8 +841,47 @@ export type PlotUncheckedUpdateManyWithoutProprioNestedInput = {
   deleteMany?: Prisma.PlotScalarWhereInput | Prisma.PlotScalarWhereInput[]
 }
 
+export type PlotUncheckedUpdateManyWithoutFavoritedByNestedInput = {
+  create?: Prisma.XOR<Prisma.PlotCreateWithoutFavoritedByInput, Prisma.PlotUncheckedCreateWithoutFavoritedByInput> | Prisma.PlotCreateWithoutFavoritedByInput[] | Prisma.PlotUncheckedCreateWithoutFavoritedByInput[]
+  connectOrCreate?: Prisma.PlotCreateOrConnectWithoutFavoritedByInput | Prisma.PlotCreateOrConnectWithoutFavoritedByInput[]
+  upsert?: Prisma.PlotUpsertWithWhereUniqueWithoutFavoritedByInput | Prisma.PlotUpsertWithWhereUniqueWithoutFavoritedByInput[]
+  set?: Prisma.PlotWhereUniqueInput | Prisma.PlotWhereUniqueInput[]
+  disconnect?: Prisma.PlotWhereUniqueInput | Prisma.PlotWhereUniqueInput[]
+  delete?: Prisma.PlotWhereUniqueInput | Prisma.PlotWhereUniqueInput[]
+  connect?: Prisma.PlotWhereUniqueInput | Prisma.PlotWhereUniqueInput[]
+  update?: Prisma.PlotUpdateWithWhereUniqueWithoutFavoritedByInput | Prisma.PlotUpdateWithWhereUniqueWithoutFavoritedByInput[]
+  updateMany?: Prisma.PlotUpdateManyWithWhereWithoutFavoritedByInput | Prisma.PlotUpdateManyWithWhereWithoutFavoritedByInput[]
+  deleteMany?: Prisma.PlotScalarWhereInput | Prisma.PlotScalarWhereInput[]
+}
+
+export type PlotUncheckedUpdateManyWithoutLawyerNestedInput = {
+  create?: Prisma.XOR<Prisma.PlotCreateWithoutLawyerInput, Prisma.PlotUncheckedCreateWithoutLawyerInput> | Prisma.PlotCreateWithoutLawyerInput[] | Prisma.PlotUncheckedCreateWithoutLawyerInput[]
+  connectOrCreate?: Prisma.PlotCreateOrConnectWithoutLawyerInput | Prisma.PlotCreateOrConnectWithoutLawyerInput[]
+  upsert?: Prisma.PlotUpsertWithWhereUniqueWithoutLawyerInput | Prisma.PlotUpsertWithWhereUniqueWithoutLawyerInput[]
+  createMany?: Prisma.PlotCreateManyLawyerInputEnvelope
+  set?: Prisma.PlotWhereUniqueInput | Prisma.PlotWhereUniqueInput[]
+  disconnect?: Prisma.PlotWhereUniqueInput | Prisma.PlotWhereUniqueInput[]
+  delete?: Prisma.PlotWhereUniqueInput | Prisma.PlotWhereUniqueInput[]
+  connect?: Prisma.PlotWhereUniqueInput | Prisma.PlotWhereUniqueInput[]
+  update?: Prisma.PlotUpdateWithWhereUniqueWithoutLawyerInput | Prisma.PlotUpdateWithWhereUniqueWithoutLawyerInput[]
+  updateMany?: Prisma.PlotUpdateManyWithWhereWithoutLawyerInput | Prisma.PlotUpdateManyWithWhereWithoutLawyerInput[]
+  deleteMany?: Prisma.PlotScalarWhereInput | Prisma.PlotScalarWhereInput[]
+}
+
 export type EnumPlotCategoriesFieldUpdateOperationsInput = {
   set?: $Enums.PlotCategories
+}
+
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type EnumCertificationStatusFieldUpdateOperationsInput = {
+  set?: $Enums.CertificationStatus
 }
 
 export type PlotCreateNestedOneWithoutImagesInput = {
@@ -750,18 +945,23 @@ export type PlotUpdateOneRequiredWithoutVisitsNestedInput = {
 export type PlotCreateWithoutProprioInput = {
   id?: string
   categoryId: $Enums.PlotCategories
+  description?: string | null
   width?: number | null
   height?: number | null
   country?: string | null
   city?: string | null
   address?: string | null
+  certificationStatus?: $Enums.CertificationStatus
   certified?: boolean
   certifStep?: number
   price?: number | null
+  pin?: number | null
   likes?: number
   canSell?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  lawyer?: Prisma.UserCreateNestedOneWithoutLawyeredPlotsInput
+  favoritedBy?: Prisma.UserCreateNestedManyWithoutFavoritePlotsInput
   images?: Prisma.ImagePlotCreateNestedManyWithoutPlotInput
   documents?: Prisma.ImageDocumentPlotCreateNestedManyWithoutPlotInput
   visits?: Prisma.VisitCreateNestedManyWithoutPlotInput
@@ -771,18 +971,23 @@ export type PlotCreateWithoutProprioInput = {
 export type PlotUncheckedCreateWithoutProprioInput = {
   id?: string
   categoryId: $Enums.PlotCategories
+  description?: string | null
+  lawyerId?: string | null
   width?: number | null
   height?: number | null
   country?: string | null
   city?: string | null
   address?: string | null
+  certificationStatus?: $Enums.CertificationStatus
   certified?: boolean
   certifStep?: number
   price?: number | null
+  pin?: number | null
   likes?: number
   canSell?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  favoritedBy?: Prisma.UserUncheckedCreateNestedManyWithoutFavoritePlotsInput
   images?: Prisma.ImagePlotUncheckedCreateNestedManyWithoutPlotInput
   documents?: Prisma.ImageDocumentPlotUncheckedCreateNestedManyWithoutPlotInput
   visits?: Prisma.VisitUncheckedCreateNestedManyWithoutPlotInput
@@ -796,6 +1001,125 @@ export type PlotCreateOrConnectWithoutProprioInput = {
 
 export type PlotCreateManyProprioInputEnvelope = {
   data: Prisma.PlotCreateManyProprioInput | Prisma.PlotCreateManyProprioInput[]
+  skipDuplicates?: boolean
+}
+
+export type PlotCreateWithoutFavoritedByInput = {
+  id?: string
+  categoryId: $Enums.PlotCategories
+  description?: string | null
+  width?: number | null
+  height?: number | null
+  country?: string | null
+  city?: string | null
+  address?: string | null
+  certificationStatus?: $Enums.CertificationStatus
+  certified?: boolean
+  certifStep?: number
+  price?: number | null
+  pin?: number | null
+  likes?: number
+  canSell?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  proprio: Prisma.UserCreateNestedOneWithoutPlotsInput
+  lawyer?: Prisma.UserCreateNestedOneWithoutLawyeredPlotsInput
+  images?: Prisma.ImagePlotCreateNestedManyWithoutPlotInput
+  documents?: Prisma.ImageDocumentPlotCreateNestedManyWithoutPlotInput
+  visits?: Prisma.VisitCreateNestedManyWithoutPlotInput
+  messages?: Prisma.MessageCreateNestedManyWithoutPlotInput
+}
+
+export type PlotUncheckedCreateWithoutFavoritedByInput = {
+  id?: string
+  categoryId: $Enums.PlotCategories
+  description?: string | null
+  proprioId: string
+  lawyerId?: string | null
+  width?: number | null
+  height?: number | null
+  country?: string | null
+  city?: string | null
+  address?: string | null
+  certificationStatus?: $Enums.CertificationStatus
+  certified?: boolean
+  certifStep?: number
+  price?: number | null
+  pin?: number | null
+  likes?: number
+  canSell?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  images?: Prisma.ImagePlotUncheckedCreateNestedManyWithoutPlotInput
+  documents?: Prisma.ImageDocumentPlotUncheckedCreateNestedManyWithoutPlotInput
+  visits?: Prisma.VisitUncheckedCreateNestedManyWithoutPlotInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlotInput
+}
+
+export type PlotCreateOrConnectWithoutFavoritedByInput = {
+  where: Prisma.PlotWhereUniqueInput
+  create: Prisma.XOR<Prisma.PlotCreateWithoutFavoritedByInput, Prisma.PlotUncheckedCreateWithoutFavoritedByInput>
+}
+
+export type PlotCreateWithoutLawyerInput = {
+  id?: string
+  categoryId: $Enums.PlotCategories
+  description?: string | null
+  width?: number | null
+  height?: number | null
+  country?: string | null
+  city?: string | null
+  address?: string | null
+  certificationStatus?: $Enums.CertificationStatus
+  certified?: boolean
+  certifStep?: number
+  price?: number | null
+  pin?: number | null
+  likes?: number
+  canSell?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  proprio: Prisma.UserCreateNestedOneWithoutPlotsInput
+  favoritedBy?: Prisma.UserCreateNestedManyWithoutFavoritePlotsInput
+  images?: Prisma.ImagePlotCreateNestedManyWithoutPlotInput
+  documents?: Prisma.ImageDocumentPlotCreateNestedManyWithoutPlotInput
+  visits?: Prisma.VisitCreateNestedManyWithoutPlotInput
+  messages?: Prisma.MessageCreateNestedManyWithoutPlotInput
+}
+
+export type PlotUncheckedCreateWithoutLawyerInput = {
+  id?: string
+  categoryId: $Enums.PlotCategories
+  description?: string | null
+  proprioId: string
+  width?: number | null
+  height?: number | null
+  country?: string | null
+  city?: string | null
+  address?: string | null
+  certificationStatus?: $Enums.CertificationStatus
+  certified?: boolean
+  certifStep?: number
+  price?: number | null
+  pin?: number | null
+  likes?: number
+  canSell?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  favoritedBy?: Prisma.UserUncheckedCreateNestedManyWithoutFavoritePlotsInput
+  images?: Prisma.ImagePlotUncheckedCreateNestedManyWithoutPlotInput
+  documents?: Prisma.ImageDocumentPlotUncheckedCreateNestedManyWithoutPlotInput
+  visits?: Prisma.VisitUncheckedCreateNestedManyWithoutPlotInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlotInput
+}
+
+export type PlotCreateOrConnectWithoutLawyerInput = {
+  where: Prisma.PlotWhereUniqueInput
+  create: Prisma.XOR<Prisma.PlotCreateWithoutLawyerInput, Prisma.PlotUncheckedCreateWithoutLawyerInput>
+}
+
+export type PlotCreateManyLawyerInputEnvelope = {
+  data: Prisma.PlotCreateManyLawyerInput | Prisma.PlotCreateManyLawyerInput[]
   skipDuplicates?: boolean
 }
 
@@ -821,37 +1145,78 @@ export type PlotScalarWhereInput = {
   NOT?: Prisma.PlotScalarWhereInput | Prisma.PlotScalarWhereInput[]
   id?: Prisma.StringFilter<"Plot"> | string
   categoryId?: Prisma.EnumPlotCategoriesFilter<"Plot"> | $Enums.PlotCategories
+  description?: Prisma.StringNullableFilter<"Plot"> | string | null
   proprioId?: Prisma.StringFilter<"Plot"> | string
+  lawyerId?: Prisma.StringNullableFilter<"Plot"> | string | null
   width?: Prisma.IntNullableFilter<"Plot"> | number | null
   height?: Prisma.IntNullableFilter<"Plot"> | number | null
   country?: Prisma.StringNullableFilter<"Plot"> | string | null
   city?: Prisma.StringNullableFilter<"Plot"> | string | null
   address?: Prisma.StringNullableFilter<"Plot"> | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFilter<"Plot"> | $Enums.CertificationStatus
   certified?: Prisma.BoolFilter<"Plot"> | boolean
   certifStep?: Prisma.IntFilter<"Plot"> | number
   price?: Prisma.IntNullableFilter<"Plot"> | number | null
+  pin?: Prisma.IntNullableFilter<"Plot"> | number | null
   likes?: Prisma.IntFilter<"Plot"> | number
   canSell?: Prisma.BoolFilter<"Plot"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Plot"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Plot"> | Date | string
 }
 
+export type PlotUpsertWithWhereUniqueWithoutFavoritedByInput = {
+  where: Prisma.PlotWhereUniqueInput
+  update: Prisma.XOR<Prisma.PlotUpdateWithoutFavoritedByInput, Prisma.PlotUncheckedUpdateWithoutFavoritedByInput>
+  create: Prisma.XOR<Prisma.PlotCreateWithoutFavoritedByInput, Prisma.PlotUncheckedCreateWithoutFavoritedByInput>
+}
+
+export type PlotUpdateWithWhereUniqueWithoutFavoritedByInput = {
+  where: Prisma.PlotWhereUniqueInput
+  data: Prisma.XOR<Prisma.PlotUpdateWithoutFavoritedByInput, Prisma.PlotUncheckedUpdateWithoutFavoritedByInput>
+}
+
+export type PlotUpdateManyWithWhereWithoutFavoritedByInput = {
+  where: Prisma.PlotScalarWhereInput
+  data: Prisma.XOR<Prisma.PlotUpdateManyMutationInput, Prisma.PlotUncheckedUpdateManyWithoutFavoritedByInput>
+}
+
+export type PlotUpsertWithWhereUniqueWithoutLawyerInput = {
+  where: Prisma.PlotWhereUniqueInput
+  update: Prisma.XOR<Prisma.PlotUpdateWithoutLawyerInput, Prisma.PlotUncheckedUpdateWithoutLawyerInput>
+  create: Prisma.XOR<Prisma.PlotCreateWithoutLawyerInput, Prisma.PlotUncheckedCreateWithoutLawyerInput>
+}
+
+export type PlotUpdateWithWhereUniqueWithoutLawyerInput = {
+  where: Prisma.PlotWhereUniqueInput
+  data: Prisma.XOR<Prisma.PlotUpdateWithoutLawyerInput, Prisma.PlotUncheckedUpdateWithoutLawyerInput>
+}
+
+export type PlotUpdateManyWithWhereWithoutLawyerInput = {
+  where: Prisma.PlotScalarWhereInput
+  data: Prisma.XOR<Prisma.PlotUpdateManyMutationInput, Prisma.PlotUncheckedUpdateManyWithoutLawyerInput>
+}
+
 export type PlotCreateWithoutImagesInput = {
   id?: string
   categoryId: $Enums.PlotCategories
+  description?: string | null
   width?: number | null
   height?: number | null
   country?: string | null
   city?: string | null
   address?: string | null
+  certificationStatus?: $Enums.CertificationStatus
   certified?: boolean
   certifStep?: number
   price?: number | null
+  pin?: number | null
   likes?: number
   canSell?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   proprio: Prisma.UserCreateNestedOneWithoutPlotsInput
+  lawyer?: Prisma.UserCreateNestedOneWithoutLawyeredPlotsInput
+  favoritedBy?: Prisma.UserCreateNestedManyWithoutFavoritePlotsInput
   documents?: Prisma.ImageDocumentPlotCreateNestedManyWithoutPlotInput
   visits?: Prisma.VisitCreateNestedManyWithoutPlotInput
   messages?: Prisma.MessageCreateNestedManyWithoutPlotInput
@@ -860,19 +1225,24 @@ export type PlotCreateWithoutImagesInput = {
 export type PlotUncheckedCreateWithoutImagesInput = {
   id?: string
   categoryId: $Enums.PlotCategories
+  description?: string | null
   proprioId: string
+  lawyerId?: string | null
   width?: number | null
   height?: number | null
   country?: string | null
   city?: string | null
   address?: string | null
+  certificationStatus?: $Enums.CertificationStatus
   certified?: boolean
   certifStep?: number
   price?: number | null
+  pin?: number | null
   likes?: number
   canSell?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  favoritedBy?: Prisma.UserUncheckedCreateNestedManyWithoutFavoritePlotsInput
   documents?: Prisma.ImageDocumentPlotUncheckedCreateNestedManyWithoutPlotInput
   visits?: Prisma.VisitUncheckedCreateNestedManyWithoutPlotInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlotInput
@@ -897,19 +1267,24 @@ export type PlotUpdateToOneWithWhereWithoutImagesInput = {
 export type PlotUpdateWithoutImagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.EnumPlotCategoriesFieldUpdateOperationsInput | $Enums.PlotCategories
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFieldUpdateOperationsInput | $Enums.CertificationStatus
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   certifStep?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   likes?: Prisma.IntFieldUpdateOperationsInput | number
   canSell?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   proprio?: Prisma.UserUpdateOneRequiredWithoutPlotsNestedInput
+  lawyer?: Prisma.UserUpdateOneWithoutLawyeredPlotsNestedInput
+  favoritedBy?: Prisma.UserUpdateManyWithoutFavoritePlotsNestedInput
   documents?: Prisma.ImageDocumentPlotUpdateManyWithoutPlotNestedInput
   visits?: Prisma.VisitUpdateManyWithoutPlotNestedInput
   messages?: Prisma.MessageUpdateManyWithoutPlotNestedInput
@@ -918,19 +1293,24 @@ export type PlotUpdateWithoutImagesInput = {
 export type PlotUncheckedUpdateWithoutImagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.EnumPlotCategoriesFieldUpdateOperationsInput | $Enums.PlotCategories
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proprioId?: Prisma.StringFieldUpdateOperationsInput | string
+  lawyerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFieldUpdateOperationsInput | $Enums.CertificationStatus
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   certifStep?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   likes?: Prisma.IntFieldUpdateOperationsInput | number
   canSell?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  favoritedBy?: Prisma.UserUncheckedUpdateManyWithoutFavoritePlotsNestedInput
   documents?: Prisma.ImageDocumentPlotUncheckedUpdateManyWithoutPlotNestedInput
   visits?: Prisma.VisitUncheckedUpdateManyWithoutPlotNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlotNestedInput
@@ -939,19 +1319,24 @@ export type PlotUncheckedUpdateWithoutImagesInput = {
 export type PlotCreateWithoutDocumentsInput = {
   id?: string
   categoryId: $Enums.PlotCategories
+  description?: string | null
   width?: number | null
   height?: number | null
   country?: string | null
   city?: string | null
   address?: string | null
+  certificationStatus?: $Enums.CertificationStatus
   certified?: boolean
   certifStep?: number
   price?: number | null
+  pin?: number | null
   likes?: number
   canSell?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   proprio: Prisma.UserCreateNestedOneWithoutPlotsInput
+  lawyer?: Prisma.UserCreateNestedOneWithoutLawyeredPlotsInput
+  favoritedBy?: Prisma.UserCreateNestedManyWithoutFavoritePlotsInput
   images?: Prisma.ImagePlotCreateNestedManyWithoutPlotInput
   visits?: Prisma.VisitCreateNestedManyWithoutPlotInput
   messages?: Prisma.MessageCreateNestedManyWithoutPlotInput
@@ -960,19 +1345,24 @@ export type PlotCreateWithoutDocumentsInput = {
 export type PlotUncheckedCreateWithoutDocumentsInput = {
   id?: string
   categoryId: $Enums.PlotCategories
+  description?: string | null
   proprioId: string
+  lawyerId?: string | null
   width?: number | null
   height?: number | null
   country?: string | null
   city?: string | null
   address?: string | null
+  certificationStatus?: $Enums.CertificationStatus
   certified?: boolean
   certifStep?: number
   price?: number | null
+  pin?: number | null
   likes?: number
   canSell?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  favoritedBy?: Prisma.UserUncheckedCreateNestedManyWithoutFavoritePlotsInput
   images?: Prisma.ImagePlotUncheckedCreateNestedManyWithoutPlotInput
   visits?: Prisma.VisitUncheckedCreateNestedManyWithoutPlotInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlotInput
@@ -997,19 +1387,24 @@ export type PlotUpdateToOneWithWhereWithoutDocumentsInput = {
 export type PlotUpdateWithoutDocumentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.EnumPlotCategoriesFieldUpdateOperationsInput | $Enums.PlotCategories
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFieldUpdateOperationsInput | $Enums.CertificationStatus
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   certifStep?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   likes?: Prisma.IntFieldUpdateOperationsInput | number
   canSell?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   proprio?: Prisma.UserUpdateOneRequiredWithoutPlotsNestedInput
+  lawyer?: Prisma.UserUpdateOneWithoutLawyeredPlotsNestedInput
+  favoritedBy?: Prisma.UserUpdateManyWithoutFavoritePlotsNestedInput
   images?: Prisma.ImagePlotUpdateManyWithoutPlotNestedInput
   visits?: Prisma.VisitUpdateManyWithoutPlotNestedInput
   messages?: Prisma.MessageUpdateManyWithoutPlotNestedInput
@@ -1018,19 +1413,24 @@ export type PlotUpdateWithoutDocumentsInput = {
 export type PlotUncheckedUpdateWithoutDocumentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.EnumPlotCategoriesFieldUpdateOperationsInput | $Enums.PlotCategories
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proprioId?: Prisma.StringFieldUpdateOperationsInput | string
+  lawyerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFieldUpdateOperationsInput | $Enums.CertificationStatus
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   certifStep?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   likes?: Prisma.IntFieldUpdateOperationsInput | number
   canSell?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  favoritedBy?: Prisma.UserUncheckedUpdateManyWithoutFavoritePlotsNestedInput
   images?: Prisma.ImagePlotUncheckedUpdateManyWithoutPlotNestedInput
   visits?: Prisma.VisitUncheckedUpdateManyWithoutPlotNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlotNestedInput
@@ -1039,19 +1439,24 @@ export type PlotUncheckedUpdateWithoutDocumentsInput = {
 export type PlotCreateWithoutMessagesInput = {
   id?: string
   categoryId: $Enums.PlotCategories
+  description?: string | null
   width?: number | null
   height?: number | null
   country?: string | null
   city?: string | null
   address?: string | null
+  certificationStatus?: $Enums.CertificationStatus
   certified?: boolean
   certifStep?: number
   price?: number | null
+  pin?: number | null
   likes?: number
   canSell?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   proprio: Prisma.UserCreateNestedOneWithoutPlotsInput
+  lawyer?: Prisma.UserCreateNestedOneWithoutLawyeredPlotsInput
+  favoritedBy?: Prisma.UserCreateNestedManyWithoutFavoritePlotsInput
   images?: Prisma.ImagePlotCreateNestedManyWithoutPlotInput
   documents?: Prisma.ImageDocumentPlotCreateNestedManyWithoutPlotInput
   visits?: Prisma.VisitCreateNestedManyWithoutPlotInput
@@ -1060,19 +1465,24 @@ export type PlotCreateWithoutMessagesInput = {
 export type PlotUncheckedCreateWithoutMessagesInput = {
   id?: string
   categoryId: $Enums.PlotCategories
+  description?: string | null
   proprioId: string
+  lawyerId?: string | null
   width?: number | null
   height?: number | null
   country?: string | null
   city?: string | null
   address?: string | null
+  certificationStatus?: $Enums.CertificationStatus
   certified?: boolean
   certifStep?: number
   price?: number | null
+  pin?: number | null
   likes?: number
   canSell?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  favoritedBy?: Prisma.UserUncheckedCreateNestedManyWithoutFavoritePlotsInput
   images?: Prisma.ImagePlotUncheckedCreateNestedManyWithoutPlotInput
   documents?: Prisma.ImageDocumentPlotUncheckedCreateNestedManyWithoutPlotInput
   visits?: Prisma.VisitUncheckedCreateNestedManyWithoutPlotInput
@@ -1097,19 +1507,24 @@ export type PlotUpdateToOneWithWhereWithoutMessagesInput = {
 export type PlotUpdateWithoutMessagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.EnumPlotCategoriesFieldUpdateOperationsInput | $Enums.PlotCategories
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFieldUpdateOperationsInput | $Enums.CertificationStatus
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   certifStep?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   likes?: Prisma.IntFieldUpdateOperationsInput | number
   canSell?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   proprio?: Prisma.UserUpdateOneRequiredWithoutPlotsNestedInput
+  lawyer?: Prisma.UserUpdateOneWithoutLawyeredPlotsNestedInput
+  favoritedBy?: Prisma.UserUpdateManyWithoutFavoritePlotsNestedInput
   images?: Prisma.ImagePlotUpdateManyWithoutPlotNestedInput
   documents?: Prisma.ImageDocumentPlotUpdateManyWithoutPlotNestedInput
   visits?: Prisma.VisitUpdateManyWithoutPlotNestedInput
@@ -1118,19 +1533,24 @@ export type PlotUpdateWithoutMessagesInput = {
 export type PlotUncheckedUpdateWithoutMessagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.EnumPlotCategoriesFieldUpdateOperationsInput | $Enums.PlotCategories
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proprioId?: Prisma.StringFieldUpdateOperationsInput | string
+  lawyerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFieldUpdateOperationsInput | $Enums.CertificationStatus
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   certifStep?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   likes?: Prisma.IntFieldUpdateOperationsInput | number
   canSell?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  favoritedBy?: Prisma.UserUncheckedUpdateManyWithoutFavoritePlotsNestedInput
   images?: Prisma.ImagePlotUncheckedUpdateManyWithoutPlotNestedInput
   documents?: Prisma.ImageDocumentPlotUncheckedUpdateManyWithoutPlotNestedInput
   visits?: Prisma.VisitUncheckedUpdateManyWithoutPlotNestedInput
@@ -1139,19 +1559,24 @@ export type PlotUncheckedUpdateWithoutMessagesInput = {
 export type PlotCreateWithoutVisitsInput = {
   id?: string
   categoryId: $Enums.PlotCategories
+  description?: string | null
   width?: number | null
   height?: number | null
   country?: string | null
   city?: string | null
   address?: string | null
+  certificationStatus?: $Enums.CertificationStatus
   certified?: boolean
   certifStep?: number
   price?: number | null
+  pin?: number | null
   likes?: number
   canSell?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   proprio: Prisma.UserCreateNestedOneWithoutPlotsInput
+  lawyer?: Prisma.UserCreateNestedOneWithoutLawyeredPlotsInput
+  favoritedBy?: Prisma.UserCreateNestedManyWithoutFavoritePlotsInput
   images?: Prisma.ImagePlotCreateNestedManyWithoutPlotInput
   documents?: Prisma.ImageDocumentPlotCreateNestedManyWithoutPlotInput
   messages?: Prisma.MessageCreateNestedManyWithoutPlotInput
@@ -1160,19 +1585,24 @@ export type PlotCreateWithoutVisitsInput = {
 export type PlotUncheckedCreateWithoutVisitsInput = {
   id?: string
   categoryId: $Enums.PlotCategories
+  description?: string | null
   proprioId: string
+  lawyerId?: string | null
   width?: number | null
   height?: number | null
   country?: string | null
   city?: string | null
   address?: string | null
+  certificationStatus?: $Enums.CertificationStatus
   certified?: boolean
   certifStep?: number
   price?: number | null
+  pin?: number | null
   likes?: number
   canSell?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  favoritedBy?: Prisma.UserUncheckedCreateNestedManyWithoutFavoritePlotsInput
   images?: Prisma.ImagePlotUncheckedCreateNestedManyWithoutPlotInput
   documents?: Prisma.ImageDocumentPlotUncheckedCreateNestedManyWithoutPlotInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlotInput
@@ -1197,19 +1627,24 @@ export type PlotUpdateToOneWithWhereWithoutVisitsInput = {
 export type PlotUpdateWithoutVisitsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.EnumPlotCategoriesFieldUpdateOperationsInput | $Enums.PlotCategories
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFieldUpdateOperationsInput | $Enums.CertificationStatus
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   certifStep?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   likes?: Prisma.IntFieldUpdateOperationsInput | number
   canSell?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   proprio?: Prisma.UserUpdateOneRequiredWithoutPlotsNestedInput
+  lawyer?: Prisma.UserUpdateOneWithoutLawyeredPlotsNestedInput
+  favoritedBy?: Prisma.UserUpdateManyWithoutFavoritePlotsNestedInput
   images?: Prisma.ImagePlotUpdateManyWithoutPlotNestedInput
   documents?: Prisma.ImageDocumentPlotUpdateManyWithoutPlotNestedInput
   messages?: Prisma.MessageUpdateManyWithoutPlotNestedInput
@@ -1218,19 +1653,24 @@ export type PlotUpdateWithoutVisitsInput = {
 export type PlotUncheckedUpdateWithoutVisitsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.EnumPlotCategoriesFieldUpdateOperationsInput | $Enums.PlotCategories
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proprioId?: Prisma.StringFieldUpdateOperationsInput | string
+  lawyerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFieldUpdateOperationsInput | $Enums.CertificationStatus
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   certifStep?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   likes?: Prisma.IntFieldUpdateOperationsInput | number
   canSell?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  favoritedBy?: Prisma.UserUncheckedUpdateManyWithoutFavoritePlotsNestedInput
   images?: Prisma.ImagePlotUncheckedUpdateManyWithoutPlotNestedInput
   documents?: Prisma.ImageDocumentPlotUncheckedUpdateManyWithoutPlotNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlotNestedInput
@@ -1239,14 +1679,39 @@ export type PlotUncheckedUpdateWithoutVisitsInput = {
 export type PlotCreateManyProprioInput = {
   id?: string
   categoryId: $Enums.PlotCategories
+  description?: string | null
+  lawyerId?: string | null
   width?: number | null
   height?: number | null
   country?: string | null
   city?: string | null
   address?: string | null
+  certificationStatus?: $Enums.CertificationStatus
   certified?: boolean
   certifStep?: number
   price?: number | null
+  pin?: number | null
+  likes?: number
+  canSell?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PlotCreateManyLawyerInput = {
+  id?: string
+  categoryId: $Enums.PlotCategories
+  description?: string | null
+  proprioId: string
+  width?: number | null
+  height?: number | null
+  country?: string | null
+  city?: string | null
+  address?: string | null
+  certificationStatus?: $Enums.CertificationStatus
+  certified?: boolean
+  certifStep?: number
+  price?: number | null
+  pin?: number | null
   likes?: number
   canSell?: boolean
   createdAt?: Date | string
@@ -1256,18 +1721,23 @@ export type PlotCreateManyProprioInput = {
 export type PlotUpdateWithoutProprioInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.EnumPlotCategoriesFieldUpdateOperationsInput | $Enums.PlotCategories
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFieldUpdateOperationsInput | $Enums.CertificationStatus
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   certifStep?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   likes?: Prisma.IntFieldUpdateOperationsInput | number
   canSell?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lawyer?: Prisma.UserUpdateOneWithoutLawyeredPlotsNestedInput
+  favoritedBy?: Prisma.UserUpdateManyWithoutFavoritePlotsNestedInput
   images?: Prisma.ImagePlotUpdateManyWithoutPlotNestedInput
   documents?: Prisma.ImageDocumentPlotUpdateManyWithoutPlotNestedInput
   visits?: Prisma.VisitUpdateManyWithoutPlotNestedInput
@@ -1277,14 +1747,92 @@ export type PlotUpdateWithoutProprioInput = {
 export type PlotUncheckedUpdateWithoutProprioInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.EnumPlotCategoriesFieldUpdateOperationsInput | $Enums.PlotCategories
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lawyerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFieldUpdateOperationsInput | $Enums.CertificationStatus
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   certifStep?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  likes?: Prisma.IntFieldUpdateOperationsInput | number
+  canSell?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  favoritedBy?: Prisma.UserUncheckedUpdateManyWithoutFavoritePlotsNestedInput
+  images?: Prisma.ImagePlotUncheckedUpdateManyWithoutPlotNestedInput
+  documents?: Prisma.ImageDocumentPlotUncheckedUpdateManyWithoutPlotNestedInput
+  visits?: Prisma.VisitUncheckedUpdateManyWithoutPlotNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutPlotNestedInput
+}
+
+export type PlotUncheckedUpdateManyWithoutProprioInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.EnumPlotCategoriesFieldUpdateOperationsInput | $Enums.PlotCategories
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lawyerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFieldUpdateOperationsInput | $Enums.CertificationStatus
+  certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  certifStep?: Prisma.IntFieldUpdateOperationsInput | number
+  price?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  likes?: Prisma.IntFieldUpdateOperationsInput | number
+  canSell?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PlotUpdateWithoutFavoritedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.EnumPlotCategoriesFieldUpdateOperationsInput | $Enums.PlotCategories
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFieldUpdateOperationsInput | $Enums.CertificationStatus
+  certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  certifStep?: Prisma.IntFieldUpdateOperationsInput | number
+  price?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  likes?: Prisma.IntFieldUpdateOperationsInput | number
+  canSell?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  proprio?: Prisma.UserUpdateOneRequiredWithoutPlotsNestedInput
+  lawyer?: Prisma.UserUpdateOneWithoutLawyeredPlotsNestedInput
+  images?: Prisma.ImagePlotUpdateManyWithoutPlotNestedInput
+  documents?: Prisma.ImageDocumentPlotUpdateManyWithoutPlotNestedInput
+  visits?: Prisma.VisitUpdateManyWithoutPlotNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutPlotNestedInput
+}
+
+export type PlotUncheckedUpdateWithoutFavoritedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.EnumPlotCategoriesFieldUpdateOperationsInput | $Enums.PlotCategories
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proprioId?: Prisma.StringFieldUpdateOperationsInput | string
+  lawyerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFieldUpdateOperationsInput | $Enums.CertificationStatus
+  certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  certifStep?: Prisma.IntFieldUpdateOperationsInput | number
+  price?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   likes?: Prisma.IntFieldUpdateOperationsInput | number
   canSell?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1295,17 +1843,95 @@ export type PlotUncheckedUpdateWithoutProprioInput = {
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlotNestedInput
 }
 
-export type PlotUncheckedUpdateManyWithoutProprioInput = {
+export type PlotUncheckedUpdateManyWithoutFavoritedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.EnumPlotCategoriesFieldUpdateOperationsInput | $Enums.PlotCategories
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proprioId?: Prisma.StringFieldUpdateOperationsInput | string
+  lawyerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFieldUpdateOperationsInput | $Enums.CertificationStatus
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   certifStep?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  likes?: Prisma.IntFieldUpdateOperationsInput | number
+  canSell?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PlotUpdateWithoutLawyerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.EnumPlotCategoriesFieldUpdateOperationsInput | $Enums.PlotCategories
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFieldUpdateOperationsInput | $Enums.CertificationStatus
+  certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  certifStep?: Prisma.IntFieldUpdateOperationsInput | number
+  price?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  likes?: Prisma.IntFieldUpdateOperationsInput | number
+  canSell?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  proprio?: Prisma.UserUpdateOneRequiredWithoutPlotsNestedInput
+  favoritedBy?: Prisma.UserUpdateManyWithoutFavoritePlotsNestedInput
+  images?: Prisma.ImagePlotUpdateManyWithoutPlotNestedInput
+  documents?: Prisma.ImageDocumentPlotUpdateManyWithoutPlotNestedInput
+  visits?: Prisma.VisitUpdateManyWithoutPlotNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutPlotNestedInput
+}
+
+export type PlotUncheckedUpdateWithoutLawyerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.EnumPlotCategoriesFieldUpdateOperationsInput | $Enums.PlotCategories
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proprioId?: Prisma.StringFieldUpdateOperationsInput | string
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFieldUpdateOperationsInput | $Enums.CertificationStatus
+  certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  certifStep?: Prisma.IntFieldUpdateOperationsInput | number
+  price?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  likes?: Prisma.IntFieldUpdateOperationsInput | number
+  canSell?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  favoritedBy?: Prisma.UserUncheckedUpdateManyWithoutFavoritePlotsNestedInput
+  images?: Prisma.ImagePlotUncheckedUpdateManyWithoutPlotNestedInput
+  documents?: Prisma.ImageDocumentPlotUncheckedUpdateManyWithoutPlotNestedInput
+  visits?: Prisma.VisitUncheckedUpdateManyWithoutPlotNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutPlotNestedInput
+}
+
+export type PlotUncheckedUpdateManyWithoutLawyerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.EnumPlotCategoriesFieldUpdateOperationsInput | $Enums.PlotCategories
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proprioId?: Prisma.StringFieldUpdateOperationsInput | string
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificationStatus?: Prisma.EnumCertificationStatusFieldUpdateOperationsInput | $Enums.CertificationStatus
+  certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  certifStep?: Prisma.IntFieldUpdateOperationsInput | number
+  price?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   likes?: Prisma.IntFieldUpdateOperationsInput | number
   canSell?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1318,6 +1944,7 @@ export type PlotUncheckedUpdateManyWithoutProprioInput = {
  */
 
 export type PlotCountOutputType = {
+  favoritedBy: number
   images: number
   documents: number
   visits: number
@@ -1325,6 +1952,7 @@ export type PlotCountOutputType = {
 }
 
 export type PlotCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  favoritedBy?: boolean | PlotCountOutputTypeCountFavoritedByArgs
   images?: boolean | PlotCountOutputTypeCountImagesArgs
   documents?: boolean | PlotCountOutputTypeCountDocumentsArgs
   visits?: boolean | PlotCountOutputTypeCountVisitsArgs
@@ -1339,6 +1967,13 @@ export type PlotCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
    * Select specific fields to fetch from the PlotCountOutputType
    */
   select?: Prisma.PlotCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * PlotCountOutputType without action
+ */
+export type PlotCountOutputTypeCountFavoritedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserWhereInput
 }
 
 /**
@@ -1373,20 +2008,26 @@ export type PlotCountOutputTypeCountMessagesArgs<ExtArgs extends runtime.Types.E
 export type PlotSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   categoryId?: boolean
+  description?: boolean
   proprioId?: boolean
+  lawyerId?: boolean
   width?: boolean
   height?: boolean
   country?: boolean
   city?: boolean
   address?: boolean
+  certificationStatus?: boolean
   certified?: boolean
   certifStep?: boolean
   price?: boolean
+  pin?: boolean
   likes?: boolean
   canSell?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   proprio?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  lawyer?: boolean | Prisma.Plot$lawyerArgs<ExtArgs>
+  favoritedBy?: boolean | Prisma.Plot$favoritedByArgs<ExtArgs>
   images?: boolean | Prisma.Plot$imagesArgs<ExtArgs>
   documents?: boolean | Prisma.Plot$documentsArgs<ExtArgs>
   visits?: boolean | Prisma.Plot$visitsArgs<ExtArgs>
@@ -1397,62 +2038,78 @@ export type PlotSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 export type PlotSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   categoryId?: boolean
+  description?: boolean
   proprioId?: boolean
+  lawyerId?: boolean
   width?: boolean
   height?: boolean
   country?: boolean
   city?: boolean
   address?: boolean
+  certificationStatus?: boolean
   certified?: boolean
   certifStep?: boolean
   price?: boolean
+  pin?: boolean
   likes?: boolean
   canSell?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   proprio?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  lawyer?: boolean | Prisma.Plot$lawyerArgs<ExtArgs>
 }, ExtArgs["result"]["plot"]>
 
 export type PlotSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   categoryId?: boolean
+  description?: boolean
   proprioId?: boolean
+  lawyerId?: boolean
   width?: boolean
   height?: boolean
   country?: boolean
   city?: boolean
   address?: boolean
+  certificationStatus?: boolean
   certified?: boolean
   certifStep?: boolean
   price?: boolean
+  pin?: boolean
   likes?: boolean
   canSell?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   proprio?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  lawyer?: boolean | Prisma.Plot$lawyerArgs<ExtArgs>
 }, ExtArgs["result"]["plot"]>
 
 export type PlotSelectScalar = {
   id?: boolean
   categoryId?: boolean
+  description?: boolean
   proprioId?: boolean
+  lawyerId?: boolean
   width?: boolean
   height?: boolean
   country?: boolean
   city?: boolean
   address?: boolean
+  certificationStatus?: boolean
   certified?: boolean
   certifStep?: boolean
   price?: boolean
+  pin?: boolean
   likes?: boolean
   canSell?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PlotOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "categoryId" | "proprioId" | "width" | "height" | "country" | "city" | "address" | "certified" | "certifStep" | "price" | "likes" | "canSell" | "createdAt" | "updatedAt", ExtArgs["result"]["plot"]>
+export type PlotOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "categoryId" | "description" | "proprioId" | "lawyerId" | "width" | "height" | "country" | "city" | "address" | "certificationStatus" | "certified" | "certifStep" | "price" | "pin" | "likes" | "canSell" | "createdAt" | "updatedAt", ExtArgs["result"]["plot"]>
 export type PlotInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   proprio?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  lawyer?: boolean | Prisma.Plot$lawyerArgs<ExtArgs>
+  favoritedBy?: boolean | Prisma.Plot$favoritedByArgs<ExtArgs>
   images?: boolean | Prisma.Plot$imagesArgs<ExtArgs>
   documents?: boolean | Prisma.Plot$documentsArgs<ExtArgs>
   visits?: boolean | Prisma.Plot$visitsArgs<ExtArgs>
@@ -1461,15 +2118,19 @@ export type PlotInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 }
 export type PlotIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   proprio?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  lawyer?: boolean | Prisma.Plot$lawyerArgs<ExtArgs>
 }
 export type PlotIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   proprio?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  lawyer?: boolean | Prisma.Plot$lawyerArgs<ExtArgs>
 }
 
 export type $PlotPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Plot"
   objects: {
     proprio: Prisma.$UserPayload<ExtArgs>
+    lawyer: Prisma.$UserPayload<ExtArgs> | null
+    favoritedBy: Prisma.$UserPayload<ExtArgs>[]
     images: Prisma.$ImagePlotPayload<ExtArgs>[]
     documents: Prisma.$ImageDocumentPlotPayload<ExtArgs>[]
     visits: Prisma.$VisitPayload<ExtArgs>[]
@@ -1478,15 +2139,19 @@ export type $PlotPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     categoryId: $Enums.PlotCategories
+    description: string | null
     proprioId: string
+    lawyerId: string | null
     width: number | null
     height: number | null
     country: string | null
     city: string | null
     address: string | null
+    certificationStatus: $Enums.CertificationStatus
     certified: boolean
     certifStep: number
     price: number | null
+    pin: number | null
     likes: number
     canSell: boolean
     createdAt: Date
@@ -1886,6 +2551,8 @@ readonly fields: PlotFieldRefs;
 export interface Prisma__PlotClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   proprio<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  lawyer<T extends Prisma.Plot$lawyerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Plot$lawyerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  favoritedBy<T extends Prisma.Plot$favoritedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Plot$favoritedByArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   images<T extends Prisma.Plot$imagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Plot$imagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ImagePlotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   documents<T extends Prisma.Plot$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Plot$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ImageDocumentPlotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   visits<T extends Prisma.Plot$visitsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Plot$visitsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VisitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1921,15 +2588,19 @@ export interface Prisma__PlotClient<T, Null = never, ExtArgs extends runtime.Typ
 export interface PlotFieldRefs {
   readonly id: Prisma.FieldRef<"Plot", 'String'>
   readonly categoryId: Prisma.FieldRef<"Plot", 'PlotCategories'>
+  readonly description: Prisma.FieldRef<"Plot", 'String'>
   readonly proprioId: Prisma.FieldRef<"Plot", 'String'>
+  readonly lawyerId: Prisma.FieldRef<"Plot", 'String'>
   readonly width: Prisma.FieldRef<"Plot", 'Int'>
   readonly height: Prisma.FieldRef<"Plot", 'Int'>
   readonly country: Prisma.FieldRef<"Plot", 'String'>
   readonly city: Prisma.FieldRef<"Plot", 'String'>
   readonly address: Prisma.FieldRef<"Plot", 'String'>
+  readonly certificationStatus: Prisma.FieldRef<"Plot", 'CertificationStatus'>
   readonly certified: Prisma.FieldRef<"Plot", 'Boolean'>
   readonly certifStep: Prisma.FieldRef<"Plot", 'Int'>
   readonly price: Prisma.FieldRef<"Plot", 'Int'>
+  readonly pin: Prisma.FieldRef<"Plot", 'Int'>
   readonly likes: Prisma.FieldRef<"Plot", 'Int'>
   readonly canSell: Prisma.FieldRef<"Plot", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Plot", 'DateTime'>
@@ -2332,6 +3003,49 @@ export type PlotDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Plots to delete.
    */
   limit?: number
+}
+
+/**
+ * Plot.lawyer
+ */
+export type Plot$lawyerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * Plot.favoritedBy
+ */
+export type Plot$favoritedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+  orderBy?: Prisma.UserOrderByWithRelationInput | Prisma.UserOrderByWithRelationInput[]
+  cursor?: Prisma.UserWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserScalarFieldEnum | Prisma.UserScalarFieldEnum[]
 }
 
 /**

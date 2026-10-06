@@ -1,17 +1,26 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
 	import { authClient } from '$lib/auth-client';
 	import { toast } from '$lib/services/notification.svelte';
-	import { Mail, LockKeyhole, User, Loader2, AlertCircle, ArrowRight } from '@lucide/svelte';
+	import {
+		Mail,
+		LockKeyhole,
+		User,
+		Loader2,
+		AlertCircle,
+		ArrowRight,
+		Eye,
+		EyeOff
+	} from '@lucide/svelte';
 	import GoogleOnTap from '../GoogleOnTap.svelte';
 
 	// Props optionnels pour recevoir des handlers personnalisés BetterAuth
 	let {
-        step,
+		step,
 		onSignInSuccess = () => {},
 		onSignUpSuccess = () => {}
 	}: {
-        step?: number;
+		step?: number;
 		onSignInSuccess?: () => void;
 		onSignUpSuccess?: () => void;
 	} = $props();
@@ -19,12 +28,18 @@
 	let mode = $state<'login' | 'register'>('login');
 	let loading = $state(false);
 	let errorMessage = $state<string | null>(null);
+	let passType = $state<'password' | 'text'>('password');
 
 	// Champs du Formulaire
 	let name = $state('');
 	let email = $state('');
 	let password = $state('');
 
+	// Validation du mot de passe (mode register uniquement)
+	let hasMinLength = $derived(password.length >= 8);
+	let hasUppercase = $derived(/[A-Z]/.test(password));
+	let hasDigit = $derived(/\d/.test(password));
+	let isRegisterPasswordValid = $derived(hasMinLength && hasUppercase && hasDigit);
 
 	function switchTab(target: 'login' | 'register') {
 		mode = target;
@@ -40,6 +55,12 @@
 			return;
 		}
 
+		if (mode === 'register' && !isRegisterPasswordValid) {
+			errorMessage =
+				'Le mot de passe doit contenir au moins 8 caractères, une majuscule et un chiffre.';
+			return;
+		}
+
 		loading = true;
 
 		try {
@@ -48,31 +69,33 @@
 				// Exemple: await authClient.signIn.email({ email, password });
 				const res = await authClient.signIn.email({
 					email,
-					password,
-				});
-
-				if (res.error) {
-					errorMessage = res.error.message || 'Identifiants invalides';
-					toast.ajouter('Identifiants invalides', 'error');
-				}else {
-                    onSignInSuccess();
-                }
-				
-			} else {
-				// Exemple: await authClient.signUp.email({ email, password, name });
-				const res = await authClient.signUp.email({
-					email,
-					password,
-					name,
+					password
 				});
 
 				if (res.error) {
 					errorMessage = res.error.message || "Erreur lors de l'inscription";
 					toast.ajouter("Erreur lors de l'inscription", 'error');
-				}else {
-                    onSignUpSuccess();
-                }
-				
+				} else {
+					onSignUpSuccess();
+					await invalidateAll();
+					await goto('/');
+				}
+			} else {
+				// Exemple: await authClient.signUp.email({ email, password, name });
+				const res = await authClient.signUp.email({
+					email,
+					password,
+					name
+				});
+
+				if (res.error) {
+					errorMessage = res.error.message || 'Identifiants invalides';
+					toast.ajouter('Identifiants invalides', 'error');
+				} else {
+					onSignInSuccess();
+					await invalidateAll();
+					await goto('/');
+				}
 			}
 		} catch (error) {
 			console.error('Erreur lors de la soumission du formulaire:', error);
@@ -88,12 +111,12 @@
 			// Exmple: await authClient.signIn.social({ provider: 'google' });
 			const res = await authClient.signIn.social({
 				provider: 'google',
-                window : true
+				window: true
 			});
 
 			if (res?.error) {
 				errorMessage = res.error.message || 'La connexion a échoué.';
-                toast.ajouter('La connexion a échoué.', 'error');
+				toast.ajouter('La connexion a échoué.', 'error');
 			} else {
 				// Le popup s'est fermé et l'utilisateur est connecté !
 				// Vous pouvez rediriger ou simplement rafraîchir la page
@@ -111,8 +134,9 @@
 		}
 	}
 </script>
-{#if step && step >= 5 }
-    <GoogleOnTap onSuccess={onSignInSuccess} />
+
+{#if step && step >= 5}
+	<GoogleOnTap onSuccess={onSignInSuccess} />
 {/if}
 
 <div class="mx-auto w-full max-w-md px-4 py-6">
@@ -248,18 +272,54 @@
 					<LockKeyhole class="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-500" />
 					<input
 						id="password"
-						type="password"
+						type={passType}
 						bind:value={password}
 						placeholder="••••••••••••"
 						required
 						class="w-full rounded-xl border border-white/10 bg-slate-950/80 py-2.5 pr-4 pl-10 text-xs text-white placeholder-slate-500 transition-all focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
 					/>
+					<button
+						onclick={() => (passType = passType === 'password' ? 'text' : 'password')}
+						type="button"
+						class="absolute top-2 right-3 cursor-pointer text-slate-500 hover:text-slate-200"
+					>
+						{#if passType === 'text'}
+							<Eye size={20} />
+						{:else}
+							<EyeOff size={20} />
+						{/if}
+					</button>
 				</div>
+
+				{#if mode === 'register'}
+					<ul class="mt-2 space-y-1 text-[10px]">
+						<li
+							class="flex items-center gap-1.5 {hasMinLength
+								? 'text-emerald-400'
+								: 'text-rose-400'}"
+						>
+							<span aria-hidden="true">{hasMinLength ? '✓' : '✕'}</span>
+							<span>Au moins 8 caractères</span>
+						</li>
+						<li
+							class="flex items-center gap-1.5 {hasUppercase
+								? 'text-emerald-400'
+								: 'text-rose-400'}"
+						>
+							<span aria-hidden="true">{hasUppercase ? '✓' : '✕'}</span>
+							<span>Au moins 1 lettre majuscule</span>
+						</li>
+						<li class="flex items-center gap-1.5 {hasDigit ? 'text-emerald-400' : 'text-rose-400'}">
+							<span aria-hidden="true">{hasDigit ? '✓' : '✕'}</span>
+							<span>Au moins 1 chiffre</span>
+						</li>
+					</ul>
+				{/if}
 			</div>
 
 			<button
 				type="submit"
-				disabled={loading}
+				disabled={loading || (mode === 'register' && !isRegisterPasswordValid)}
 				class="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-linear-to-r from-emerald-400 via-teal-300 to-emerald-400 bg-size-[200%_auto] px-4 py-3 text-xs font-bold text-slate-950 shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all duration-300 hover:bg-position-[right_center] active:scale-95 disabled:opacity-50"
 			>
 				{#if loading}

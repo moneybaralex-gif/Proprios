@@ -1,0 +1,436 @@
+This file is a merged representation of a subset of the codebase, containing specifically included files, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of a subset of the repository's contents that is considered the most important context.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Only files matching these patterns are included: prisma/schema.prisma, package.json, .env
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+prisma/
+  schema.prisma
+package.json
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="prisma/schema.prisma">
+// filepath: prisma/schema.prisma
+generator client {
+  provider = "prisma-client"
+  output   = "../src/lib/server/generated/prisma"
+}
+
+datasource db {
+  provider = "postgres"
+}
+
+model User {
+  id                   String      @id @default(cuid())
+  name                 String
+  email                String      @unique
+  emailVerified        Boolean     @default(false)
+  telephone            String?     @unique
+  dateOfBirth          DateTime?
+  gender               Gender?
+  country              String?
+  city                 String?
+  image                String?
+  role                 String?     @default("user")
+  banned               Boolean?    @default(false)
+  banReason            String?
+  banExpires           DateTime?
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
+  certifStep           Int         @default(0)
+  type                 UserType    @default(GUEST)
+  cardID               String?     @unique
+  typeID               UserIDType?
+  identityCardPhotoUrl String?
+  portraitPhotoUrl     String?
+  cardHoldingPhotoUrl  String?
+  kycSubmittedAt       DateTime?
+  kycReviewedAt        DateTime?
+  kycRejectionReason   String?
+  loyaltyPoint         Int         @default(0)
+  certified            Boolean     @default(false)
+
+  // Relations
+  sessions              Session[]
+  accounts              Account[]
+  plots                 Plot[]
+  favoritePlots         Plot[]         @relation("FavoritePlots")
+  conversations         Conversation[] @relation("UserConversations")
+  assignedConversations Conversation[] @relation("AssignedAdmin")
+  messages              Message[]      @relation("SentMessages")
+  notifications         Notification[]
+  visits                Visit[]        @relation("UserVisits")
+  purchases             Buying[]       @relation("BuyerRelation")
+  sales                 Buying[]       @relation("ProprioRelation")
+  legalAssistance       Buying[]       @relation("LawyerRelation")
+  agentVisits           Visit[]        @relation("AssignedVisits")
+  lawyeredPlots         Plot[]         @relation("PlotLawyer")
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("accounts")
+}
+
+model Verification {
+  id         String    @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @updatedAt
+
+  @@index([identifier])
+  @@map("verifications")
+}
+
+model Plot {
+  id                  String              @id @default(cuid())
+  categoryId          PlotCategories
+  description         String?             @db.Text
+  proprioId           String
+  proprio             User                @relation(fields: [proprioId], references: [id])
+  lawyerId            String?
+  lawyer              User?               @relation("PlotLawyer", fields: [lawyerId], references: [id])
+  width               Int?
+  height              Int?
+  country             String?
+  city                String?
+  address             String?
+  certificationStatus CertificationStatus @default(ATTENTE)
+  certified           Boolean             @default(false)
+  certifStep          Int                 @default(0)
+  price               Int?
+  pin                 Int?                @unique
+  likes               Int                 @default(0)
+  canSell             Boolean             @default(false)
+  favoritedBy         User[]              @relation("FavoritePlots")
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  images    ImagePlot[]
+  documents ImageDocumentPlot[]
+  visits    Visit[]
+  messages  Message[]
+
+  @@index([proprioId])
+  @@index([certified, certifStep])
+  @@map("plots")
+}
+
+model ImagePlot {
+  id       String @id @default(uuid())
+  url      String
+  publicId String
+  plotId   String
+  plot     Plot   @relation(fields: [plotId], references: [id], onDelete: Cascade)
+}
+
+model ImageDocumentPlot {
+  id       String  @id @default(uuid())
+  url      String
+  publicId String
+  name     String?
+  plotId   String
+  plot     Plot    @relation(fields: [plotId], references: [id], onDelete: Cascade)
+}
+
+model Conversation {
+  id               String             @id @default(cuid())
+  userId           String             @map("user_id")
+  assignedToId     String?            @map("assigned_to_id")
+  status           ConversationStatus @default(UNASSIGNED)
+  lastMessageAt    DateTime           @default(now())
+  unreadAdminCount Int                @default(0)
+  unreadUserCount  Int                @default(0)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+
+  user       User      @relation("UserConversations", fields: [userId], references: [id], onDelete: Cascade)
+  assignedTo User?     @relation("AssignedAdmin", fields: [assignedToId], references: [id], onDelete: SetNull)
+  messages   Message[]
+
+  @@index([userId])
+  @@index([lastMessageAt])
+  @@index([userId, lastMessageAt])
+  @@map("conversations")
+}
+
+model Message {
+  id             String      @id @default(cuid())
+  conversationId String
+  senderId       String
+  type           MessageType @default(TEXT)
+  content        String      @db.Text
+  plotId         String? 
+  plot           Plot?       @relation(fields: [plotId], references: [id], onDelete: SetNull)
+  isRead         Boolean     @default(false)
+  createdAt      DateTime    @default(now())
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender       User         @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId, createdAt])
+  @@map("messages")
+}
+
+model Visit {
+  id          String    @id @default(cuid())
+  userId      String?
+  user        User?     @relation("UserVisits", fields: [userId], references: [id])
+  agentId     String? 
+  agent       User?     @relation("AssignedVisits", fields: [agentId], references: [id])
+  plotId      String
+  plot        Plot      @relation(fields: [plotId], references: [id])
+  date        DateTime?
+  type        VisitType
+  paid        Boolean   @default(false)
+  isCompleted Boolean   @default(false)
+  isCancelled Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([plotId])
+  @@index([agentId])
+  @@map("visits")
+}
+
+model Buying {
+  id               String   @id @default(cuid())
+  proprioId        String
+  proprio          User     @relation("ProprioRelation", fields: [proprioId], references: [id])
+  buyerId          String
+  buyer            User     @relation("BuyerRelation", fields: [buyerId], references: [id])
+  amount           Int
+  amountCommission Int
+  legalLawyerId    String?
+  lawyer           User?    @relation("LawyerRelation", fields: [legalLawyerId], references: [id])
+  comment          String?  @db.Text
+  witnessA         String?
+  witnessB         String?
+  createdAt        DateTime @default(now())
+
+  @@map("buyings")
+}
+
+model FinanceTransaction {
+  id         String          @id @default(cuid())
+  type       TransactionType
+  amount     Int
+  motif      String
+  recordedBy String 
+  createdAt  DateTime        @default(now())
+
+  @@map("finance_transactions")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  content   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("notifications")
+}
+
+enum CertificationStatus {
+  ATTENTE
+  EN_COURS
+  CERTIFIE
+  REJETE
+}
+
+enum PlotCategories {
+  HOUSE
+  COMPANY
+  GROUND
+  OTHER
+}
+
+enum UserIDType {
+  PASSPORT
+  NATIONAL
+  DRIVING
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum UserType {
+  AGENT
+  GUEST
+  PROPRIO
+  LAWYER
+  EMPLOYEE
+}
+
+enum ConversationStatus {
+  UNASSIGNED
+  IN_PROGRESS
+  WAITING_USER
+  RESOLVED
+  CLOSED
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  FILE
+  SYSTEM
+  INTERNAL_NOTE
+  VALIDATION
+}
+
+enum VisitType {
+  CERTIFICATION
+  FORCLIENT
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+</file>
+
+<file path="package.json">
+{
+	"name": "mbp",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"ws": "bun run server/ws.ts",
+		"dev:all": "concurrently \"bun run dev\" \"bun run ws\"",
+		"build": "vite build",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync || echo ''",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"lint": "prettier --check . && eslint .",
+		"format": "prettier --write ."
+	},
+	"devDependencies": {
+		"@eslint/compat": "^2.0.4",
+		"@eslint/js": "^10.0.1",
+		"@fontsource-variable/geist": "^5.2.9",
+		"@sveltejs/adapter-auto": "^7.0.1",
+		"@sveltejs/kit": "^2.57.0",
+		"@sveltejs/vite-plugin-svelte": "^7.0.0",
+		"@tailwindcss/vite": "^4.2.2",
+		"@types/canvas-confetti": "^1.9.0",
+		"@types/node": "^24",
+		"@types/pg": "^8.20.0",
+		"clsx": "^2.1.1",
+		"eslint": "^10.2.0",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-svelte": "^3.17.0",
+		"globals": "^17.4.0",
+		"prettier": "^3.8.1",
+		"prettier-plugin-svelte": "^3.5.1",
+		"prettier-plugin-tailwindcss": "^0.7.2",
+		"prisma": "^7.8.0",
+		"svelte": "^5.55.2",
+		"svelte-check": "^4.4.6",
+		"tailwind-merge": "^3.6.0",
+		"tailwind-variants": "^3.2.2",
+		"tailwindcss": "^4.2.2",
+		"tsx": "^4.22.3",
+		"concurrently": "^9.2.1",
+		"tw-animate-css": "^1.4.0",
+		"typescript": "^6.0.2",
+		"typescript-eslint": "^8.58.1",
+		"vite": "^8.0.7"
+	},
+	"dependencies": {
+		"@lucide/svelte": "^1.17.0",
+		"@prisma/adapter-pg": "^7.8.0",
+		"@prisma/client": "^7.9.1",
+		"@types/bun": "^1.4.0",
+		"better-auth": "^1.6.25",
+		"canvas-confetti": "^1.9.4",
+		"chart.js": "^4.5.1",
+		"cloudinary": "^2.10.0",
+		"dotenv": "^17.4.2",
+		"pg": "^8.21.0",
+		"resend": "^6.18.1"
+	}
+}
+</file>
+
+</files>

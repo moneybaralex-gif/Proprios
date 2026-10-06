@@ -1,487 +1,485 @@
 <script lang="ts">
-  import { enhance } from '$app/forms';
-  import Card from '$lib/components/admin/ui/Card.svelte';
-  import Badge from '$lib/components/admin/ui/Badge.svelte';
-  import { 
-    Search, MapPin, Map, Home, Building2, Trees, ShieldCheck,
-    Maximize, DollarSign, Camera, FileText, CheckCircle, Edit3, X, Save,
-    Copy, Trash2, Navigation, MessageSquare, AlertTriangle, Filter
-  } from '@lucide/svelte';
-  
-  import type { PageData } from './$types';
+	import { enhance } from '$app/forms';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import type { Component } from 'svelte';
+	import Card from '$lib/components/admin/ui/Card.svelte';
+	import {
+		Map,
+		Pencil,
+		Trash2,
+		Search,
+		X,
+		MapPin,
+		ShieldCheck,
+		Image as ImageIcon,
+		Loader2,
+		AlertTriangle,
+		Tag,
+		Save
+	} from '@lucide/svelte';
 
-  // --- INTERFACES STRICTES ---
-  interface FormResult { success?: boolean; message?: string; }
-  type PlotCategory = 'HOUSE' | 'COMPANY' | 'GROUND' | 'OTHER';
-  type FilterStatus = 'ALL' | 'CERTIFIED' | 'PENDING' | 'FOR_SALE';
+	let { data } = $props();
+	let plots = $derived(data.plots);
 
-  interface Proprio { id: string; name: string; image: string | null; telephone: string | null; certified: boolean; }
-  interface Image {
-    id: string;
-    url: string;
-    publicId: string;
-    plotId: string;
-  }
-  interface Document {
-    id: string;
-    url: string;
-    publicId: string;
-    plotId: string;
-  }
-  interface Visit {
-    id: string;
-    date: Date | null;
-    type: string;
-    createdAt: Date;
-    updatedAt: Date;
-    userId: string | null;
-    plotId: string;
-    agentId: string | null;
-    paid: boolean;
-    isCompleted: boolean;
-  }
+	type EditingPlot = (typeof plots)[number];
+	type TabId = 'general' | 'location' | 'status' | 'media';
+	interface TabDef {
+		id: TabId;
+		label: string;
+		icon: Component<{ size?: number | string }>;
+	}
 
-  interface PlotData {
-    id: string;
-    categoryId: PlotCategory;
-    width: number | null;
-    height: number | null;
-    price: number | null;
-    address: string | null;
-    city: string | null;
-    canSell: boolean;
-    certified: boolean;
-    certifStep: number;
-    createdAt: Date;
-    proprio: Proprio;
-    images: Image[];
-    documents: Document[];
-    visits: Visit[];
-    _count: { messages: number };
-  }
+	let searchQuery = $state('');
+	let filteredPlots = $derived(
+		plots.filter(
+			(p) =>
+				p.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+				p.proprio.name.toLowerCase().includes(searchQuery.toLowerCase())
+		)
+	);
 
-  type AdminPageData = Omit<PageData, 'plots'> & {
-    plots: PlotData[];
-    user: {
-      id: string;
-      createdAt: Date;
-      updatedAt: Date;
-      email: string;
-      emailVerified: boolean;
-      name: string;
-      image?: string | null;
-      role?: string;
-    } | null;
-  };
+	let editingPlot = $state<EditingPlot | null>(null);
+	let activeTab = $state<TabId>('general');
+	let deletingImageId = $state<string | null>(null);
+	let isSubmitting = $state(false);
+	let errorMessage = $state<string | null>(null);
 
-  let { data, form }: { data: AdminPageData; form: FormResult | null } = $props();
+	const tabs: TabDef[] = [
+		{ id: 'general', label: 'Général', icon: Tag },
+		{ id: 'location', label: 'Localisation', icon: MapPin },
+		{ id: 'status', label: 'Statut & Vente', icon: ShieldCheck },
+		{ id: 'media', label: 'Média', icon: ImageIcon }
+	];
 
-  // --- ÉTATS (Runes) ---
-  let searchQuery = $state('');
-  let activeFilter = $state<FilterStatus>('ALL');
-  let selectedPlotId = $state<string | null>(null);
-  let isEditing = $state(false);
-  let copiedId = $state(false);
-  let showSuccessToast = $state(false);
+	const fieldLabel = 'text-[11px] font-semibold uppercase tracking-wider text-slate-400';
+	const fieldInput =
+		'rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white outline-none transition focus:border-proprios-mint/60 focus:bg-white/[0.07]';
 
-  // --- LOGIQUE DÉRIVÉE ---
-  let typedPlots = $derived(data.plots as unknown as PlotData[]);
+	function openEdit(plot: EditingPlot) {
+		editingPlot = { ...plot, images: [...plot.images] };
+		activeTab = 'general';
+		errorMessage = null;
+		isSubmitting = false;
+		deletingImageId = null;
+	}
 
-  let filteredPlots = $derived(
-    typedPlots.filter(plot => {
-      const matchSearch = plot.id.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          plot.proprio.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          (plot.city && plot.city.toLowerCase().includes(searchQuery.toLowerCase()));
-                          
-      if (activeFilter === 'CERTIFIED') return matchSearch && plot.certified;
-      if (activeFilter === 'PENDING') return matchSearch && !plot.certified;
-      if (activeFilter === 'FOR_SALE') return matchSearch && plot.canSell;
-      return matchSearch;
-    })
-  );
+	function closeEdit() {
+		editingPlot = null;
+		errorMessage = null;
+		isSubmitting = false;
+		deletingImageId = null;
+	}
 
-  let activePlot = $derived(filteredPlots.find(p => p.id === selectedPlotId));
-  let isAdmin = $derived(data.user?.role === 'admin');
+	const handleEnhance: SubmitFunction = ({ submitter }) => {
+		const isDeleteImage = submitter?.getAttribute('formaction')?.includes('deleteImage') ?? false;
 
-  // --- HELPERS ---
-  const getCategoryIcon = (cat: PlotCategory) => {
-    switch(cat) {
-      case 'HOUSE': return Home;
-      case 'COMPANY': return Building2;
-      case 'GROUND': return Trees;
-      default: return Map;
-    }
-  };
+		if (!isDeleteImage) {
+			isSubmitting = true;
+			errorMessage = null;
+		}
 
-  const getCategoryLabel = (cat: PlotCategory) => {
-    switch(cat) {
-      case 'HOUSE': return 'Maison / Villa';
-      case 'COMPANY': return 'Local Commercial';
-      case 'GROUND': return 'Terrain Nu';
-      default: return 'Autre';
-    }
-  };
+		return async ({ result, update }) => {
+			if (!isDeleteImage) isSubmitting = false;
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    copiedId = true;
-    setTimeout(() => copiedId = false, 2000);
-  };
+			if (result.type === 'success') {
+				if (isDeleteImage && deletingImageId) {
+					const plot = editingPlot;
+					if (plot) {
+						plot.images = plot.images.filter((i) => i.id !== deletingImageId);
+					}
+					deletingImageId = null;
+				} else {
+					closeEdit();
+				}
+			} else if (result.type === 'failure') {
+				const responseData = result.data as { message?: string } | undefined;
+				errorMessage = responseData?.message ?? 'Une erreur est survenue';
+				deletingImageId = null;
+			}
 
-  $effect(() => {
-    if (form?.success) {
-      isEditing = false;
-      showSuccessToast = true;
-      setTimeout(() => showSuccessToast = false, 3000);
-    }
-  });
+			await update();
+		};
+	};
 </script>
 
-{#if data.user}
-  <div class="h-[calc(100vh-8rem)] flex gap-6 overflow-hidden relative">
-    
-    <!-- ========================================== -->
-    <!-- COLONNE GAUCHE : EXPLORATEUR (380px)       -->
-    <!-- ========================================== -->
-    <Card class="w-95 flex flex-col shrink-0 bg-proprios-dark/50">
-      <div class="p-5 border-b border-white/5 space-y-4">
-        <div class="flex justify-between items-center">
-          <div>
-            <h2 class="text-xl font-bold text-white mb-0.5">Registre Foncier</h2>
-            <p class="text-xs text-slate-400">{filteredPlots.length} biens répertoriés</p>
-          </div>
-          <div class="w-10 h-10 bg-proprios-mint/10 text-proprios-mint rounded-xl flex items-center justify-center border border-proprios-mint/20">
-            <Map size={20} />
-          </div>
-        </div>
+<div class="relative h-[calc(100vh-8rem)]">
+	<Card class="flex h-full flex-col bg-proprios-card">
+		<div class="flex items-center justify-between border-b border-white/5 bg-proprios-dark/50 p-6">
+			<div class="flex items-center gap-4">
+				<div
+					class="flex h-12 w-12 items-center justify-center rounded-xl bg-proprios-mint/10 text-proprios-mint"
+				>
+					<Map size={24} />
+				</div>
+				<div>
+					<h2 class="text-xl font-bold text-white">Base de Données Parcelles</h2>
+					<p class="text-sm text-slate-400">Gestion globale des biens immobiliers.</p>
+				</div>
+			</div>
+			<div class="relative w-72">
+				<Search size={16} class="absolute top-1/2 left-3 -translate-y-1/2 text-slate-500" />
+				<input
+					bind:value={searchQuery}
+					placeholder="Rechercher..."
+					class="w-full rounded-xl border border-white/10 bg-white/5 py-2 pr-4 pl-9 text-sm text-white focus:border-proprios-mint/50 focus:outline-none"
+				/>
+			</div>
+		</div>
 
-        <div class="relative">
-          <Search size={16} class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-          <input 
-            bind:value={searchQuery}
-            type="text" 
-            placeholder="ID, Client, Ville..." 
-            class="w-full bg-white/5 border border-white/10 rounded-xl py-2.5 pl-9 pr-4 text-sm text-white focus:outline-none focus:border-proprios-mint/50 transition-colors"
-          />
-        </div>
+		<div class="flex-1 overflow-auto">
+			<table class="w-full text-left text-sm text-slate-300">
+				<thead class="sticky top-0 bg-white/5 text-xs text-slate-400 uppercase backdrop-blur-md">
+					<tr>
+						<th class="px-6 py-4">ID</th>
+						<th class="px-6 py-4">Propriétaire</th>
+						<th class="px-6 py-4">Ville</th>
+						<th class="px-6 py-4">Statut</th>
+						<th class="px-6 py-4 text-right">Actions</th>
+					</tr>
+				</thead>
+				<tbody class="divide-y divide-white/5">
+					{#each filteredPlots as plot (plot.id)}
+						<tr class="transition-colors hover:bg-white/5">
+							<td class="px-6 py-4 font-mono text-xs">#{plot.id.slice(-6).toUpperCase()}</td>
+							<td class="px-6 py-4 font-bold text-white">{plot.proprio.name}</td>
+							<td class="px-6 py-4">{plot.city || '-'}</td>
+							<td class="px-6 py-4"
+								><span class="rounded bg-white/10 px-2 py-1 text-[10px] font-bold uppercase"
+									>{plot.certificationStatus}</span
+								></td
+							>
+							<td class="flex justify-end gap-2 px-6 py-4">
+								<button
+									type="button"
+									onclick={() => openEdit(plot)}
+									class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400 transition hover:bg-blue-500 hover:text-white"
+									aria-label="Modifier la parcelle"
+								>
+									<Pencil size={14} />
+								</button>
+								<form method="POST" action="?/deletePlot" use:enhance>
+									<input type="hidden" name="id" value={plot.id} />
+									<button
+										type="submit"
+										class="flex h-8 w-8 items-center justify-center rounded-lg bg-red-500/10 text-red-500 transition hover:bg-red-500 hover:text-white"
+										aria-label="Supprimer la parcelle"
+									>
+										<Trash2 size={14} />
+									</button>
+								</form>
+							</td>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		</div>
+	</Card>
 
-        <div class="grid grid-cols-2 gap-2">
-          {#each [{id: 'ALL', label: 'Tous'}, {id: 'CERTIFIED', label: 'Certifiés'}, {id: 'PENDING', label: 'En attente'}, {id: 'FOR_SALE', label: 'À Vendre'}] as filter (filter.id)}
-            <button 
-              type="button"
-              onclick={() => activeFilter = filter.id as FilterStatus}
-              class="py-2 px-3 text-xs font-medium rounded-xl transition-all border {activeFilter === filter.id ? 'bg-proprios-card text-white border-white/10 shadow-sm' : 'bg-transparent text-slate-500 border-transparent hover:bg-white/5 hover:text-slate-300'}">
-              {filter.label}
-            </button>
-          {/each}
-        </div>
-      </div>
+	<!-- Modale d'édition -->
+	{#if editingPlot}
+		<div
+			class="absolute inset-0 z-50 flex items-center justify-center bg-proprios-dark/80 p-4 backdrop-blur-sm sm:p-6"
+		>
+			<div
+				class="relative flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-proprios-card shadow-2xl"
+			>
+				<!-- En-tête -->
+				<header class="flex items-start justify-between border-b border-white/5 p-6">
+					<div class="flex items-center gap-4">
+						<div
+							class="flex h-11 w-11 items-center justify-center rounded-xl bg-proprios-mint/10 text-proprios-mint"
+						>
+							<Pencil size={20} />
+						</div>
+						<div>
+							<h3 class="text-lg font-bold text-white">Modification de la parcelle</h3>
+							<p class="font-mono text-xs text-slate-400">
+								#{editingPlot.id.slice(-6).toUpperCase()} • {editingPlot.proprio.name}
+							</p>
+						</div>
+					</div>
+					<button
+						type="button"
+						onclick={closeEdit}
+						class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition hover:bg-white/5 hover:text-white"
+						aria-label="Fermer"
+					>
+						<X size={18} />
+					</button>
+				</header>
 
-      <div class="flex-1 overflow-y-auto p-3 space-y-2">
-        {#each filteredPlots as plot (plot.id)}
-          {@const Icon = getCategoryIcon(plot.categoryId)}
-          <button 
-            type="button"
-            onclick={() => { selectedPlotId = plot.id; isEditing = false; }}
-            class="w-full text-left p-3 rounded-2xl transition-all flex gap-3 group border {selectedPlotId === plot.id ? 'bg-proprios-mint/5 border-proprios-mint/30 shadow-[0_0_15px_rgba(2,225,177,0.05)]' : 'bg-white/1 border-white/5 hover:bg-white/3'}">
-            
-            <!-- Thumbnail -->
-            <div class="w-16 h-16 rounded-xl overflow-hidden bg-proprios-dark shrink-0 relative border border-white/10">
-              {#if plot.images.length > 0}
-                <img src={plot.images[0].url} alt="Aperçu" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-              {:else}
-                <div class="w-full h-full flex items-center justify-center text-slate-600"><Icon size={24} /></div>
-              {/if}
-              {#if plot.certified}
-                <div class="absolute bottom-1 right-1 bg-proprios-dark rounded-full p-0.5"><div class="bg-proprios-mint text-proprios-dark rounded-full p-0.5"><ShieldCheck size={10} /></div></div>
-              {/if}
-            </div>
-            
-            <!-- Info -->
-            <div class="flex-1 min-w-0 py-0.5">
-              <div class="flex justify-between items-start mb-1">
-                <span class="text-xs font-bold text-white truncate pr-2">#{plot.id.slice(-6).toUpperCase()}</span>
-                {#if plot.canSell}
-                  <span class="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.8)]" title="À Vendre"></span>
-                {/if}
-              </div>
-              <p class="text-[11px] text-slate-400 truncate mb-1.5">{plot.proprio.name}</p>
-              
-              <!-- Mini Progress bar pour les non-certifiés -->
-              {#if !plot.certified}
-                <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden">
-                  <div class="h-full bg-amber-500 transition-all" style="width: {(plot.certifStep / 4) * 100}%"></div>
-                </div>
-              {:else}
-                <div class="flex items-center gap-1 text-[10px] text-slate-500"><MapPin size={10} /> {plot.city || 'Ville inconnue'}</div>
-              {/if}
-            </div>
-          </button>
-        {/each}
-        
-        {#if filteredPlots.length === 0}
-          <div class="p-8 text-center flex flex-col items-center justify-center text-slate-500 gap-3 mt-10">
-            <Filter size={32} class="opacity-30" />
-            <p class="text-sm">Aucun bien ne correspond aux filtres.</p>
-          </div>
-        {/if}
-      </div>
-    </Card>
+				<!-- Onglets -->
+				<nav class="flex gap-1 overflow-x-auto border-b border-white/5 px-6">
+					{#each tabs as tab (tab.id)}
+						{@const Icon = tab.icon}
+						<button
+							type="button"
+							onclick={() => (activeTab = tab.id)}
+							class="flex items-center gap-2 border-b-2 px-4 py-3 text-xs font-semibold tracking-wider uppercase transition {activeTab ===
+							tab.id
+								? 'border-proprios-mint text-proprios-mint'
+								: 'border-transparent text-slate-400 hover:text-white'}"
+						>
+							<Icon size={14} />
+							{tab.label}
+						</button>
+					{/each}
+				</nav>
 
-    <!-- ========================================== -->
-    <!-- COLONNE DROITE : LE VISUALISEUR (BENTO)    -->
-    <!-- ========================================== -->
-    <Card class="flex-1 flex flex-col min-w-0 bg-proprios-card relative overflow-hidden shadow-2xl">
-      {#if !activePlot}
-        <div class="flex-1 flex flex-col items-center justify-center text-slate-500">
-          <div class="w-24 h-24 bg-white/5 rounded-3xl flex items-center justify-center mb-6 border border-white/10">
-            <Map size={40} class="text-slate-600" />
-          </div>
-          <h3 class="text-xl font-medium text-white mb-2">Détails de la Parcelle</h3>
-          <p class="text-sm">Explorez le registre foncier en sélectionnant un bien.</p>
-        </div>
-      {:else}
-        {@const Icon = getCategoryIcon(activePlot.categoryId)}
-        
-        <!-- HEADER PARCELLE (Hero Section) -->
-        <div class="h-40 shrink-0 relative bg-proprios-dark">
-          <!-- Background Image Blur -->
-          {#if activePlot.images.length > 0}
-            <img src={activePlot.images[0].url} alt="Cover" class="absolute inset-0 w-full h-full object-cover opacity-30" />
-            <div class="absolute inset-0 bg-linear-to-t from-proprios-card to-transparent"></div>
-          {/if}
+				<!-- Formulaire -->
+				<form
+					method="POST"
+					action="?/updatePlot"
+					use:enhance={handleEnhance}
+					class="flex min-h-0 flex-1 flex-col"
+				>
+					<input type="hidden" name="id" value={editingPlot.id} />
 
-          <div class="absolute inset-0 p-6 flex flex-col justify-end">
-            <div class="flex items-end justify-between">
-              <div class="flex items-center gap-5">
-                <div class="w-16 h-16 bg-proprios-card border border-white/10 rounded-2xl flex items-center justify-center shadow-lg relative z-10 text-white">
-                  <Icon size={28} />
-                </div>
-                <div class="relative z-10">
-                  <div class="flex items-center gap-3 mb-1">
-                    <h2 class="text-3xl font-black text-white tracking-tight">#{activePlot.id.slice(-6).toUpperCase()}</h2>
-                    <button type="button" onclick={() => copyToClipboard(activePlot.id)} class="p-1.5 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors" title="Copier l'ID complet">
-                      {#if copiedId}<CheckCircle size={14} class="text-proprios-mint" />{:else}<Copy size={14} />{/if}
-                    </button>
-                    {#if activePlot.certified}
-                      <Badge variant="success">Certifié PropriOS</Badge>
-                    {:else}
-                      <Badge variant="warning">Étape {activePlot.certifStep}/4</Badge>
-                    {/if}
-                  </div>
-                  <p class="text-slate-300 font-medium flex items-center gap-2">
-                    <MapPin size={14} class="text-proprios-mint" /> 
-                    {activePlot.address || 'Adresse non spécifiée'}, {activePlot.city || 'Ville non spécifiée'}
-                  </p>
-                </div>
-              </div>
+					<div class="min-h-0 flex-1 overflow-y-auto p-6">
+						<!-- Général -->
+						<section class="grid gap-5" class:hidden={activeTab !== 'general'}>
+							<label class="grid gap-1.5">
+								<span class={fieldLabel}>Catégorie</span>
+								<select name="categoryId" value={editingPlot.categoryId} class={fieldInput} style="background-color: black;">
+									<option value="GROUND">Terrain</option>
+									<option value="HOUSE">Maison</option>
+									<option value="COMPANY">Entreprise</option>
+									<option value="OTHER">Autre</option>
+								</select>
+							</label>
 
-              <!-- Action Bar Top Right -->
-              <div class="flex gap-2 relative z-10">
-                {#if !isEditing}
-                  <button type="button" onclick={() => isEditing = true} class="px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm font-bold rounded-xl transition-colors border border-white/10 flex items-center gap-2">
-                    <Edit3 size={16} /> Éditer
-                  </button>
-                {:else}
-                  <button type="button" onclick={() => isEditing = false} class="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 text-sm font-bold rounded-xl transition-colors border border-red-500/20 flex items-center gap-2">
-                    <X size={16} /> Annuler
-                  </button>
-                {/if}
-              </div>
-            </div>
-          </div>
-        </div>
+							<label class="grid gap-1.5">
+								<span class={fieldLabel}>Description</span>
+								<textarea
+									name="description"
+									rows={6}
+									value={editingPlot.description ?? ''}
+									placeholder="Description détaillée de la parcelle..."
+									class="{fieldInput} resize-none"
+								></textarea>
+							</label>
+						</section>
 
-        <!-- CONTENU PRINCIPAL (Bento Grid) -->
-        <div class="flex-1 overflow-y-auto p-6">
-          {#if isEditing}
-            <!-- MODE ÉDITION (Formulaire) -->
-            <form method="POST" action="?/updatePlot" use:enhance class="bg-white/5 border border-white/10 rounded-3xl p-6 shadow-xl animate-in fade-in slide-in-from-bottom-4">
-              <input type="hidden" name="plotId" value={activePlot.id} />
-              
-              <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
-                <h3 class="text-lg font-bold text-white flex items-center gap-2"><Edit3 size={18} class="text-proprios-mint" /> Modifier les informations</h3>
-                <button type="submit" class="px-6 py-2.5 bg-proprios-mint hover:bg-proprios-mint-hover text-proprios-dark text-sm font-bold rounded-xl transition-colors shadow-[0_0_15px_rgba(2,225,177,0.3)] flex items-center gap-2">
-                  <Save size={16} /> Enregistrer
-                </button>
-              </div>
+						<!-- Localisation & Dimensions -->
+						<section class="grid gap-5" class:hidden={activeTab !== 'location'}>
+							<div class="grid gap-5 sm:grid-cols-2">
+								<label class="grid gap-1.5">
+									<span class={fieldLabel}>Pays</span>
+									<input
+										name="country"
+										value={editingPlot.country ?? ''}
+										class={fieldInput}
+										placeholder="Pays"
+									/>
+								</label>
+								<label class="grid gap-1.5">
+									<span class={fieldLabel}>Ville</span>
+									<input
+										name="city"
+										value={editingPlot.city ?? ''}
+										class={fieldInput}
+										placeholder="Ville"
+									/>
+								</label>
+							</div>
 
-              <div class="grid grid-cols-2 gap-6">
-                <div class="space-y-2">
-                  <label for="categoryId" class="block text-xs font-bold text-slate-400 uppercase">Type de Bien</label>
-                  <select id="categoryId" name="categoryId" class="w-full bg-proprios-dark border border-white/10 rounded-xl p-3 text-sm text-white focus:border-proprios-mint/50 focus:outline-none">
-                    <option value="HOUSE" selected={activePlot.categoryId === 'HOUSE'}>Maison / Villa</option>
-                    <option value="COMPANY" selected={activePlot.categoryId === 'COMPANY'}>Local Commercial</option>
-                    <option value="GROUND" selected={activePlot.categoryId === 'GROUND'}>Terrain Nu</option>
-                    <option value="OTHER" selected={activePlot.categoryId === 'OTHER'}>Autre</option>
-                  </select>
-                </div>
+							<label class="grid gap-1.5">
+								<span class={fieldLabel}>Adresse</span>
+								<input
+									name="address"
+									value={editingPlot.address ?? ''}
+									class={fieldInput}
+									placeholder="Adresse complète"
+								/>
+							</label>
 
-                <div class="space-y-2">
-                  <label for="price" class="block text-xs font-bold text-slate-400 uppercase">Prix Estimé ($)</label>
-                  <div class="relative">
-                    <DollarSign size={16} class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-                    <input type="number" id="price" name="price" value={activePlot.price || ''} placeholder="0" class="w-full bg-proprios-dark border border-white/10 rounded-xl p-3 pl-9 text-sm text-white focus:border-proprios-mint/50 focus:outline-none" />
-                  </div>
-                </div>
+							<div class="grid gap-5 sm:grid-cols-3">
+								<label class="grid gap-1.5">
+									<span class={fieldLabel}>Largeur (m)</span>
+									<input
+										name="width"
+										type="number"
+										value={editingPlot.width ?? ''}
+										class={fieldInput}
+										placeholder="0"
+									/>
+								</label>
+								<label class="grid gap-1.5">
+									<span class={fieldLabel}>Longueur (m)</span>
+									<input
+										name="height"
+										type="number"
+										value={editingPlot.height ?? ''}
+										class={fieldInput}
+										placeholder="0"
+									/>
+								</label>
+								<label class="grid gap-1.5">
+									<span class={fieldLabel}>Prix</span>
+									<input
+										name="price"
+										type="number"
+										value={editingPlot.price ?? ''}
+										class={fieldInput}
+										placeholder="0"
+									/>
+								</label>
+							</div>
+						</section>
 
-                <div class="space-y-2">
-                  <label for="width" class="block text-xs font-bold text-slate-400 uppercase">Largeur (m)</label>
-                  <input type="number" id="width" name="width" value={activePlot.width || ''} class="w-full bg-proprios-dark border border-white/10 rounded-xl p-3 text-sm text-white focus:border-proprios-mint/50 focus:outline-none" />
-                </div>
-                
-                <div class="space-y-2">
-                  <label for="height" class="block text-xs font-bold text-slate-400 uppercase">Longueur (m)</label>
-                  <input type="number" id="height" name="height" value={activePlot.height || ''} class="w-full bg-proprios-dark border border-white/10 rounded-xl p-3 text-sm text-white focus:border-proprios-mint/50 focus:outline-none" />
-                </div>
+						<!-- Statut & Vente -->
+						<section class="grid gap-5" class:hidden={activeTab !== 'status'}>
+							<div class="grid gap-5 sm:grid-cols-2">
+								<label class="grid gap-1.5">
+									<span class={fieldLabel}>Statut de certification</span>
+									<select
+										name="certificationStatus"
+										value={editingPlot.certificationStatus}
+										class={fieldInput} style=" background-color: black;"
+									>
+										<option value="ATTENTE">En attente</option>
+										<option value="EN_COURS">En cours</option>
+										<option value="CERTIFIE">Certifié</option>
+										<option value="REJETE">Rejeté</option>
+									</select>
+								</label>
+								<label class="grid gap-1.5">
+									<span class={fieldLabel}>Étape de certification</span>
+									<input
+										name="certifStep"
+										type="number"
+										min="0"
+										value={editingPlot.certifStep}
+										class={fieldInput}
+									/>
+								</label>
+							</div>
 
-                <div class="space-y-2">
-                  <label for="city" class="block text-xs font-bold text-slate-400 uppercase">Ville</label>
-                  <input type="text" id="city" name="city" value={activePlot.city || ''} class="w-full bg-proprios-dark border border-white/10 rounded-xl p-3 text-sm text-white focus:border-proprios-mint/50 focus:outline-none" />
-                </div>
+							<div class="grid gap-3 rounded-xl border border-white/10 bg-white/2 p-4">
+								<label class="flex cursor-pointer items-center justify-between gap-4">
+									<div>
+										<p class="text-sm font-medium text-white">Certifié</p>
+										<p class="text-xs text-slate-400">La parcelle est officiellement certifiée</p>
+									</div>
+									<input
+										type="checkbox"
+										name="certified"
+										checked={editingPlot.certified}
+										class="h-5 w-5 accent-proprios-mint"
+									/>
+								</label>
 
-                <div class="space-y-2">
-                  <label for="address" class="block text-xs font-bold text-slate-400 uppercase">Adresse Complète</label>
-                  <input type="text" id="address" name="address" value={activePlot.address || ''} class="w-full bg-proprios-dark border border-white/10 rounded-xl p-3 text-sm text-white focus:border-proprios-mint/50 focus:outline-none" />
-                </div>
+								<div class="h-px bg-white/5"></div>
 
-                <div class="col-span-2 mt-4 p-4 bg-purple-500/10 border border-purple-500/20 rounded-xl flex items-center justify-between">
-                  <div>
-                    <h4 class="text-sm font-bold text-white">Mettre en Vente</h4>
-                    <p class="text-xs text-slate-400 mt-1">Autoriser l'affichage de cette parcelle sur la marketplace publique.</p>
-                  </div>
-                  <label class="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" name="canSell" value="true" checked={activePlot.canSell} class="sr-only peer">
-                    <div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
-                  </label>
-                </div>
-              </div>
-            </form>
+								<label class="flex cursor-pointer items-center justify-between gap-4">
+									<div>
+										<p class="text-sm font-medium text-white">Proposé à la vente</p>
+										<p class="text-xs text-slate-400">La parcelle est visible sur le marché</p>
+									</div>
+									<input
+										type="checkbox"
+										name="canSell"
+										checked={editingPlot.canSell}
+										class="h-5 w-5 accent-proprios-mint"
+									/>
+								</label>
+							</div>
+						</section>
 
-            {#if isAdmin}
-              <form method="POST" action="?/deletePlot" use:enhance class="mt-8 border-t border-red-500/20 pt-8">
-                <input type="hidden" name="plotId" value={activePlot.id} />
-                <h4 class="text-sm font-bold text-red-500 mb-2">Zone Dangereuse</h4>
-                <p class="text-xs text-slate-400 mb-4">Cette action est irréversible. La suppression effacera toutes les images et documents liés.</p>
-                <button type="submit" class="px-6 py-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-500 text-sm font-bold rounded-xl transition-colors border border-red-500/20 flex items-center gap-2">
-                  <Trash2 size={16} /> Supprimer la parcelle
-                </button>
-              </form>
-            {/if}
+						<!-- Média -->
+						<section class="grid gap-4" class:hidden={activeTab !== 'media'}>
+							<div class="flex items-center justify-between">
+								<div>
+									<h4 class="text-sm font-semibold text-white">Galerie média</h4>
+									<p class="text-xs text-slate-400">
+										{editingPlot.images.length} image(s) rattachée(s) à cette parcelle
+									</p>
+								</div>
+							</div>
 
-          {:else}
-            <!-- MODE LECTURE (Bento Grid) -->
-            <div class="grid grid-cols-3 gap-4 auto-rows-30 animate-in fade-in zoom-in-95 duration-300">
-              
-              <!-- BENTO 1 : Stats Principales (2 colonnes) -->
-              <div class="col-span-2 row-span-1 bg-white/5 border border-white/10 rounded-3xl p-5 flex items-center justify-around relative overflow-hidden">
-                <div class="absolute -right-10 -top-10 w-32 h-32 bg-proprios-mint/10 rounded-full blur-3xl pointer-events-none"></div>
-                
-                <div class="text-center">
-                  <p class="text-xs text-slate-400 uppercase font-bold tracking-wider mb-1 flex justify-center"><DollarSign size={14} class="text-proprios-mint" /></p>
-                  <p class="text-2xl font-black text-white">{activePlot.price ? `${activePlot.price.toLocaleString()} $` : 'N/A'}</p>
-                  <p class="text-[10px] text-slate-500">Valeur Estimée</p>
-                </div>
-                
-                <div class="w-px h-12 bg-white/10"></div>
-                
-                <div class="text-center">
-                  <p class="text-xs text-slate-400 uppercase font-bold tracking-wider mb-1 flex justify-center"><Maximize size={14} class="text-proprios-mint" /></p>
-                  <p class="text-2xl font-black text-white">{activePlot.width && activePlot.height ? (activePlot.width * activePlot.height) : 0} <span class="text-sm font-medium">m²</span></p>
-                  <p class="text-[10px] text-slate-500">{activePlot.width || 0}m x {activePlot.height || 0}m</p>
-                </div>
+							{#if editingPlot.images.length === 0}
+								<div
+									class="flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-white/10 bg-white/2 py-12 text-slate-500"
+								>
+									<ImageIcon size={32} />
+									<p class="text-sm">Aucune image pour cette parcelle</p>
+								</div>
+							{:else}
+								<div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+									{#each editingPlot.images as image (image.id)}
+										<div
+											class="group relative aspect-square overflow-hidden rounded-xl border border-white/10 bg-white/5"
+										>
+											<!-- svelte-ignore a11y_img_redundant_alt -->
+											<img
+												src={image.url}
+												alt="Image de la parcelle"
+												class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+												loading="lazy"
+											/>
+											<div
+												class="absolute inset-0 flex items-center justify-center bg-proprios-dark/70 opacity-0 backdrop-blur-[2px] transition group-hover:opacity-100"
+											>
+												<button
+													type="submit"
+													formaction="?/deleteImage"
+													name="imageId"
+													value={image.id}
+													onclick={() => (deletingImageId = image.id)}
+													disabled={deletingImageId === image.id}
+													class="flex h-10 w-10 items-center justify-center rounded-lg bg-red-500/90 text-white transition hover:bg-red-500 disabled:cursor-wait disabled:opacity-60"
+													aria-label="Supprimer l'image"
+												>
+													{#if deletingImageId === image.id}
+														<Loader2 size={16} class="animate-spin" />
+													{:else}
+														<Trash2 size={16} />
+													{/if}
+												</button>
+											</div>
+										</div>
+									{/each}
+								</div>
+							{/if}
+						</section>
+					</div>
 
-                <div class="w-px h-12 bg-white/10"></div>
-
-                <div class="text-center">
-                  <p class="text-xs text-slate-400 uppercase font-bold tracking-wider mb-1 flex justify-center"><Navigation size={14} class="text-proprios-mint" /></p>
-                  <p class="text-lg font-black text-white mt-1">{getCategoryLabel(activePlot.categoryId)}</p>
-                  <p class="text-[10px] text-slate-500">Type de Bien</p>
-                </div>
-              </div>
-
-              <!-- BENTO 2 : Propriétaire (1 colonne, 2 rows) -->
-              <div class="col-span-1 row-span-2 bg-linear-to-b from-white/5 to-transparent border border-white/10 rounded-3xl p-5 flex flex-col">
-                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Propriétaire</h3>
-                <div class="flex flex-col items-center flex-1 justify-center text-center">
-                  <div class="relative mb-3">
-                    <img src={activePlot.proprio.image || `https://api.dicebear.com/7.x/initials/svg?seed=${activePlot.proprio.name}`} class="w-20 h-20 rounded-2xl object-cover border border-white/10 shadow-lg" alt="Proprio" />
-                    {#if activePlot.proprio.certified}
-                      <div class="absolute -bottom-2 -right-2 bg-proprios-card rounded-full p-1"><div class="bg-proprios-mint text-proprios-dark rounded-full p-0.5"><CheckCircle size={14} /></div></div>
-                    {/if}
-                  </div>
-                  <p class="text-white font-bold">{activePlot.proprio.name}</p>
-                  <p class="text-xs text-slate-400 mb-4">{activePlot.proprio.telephone || 'Pas de numéro'}</p>
-                  
-                  <a href="/admin/messages?user={activePlot.proprio.id}" class="w-full py-2.5 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-xl transition-colors border border-white/10 flex items-center justify-center gap-2">
-                    <MessageSquare size={14} /> Contacter
-                  </a>
-                </div>
-              </div>
-
-              <!-- BENTO 3 : Galerie d'Images (2 colonnes, 2 rows) -->
-              <div class="col-span-2 row-span-2 bg-white/5 border border-white/10 rounded-3xl p-5 flex flex-col">
-                <div class="flex justify-between items-center mb-4">
-                  <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2"><Camera size={14} /> Galerie ({activePlot.images.length})</h3>
-                </div>
-                
-                {#if activePlot.images.length > 0}
-                  <div class="flex-1 grid grid-cols-3 gap-3 overflow-hidden rounded-xl">
-                    <!-- Image Principale prend 2 places -->
-                    <div class="col-span-2 row-span-2 rounded-xl overflow-hidden relative group">
-                      <img src={activePlot.images[0].url} alt="Vue 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    </div>
-                    <!-- Miniatures -->
-                    {#each activePlot.images.slice(1, 3) as img (img.id)}
-                      <div class="rounded-xl overflow-hidden relative group">
-                        <img src={img.url} alt="Vue secondaire" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      </div>
-                    {/each}
-                    <!-- Placeholder si moins de 3 images -->
-                    {#if activePlot.images.length < 3}
-                       
-                       {#each Array(3 - activePlot.images.length) as _, index (index)}
-                         <div class="bg-black/20 rounded-xl border border-white/5 flex items-center justify-center text-slate-600"><Camera size={20} /></div>
-                       {/each}
-                    {/if}
-                  </div>
-                {:else}
-                  <div class="flex-1 border-2 border-dashed border-white/10 rounded-xl flex flex-col items-center justify-center text-slate-500">
-                    <Camera size={32} class="mb-2 opacity-50" />
-                    <p class="text-xs">Aucune photo du terrain</p>
-                  </div>
-                {/if}
-              </div>
-
-              <!-- BENTO 4 : Documents Légaux (1 colonne, 1 row) -->
-              <div class="col-span-1 row-span-1 bg-white/5 border border-white/10 rounded-3xl p-5 flex flex-col justify-center">
-                <div class="flex justify-between items-center mb-3">
-                  <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2"><FileText size={14} /> Documents</h3>
-                  <Badge variant={activePlot.documents.length > 0 ? 'success' : 'warning'}>{activePlot.documents.length}</Badge>
-                </div>
-                {#if activePlot.documents.length > 0}
-                  <div class="flex -space-x-2">
-                    {#each activePlot.documents.slice(0,3) as doc (doc.id)}
-                      <div class="w-10 h-10 rounded-xl bg-slate-800 border-2 border-proprios-card flex items-center justify-center text-slate-300 z-10"><FileText size={16}/></div>
-                    {/each}
-                  </div>
-                  <a href="/admin/certifications?plot={activePlot.id}" class="text-[10px] text-proprios-mint mt-3 hover:underline">Ouvrir le dossier légal &rarr;</a>
-                {:else}
-                  <p class="text-xs text-amber-500 flex items-center gap-1"><AlertTriangle size={12}/> Dossier vide</p>
-                {/if}
-              </div>
-
-            </div>
-          {/if}
-        </div>
-      {/if}
-
-      <!-- TOAST SUCCESS (Designé pour s'intégrer parfaitement) -->
-      {#if showSuccessToast}
-        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 bg-proprios-mint text-proprios-dark px-6 py-3 rounded-full shadow-[0_10px_40px_rgba(2,225,177,0.4)] font-bold flex items-center gap-3 animate-in slide-in-from-bottom-8 fade-in duration-300 z-50 border border-white/20">
-          <CheckCircle size={20} /> Modifications enregistrées !
-        </div>
-      {/if}
-    </Card>
-  </div>
-{/if}
+					<!-- Pied de page -->
+					<footer
+						class="flex items-center justify-between gap-3 border-t border-white/5 bg-proprios-dark/40 p-5"
+					>
+						<div class="min-h-5 text-xs">
+							{#if errorMessage}
+								<span class="flex items-center gap-2 text-red-400">
+									<AlertTriangle size={14} />
+									{errorMessage}
+								</span>
+							{/if}
+						</div>
+						<div class="flex items-center gap-3">
+							<button
+								type="button"
+								onclick={closeEdit}
+								class="rounded-xl border border-white/10 px-4 py-2.5 text-sm font-medium text-slate-300 transition hover:bg-white/5 hover:text-white"
+							>
+								Annuler
+							</button>
+							<button
+								type="submit"
+								disabled={isSubmitting}
+								class="flex items-center gap-2 rounded-xl bg-proprios-mint px-5 py-2.5 text-sm font-bold text-proprios-dark transition hover:brightness-110 disabled:cursor-wait disabled:opacity-70"
+							>
+								{#if isSubmitting}
+									<Loader2 size={14} class="animate-spin" />
+								{:else}
+									<Save size={14} />
+								{/if}
+								Enregistrer
+							</button>
+						</div>
+					</footer>
+				</form>
+			</div>
+		</div>
+	{/if}
+</div>

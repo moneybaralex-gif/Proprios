@@ -1,108 +1,127 @@
-// src/routes/admin/certifications/+page.server.ts
+// filepath: src/routes/admin/certifications/+page.server.ts
 import { prisma } from '$lib/server/prisma';
 import { fail } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
-import { auth } from '$lib/server/auth';
+import { publishRealtime } from '$lib/server/realtime';
+import { requireAdmin } from '$lib/server/adminGuard';
 
 export const load: PageServerLoad = async ({ parent }) => {
-    const { user: currentUser } = await parent();
+	const { user: currentUser } = await parent();
 
-    // Récupérer les parcelles en cours de certification (certified = false)
-    const pendingPlots = await prisma.plot.findMany({
-        where: { certified: false },
-        orderBy: { updatedAt: 'desc' },
-        include: {
-            proprio: {
-                select: { id: true, name: true, telephone: true, cardID: true, typeID: true, certified: true }
-            },
-            images: true,
-            documents: true,
-            visits: {
-                where: { type: 'CERTIFICATION' },
-                orderBy: { createdAt: 'desc' },
-                take: 1
-            }
-        }
-    });
+	const pendingPlots = await prisma.plot.findMany({
+		where: { certificationStatus: { not: 'CERTIFIE' } },
+		orderBy: { updatedAt: 'desc' },
+		include: {
+			proprio: {
+				select: {
+					id: true,
+					name: true,
+					telephone: true,
+					cardID: true,
+					typeID: true,
+					certified: true
+				}
+			},
+			images: true,
+			documents: true,
+			visits: {
+				where: { type: 'CERTIFICATION' },
+				orderBy: { createdAt: 'desc' },
+				take: 1
+			}
+		}
+	});
 
-    return {
-        currentUser,
-        pendingPlots
-    };
+	const lawyers = await prisma.user.findMany({
+		where: { type: 'LAWYER' },
+		select: { id: true, name: true, email: true }
+	});
+
+	return { currentUser, pendingPlots, lawyers };
 };
 
 export const actions: Actions = {
-    // Action 1: Avancer l'étape de certification
-    advanceStep: async ({ request }) => {
-        const session = await auth.api.getSession()
-        if (!session) return fail(401, { message: 'Non autorisé' });
+	advanceStep: async ({ request }) => {
+		const guard = await requireAdmin(request);
+		if (!guard.authorized) return guard.response;
 
-        const formData = await request.formData();
-        const plotId = formData.get('plotId')?.toString();
-        const currentStepStr = formData.get('currentStep')?.toString();
+		const formData = await request.formData();
+		const plotId = formData.get('plotId')?.toString();
+		const currentStepStr = formData.get('currentStep')?.toString();
+		const lawyerId = formData.get('lawyerId')?.toString();
 
-        if (!plotId || !currentStepStr) {
-            return fail(400, { message: 'Données manquantes' });
-        }
+		if (!plotId || !currentStepStr) {
+			return fail(400, { message: 'Données manquantes' });
+		}
 
-        const currentStep = parseInt(currentStepStr, 10);
-        const nextStep = currentStep + 1;
-        const isFinalStep = nextStep >= 4; // 4 = Étape finale (Certifié)
+		const currentStep = parseInt(currentStepStr, 10);
+		const nextStep = currentStep + 1;
+		const isFinalStep = nextStep >= 4;
 
-        await prisma.plot.update({
-            where: { id: plotId },
-            data: {
-                certifStep: isFinalStep ? 4 : nextStep,
-                certified: isFinalStep
-            }
-        });
+		if (currentStep === 2 && !lawyerId) {
+			return fail(400, {
+				message: "Vous devez assigner un avocat pour passer à l'étape légale."
+			});
+		}
 
-        // Notification de succès pour le client
-        if (isFinalStep) {
-            const plot = await prisma.plot.findUnique({ where: { id: plotId } });
-            if (plot) {
-                await prisma.notification.create({
-                    data: {
-                        userId: plot.proprioId,
-                        title: 'Parcelle certifiée !',
-                        content: `Félicitations, votre parcelle #${plot.id.slice(-6).toUpperCase()} a passé toutes les vérifications et est désormais certifiée PropriOS.`
-                    }
-                });
-            }
-        }
+		await prisma.plot.update({
+			where: { id: plotId },
+			data: {
+				certifStep: isFinalStep ? 4 : nextStep,
+				certificationStatus: isFinalStep ? 'CERTIFIE' : 'EN_COURS',
+				certified: isFinalStep,
+				...(lawyerId ? { lawyerId } : {})
+			}
+		});
 
-        return { success: true };
-    },
+		if (isFinalStep) {
+			const plot = await prisma.plot.findUnique({ where: { id: plotId } });
+			if (plot) {
+				await prisma.notification.create({
+					data: {
+						userId: plot.proprioId,
+						title: 'Parcelle certifiée !',
+						content: `Félicitations, votre parcelle #${plot.id
+							.slice(-6)
+							.toUpperCase()} a passé toutes les vérifications et est désormais certifiée PropriOS.`
+					}
+				});
+			}
+		}
 
-    // Action 2: Planifier une descente sur terrain (Visite)
-    scheduleVisit: async ({ request }) => {
-        const session = await auth.api.getSession()
-        if (!session) return fail(401, { message: 'Non autorisé' });
+		await publishRealtime({
+			type: 'plot.certification.updated',
+			entity: 'plot',
+			id: plotId,
+			payload: {
+				certificationStatus: isFinalStep ? 'CERTIFIE' : 'EN_COURS',
+				certifStep: isFinalStep ? 4 : nextStep
+			}
+		});
 
-        const formData = await request.formData();
-        const plotId = formData.get('plotId')?.toString();
-        const dateStr = formData.get('date')?.toString();
+		return { success: true };
+	},
 
-        if (!plotId || !dateStr) {
-            return fail(400, { message: 'ID ou date manquante' });
-        }
+	scheduleVisit: async ({ request }) => {
+		const guard = await requireAdmin(request);
+		if (!guard.authorized) return guard.response;
 
-        await prisma.visit.create({
-            data: {
-                plotId,
-                date: new Date(dateStr),
-                type: 'CERTIFICATION',
-                isCompleted: false
-            }
-        });
+		const formData = await request.formData();
+		const plotId = formData.get('plotId')?.toString();
+		const dateStr = formData.get('date')?.toString();
 
-        return { success: true };
-    },
+		if (!plotId || !dateStr) return fail(400, { message: 'ID ou date manquante' });
 
-    // Action 3: Rejeter / Signaler un problème
-    /* rejectDoc: async ({ request, locals }) => {
-        // Logique pour renvoyer à l'étape 0 ou notifier le client d'un problème
-        // ...
-        return { success: true };
-    } */
+		await prisma.visit.create({
+			data: {
+				plotId,
+				date: new Date(dateStr),
+				type: 'CERTIFICATION',
+				isCompleted: false,
+				isCancelled: false
+			}
+		});
+
+		return { success: true };
+	}
 };

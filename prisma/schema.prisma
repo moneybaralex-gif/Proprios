@@ -1,3 +1,4 @@
+// filepath: prisma/schema.prisma
 generator client {
   provider = "prisma-client"
   output   = "../src/lib/server/generated/prisma"
@@ -7,32 +8,41 @@ datasource db {
   provider = "postgres"
 }
 
-// --- UTILISATEURS & AUTH (Better Auth) ---
 model User {
-  id            String      @id @default(cuid())
-  name          String
-  email         String      @unique
-  emailVerified Boolean     @default(false)
-  telephone     String?     @unique
-  image         String?
-  role          String?     @default("user") // "user", "admin", "employee"
-  banned        Boolean?    @default(false)
-  banReason     String?
-  banExpires    DateTime?
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  certifStep    Int         @default(0)
-  type          UserType    @default(GUEST)
-  cardID        String?     @unique
-  typeID        UserIDType?
-  pin           Int?
-  loyaltyPoint  Int         @default(0)
-  certified     Boolean     @default(false)
+  id                   String      @id @default(cuid())
+  name                 String
+  email                String      @unique
+  emailVerified        Boolean     @default(false)
+  telephone            String?     @unique
+  dateOfBirth          DateTime?
+  gender               Gender?
+  country              String?
+  city                 String?
+  image                String?
+  role                 String?     @default("user")
+  banned               Boolean?    @default(false)
+  banReason            String?
+  banExpires           DateTime?
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
+  certifStep           Int         @default(0)
+  type                 UserType    @default(GUEST)
+  cardID               String?     @unique
+  typeID               UserIDType?
+  identityCardPhotoUrl String?
+  portraitPhotoUrl     String?
+  cardHoldingPhotoUrl  String?
+  kycSubmittedAt       DateTime?
+  kycReviewedAt        DateTime?
+  kycRejectionReason   String?
+  loyaltyPoint         Int         @default(0)
+  certified            Boolean     @default(false)
 
   // Relations
   sessions              Session[]
   accounts              Account[]
   plots                 Plot[]
+  favoritePlots         Plot[]         @relation("FavoritePlots")
   conversations         Conversation[] @relation("UserConversations")
   assignedConversations Conversation[] @relation("AssignedAdmin")
   messages              Message[]      @relation("SentMessages")
@@ -42,6 +52,7 @@ model User {
   sales                 Buying[]       @relation("ProprioRelation")
   legalAssistance       Buying[]       @relation("LawyerRelation")
   agentVisits           Visit[]        @relation("AssignedVisits")
+  lawyeredPlots         Plot[]         @relation("PlotLawyer")
 
   @@map("users")
 }
@@ -78,29 +89,46 @@ model Account {
   @@map("accounts")
 }
 
-// --- PARCELLES & IMMOBILIER ---
+model Verification {
+  id         String    @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @updatedAt
+
+  @@index([identifier])
+  @@map("verifications")
+}
+
 model Plot {
-  id         String         @id @default(cuid())
-  categoryId PlotCategories
-  proprioId  String
-  proprio    User           @relation(fields: [proprioId], references: [id])
-  width      Int?
-  height     Int?
-  country    String?
-  city       String?
-  address    String?
-  certified  Boolean        @default(false)
-  certifStep Int            @default(0) // Max 4
-  price      Int?
-  likes      Int            @default(0)
-  canSell    Boolean        @default(false)
-  createdAt  DateTime       @default(now())
-  updatedAt  DateTime       @updatedAt
+  id                  String              @id @default(cuid())
+  categoryId          PlotCategories
+  description         String?             @db.Text
+  proprioId           String
+  proprio             User                @relation(fields: [proprioId], references: [id])
+  lawyerId            String?
+  lawyer              User?               @relation("PlotLawyer", fields: [lawyerId], references: [id])
+  width               Int?
+  height              Int?
+  country             String?
+  city                String?
+  address             String?
+  certificationStatus CertificationStatus @default(ATTENTE)
+  certified           Boolean             @default(false)
+  certifStep          Int                 @default(0)
+  price               Int?
+  pin                 Int?                @unique
+  likes               Int                 @default(0)
+  canSell             Boolean             @default(false)
+  favoritedBy         User[]              @relation("FavoritePlots")
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
 
   images    ImagePlot[]
   documents ImageDocumentPlot[]
   visits    Visit[]
-  messages  Message[] // Relation inverse ajoutée
+  messages  Message[]
 
   @@index([proprioId])
   @@index([certified, certifStep])
@@ -116,14 +144,14 @@ model ImagePlot {
 }
 
 model ImageDocumentPlot {
-  id       String @id @default(uuid())
+  id       String  @id @default(uuid())
   url      String
   publicId String
+  name     String?
   plotId   String
-  plot     Plot   @relation(fields: [plotId], references: [id], onDelete: Cascade)
+  plot     Plot    @relation(fields: [plotId], references: [id], onDelete: Cascade)
 }
 
-// --- MESSAGERIE ---
 model Conversation {
   id               String             @id @default(cuid())
   userId           String             @map("user_id")
@@ -139,6 +167,9 @@ model Conversation {
   assignedTo User?     @relation("AssignedAdmin", fields: [assignedToId], references: [id], onDelete: SetNull)
   messages   Message[]
 
+  @@index([userId])
+  @@index([lastMessageAt])
+  @@index([userId, lastMessageAt])
   @@map("conversations")
 }
 
@@ -148,7 +179,7 @@ model Message {
   senderId       String
   type           MessageType @default(TEXT)
   content        String      @db.Text
-  plotId         String? // Parcelle attachée en référence
+  plotId         String? 
   plot           Plot?       @relation(fields: [plotId], references: [id], onDelete: SetNull)
   isRead         Boolean     @default(false)
   createdAt      DateTime    @default(now())
@@ -160,12 +191,11 @@ model Message {
   @@map("messages")
 }
 
-// --- OPÉRATIONS (Visites, Achats, Notifications, Finances) ---
 model Visit {
   id          String    @id @default(cuid())
   userId      String?
   user        User?     @relation("UserVisits", fields: [userId], references: [id])
-  agentId     String? // Employé/Agent en charge de la descente
+  agentId     String? 
   agent       User?     @relation("AssignedVisits", fields: [agentId], references: [id])
   plotId      String
   plot        Plot      @relation(fields: [plotId], references: [id])
@@ -173,6 +203,7 @@ model Visit {
   type        VisitType
   paid        Boolean   @default(false)
   isCompleted Boolean   @default(false)
+  isCancelled Boolean   @default(false)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
@@ -204,7 +235,7 @@ model FinanceTransaction {
   type       TransactionType
   amount     Int
   motif      String
-  recordedBy String // Admin ID
+  recordedBy String 
   createdAt  DateTime        @default(now())
 
   @@map("finance_transactions")
@@ -222,7 +253,13 @@ model Notification {
   @@map("notifications")
 }
 
-// --- ENUMS ---
+enum CertificationStatus {
+  ATTENTE
+  EN_COURS
+  CERTIFIE
+  REJETE
+}
+
 enum PlotCategories {
   HOUSE
   COMPANY
@@ -234,6 +271,12 @@ enum UserIDType {
   PASSPORT
   NATIONAL
   DRIVING
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
 }
 
 enum UserType {

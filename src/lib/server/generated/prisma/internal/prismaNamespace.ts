@@ -400,6 +400,7 @@ export const ModelName = {
   User: 'User',
   Session: 'Session',
   Account: 'Account',
+  Verification: 'Verification',
   Plot: 'Plot',
   ImagePlot: 'ImagePlot',
   ImageDocumentPlot: 'ImageDocumentPlot',
@@ -424,7 +425,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "plot" | "imagePlot" | "imageDocumentPlot" | "conversation" | "message" | "visit" | "buying" | "financeTransaction" | "notification"
+    modelProps: "user" | "session" | "account" | "verification" | "plot" | "imagePlot" | "imageDocumentPlot" | "conversation" | "message" | "visit" | "buying" | "financeTransaction" | "notification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -647,6 +648,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.AccountCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.AccountCountAggregateOutputType> | number
+        }
+      }
+    }
+    Verification: {
+      payload: Prisma.$VerificationPayload<ExtArgs>
+      fields: Prisma.VerificationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VerificationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VerificationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationPayload>
+        }
+        findFirst: {
+          args: Prisma.VerificationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VerificationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationPayload>
+        }
+        findMany: {
+          args: Prisma.VerificationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationPayload>[]
+        }
+        create: {
+          args: Prisma.VerificationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationPayload>
+        }
+        createMany: {
+          args: Prisma.VerificationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VerificationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationPayload>[]
+        }
+        delete: {
+          args: Prisma.VerificationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationPayload>
+        }
+        update: {
+          args: Prisma.VerificationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationPayload>
+        }
+        deleteMany: {
+          args: Prisma.VerificationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VerificationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VerificationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationPayload>[]
+        }
+        upsert: {
+          args: Prisma.VerificationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationPayload>
+        }
+        aggregate: {
+          args: Prisma.VerificationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVerification>
+        }
+        groupBy: {
+          args: Prisma.VerificationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VerificationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VerificationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VerificationCountAggregateOutputType> | number
         }
       }
     }
@@ -1361,6 +1436,10 @@ export const UserScalarFieldEnum = {
   email: 'email',
   emailVerified: 'emailVerified',
   telephone: 'telephone',
+  dateOfBirth: 'dateOfBirth',
+  gender: 'gender',
+  country: 'country',
+  city: 'city',
   image: 'image',
   role: 'role',
   banned: 'banned',
@@ -1372,7 +1451,12 @@ export const UserScalarFieldEnum = {
   type: 'type',
   cardID: 'cardID',
   typeID: 'typeID',
-  pin: 'pin',
+  identityCardPhotoUrl: 'identityCardPhotoUrl',
+  portraitPhotoUrl: 'portraitPhotoUrl',
+  cardHoldingPhotoUrl: 'cardHoldingPhotoUrl',
+  kycSubmittedAt: 'kycSubmittedAt',
+  kycReviewedAt: 'kycReviewedAt',
+  kycRejectionReason: 'kycRejectionReason',
   loyaltyPoint: 'loyaltyPoint',
   certified: 'certified'
 } as const
@@ -1412,18 +1496,34 @@ export const AccountScalarFieldEnum = {
 export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum]
 
 
+export const VerificationScalarFieldEnum = {
+  id: 'id',
+  identifier: 'identifier',
+  value: 'value',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
+
+
 export const PlotScalarFieldEnum = {
   id: 'id',
   categoryId: 'categoryId',
+  description: 'description',
   proprioId: 'proprioId',
+  lawyerId: 'lawyerId',
   width: 'width',
   height: 'height',
   country: 'country',
   city: 'city',
   address: 'address',
+  certificationStatus: 'certificationStatus',
   certified: 'certified',
   certifStep: 'certifStep',
   price: 'price',
+  pin: 'pin',
   likes: 'likes',
   canSell: 'canSell',
   createdAt: 'createdAt',
@@ -1447,6 +1547,7 @@ export const ImageDocumentPlotScalarFieldEnum = {
   id: 'id',
   url: 'url',
   publicId: 'publicId',
+  name: 'name',
   plotId: 'plotId'
 } as const
 
@@ -1491,6 +1592,7 @@ export const VisitScalarFieldEnum = {
   type: 'type',
   paid: 'paid',
   isCompleted: 'isCompleted',
+  isCancelled: 'isCancelled',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1604,6 +1706,20 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'Gender'
+ */
+export type EnumGenderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Gender'>
+    
+
+
+/**
+ * Reference to a field of type 'Gender[]'
+ */
+export type ListEnumGenderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Gender[]'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -1656,6 +1772,20 @@ export type EnumPlotCategoriesFieldRefInput<$PrismaModel> = FieldRefInputType<$P
  * Reference to a field of type 'PlotCategories[]'
  */
 export type ListEnumPlotCategoriesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlotCategories[]'>
+    
+
+
+/**
+ * Reference to a field of type 'CertificationStatus'
+ */
+export type EnumCertificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CertificationStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'CertificationStatus[]'
+ */
+export type ListEnumCertificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CertificationStatus[]'>
     
 
 
@@ -1882,6 +2012,7 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit
+  verification?: Prisma.VerificationOmit
   plot?: Prisma.PlotOmit
   imagePlot?: Prisma.ImagePlotOmit
   imageDocumentPlot?: Prisma.ImageDocumentPlotOmit

@@ -33,6 +33,7 @@ export type VisitMinAggregateOutputType = {
   type: $Enums.VisitType | null
   paid: boolean | null
   isCompleted: boolean | null
+  isCancelled: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -46,6 +47,7 @@ export type VisitMaxAggregateOutputType = {
   type: $Enums.VisitType | null
   paid: boolean | null
   isCompleted: boolean | null
+  isCancelled: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -59,6 +61,7 @@ export type VisitCountAggregateOutputType = {
   type: number
   paid: number
   isCompleted: number
+  isCancelled: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -74,6 +77,7 @@ export type VisitMinAggregateInputType = {
   type?: true
   paid?: true
   isCompleted?: true
+  isCancelled?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -87,6 +91,7 @@ export type VisitMaxAggregateInputType = {
   type?: true
   paid?: true
   isCompleted?: true
+  isCancelled?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -100,6 +105,7 @@ export type VisitCountAggregateInputType = {
   type?: true
   paid?: true
   isCompleted?: true
+  isCancelled?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -186,6 +192,7 @@ export type VisitGroupByOutputType = {
   type: $Enums.VisitType
   paid: boolean
   isCompleted: boolean
+  isCancelled: boolean
   createdAt: Date
   updatedAt: Date
   _count: VisitCountAggregateOutputType | null
@@ -220,6 +227,7 @@ export type VisitWhereInput = {
   type?: Prisma.EnumVisitTypeFilter<"Visit"> | $Enums.VisitType
   paid?: Prisma.BoolFilter<"Visit"> | boolean
   isCompleted?: Prisma.BoolFilter<"Visit"> | boolean
+  isCancelled?: Prisma.BoolFilter<"Visit"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Visit"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Visit"> | Date | string
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -236,6 +244,7 @@ export type VisitOrderByWithRelationInput = {
   type?: Prisma.SortOrder
   paid?: Prisma.SortOrder
   isCompleted?: Prisma.SortOrder
+  isCancelled?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -255,6 +264,7 @@ export type VisitWhereUniqueInput = Prisma.AtLeast<{
   type?: Prisma.EnumVisitTypeFilter<"Visit"> | $Enums.VisitType
   paid?: Prisma.BoolFilter<"Visit"> | boolean
   isCompleted?: Prisma.BoolFilter<"Visit"> | boolean
+  isCancelled?: Prisma.BoolFilter<"Visit"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Visit"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Visit"> | Date | string
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -271,6 +281,7 @@ export type VisitOrderByWithAggregationInput = {
   type?: Prisma.SortOrder
   paid?: Prisma.SortOrder
   isCompleted?: Prisma.SortOrder
+  isCancelled?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.VisitCountOrderByAggregateInput
@@ -290,6 +301,7 @@ export type VisitScalarWhereWithAggregatesInput = {
   type?: Prisma.EnumVisitTypeWithAggregatesFilter<"Visit"> | $Enums.VisitType
   paid?: Prisma.BoolWithAggregatesFilter<"Visit"> | boolean
   isCompleted?: Prisma.BoolWithAggregatesFilter<"Visit"> | boolean
+  isCancelled?: Prisma.BoolWithAggregatesFilter<"Visit"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Visit"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Visit"> | Date | string
 }
@@ -300,6 +312,7 @@ export type VisitCreateInput = {
   type: $Enums.VisitType
   paid?: boolean
   isCompleted?: boolean
+  isCancelled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutVisitsInput
@@ -316,6 +329,7 @@ export type VisitUncheckedCreateInput = {
   type: $Enums.VisitType
   paid?: boolean
   isCompleted?: boolean
+  isCancelled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -326,6 +340,7 @@ export type VisitUpdateInput = {
   type?: Prisma.EnumVisitTypeFieldUpdateOperationsInput | $Enums.VisitType
   paid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCancelled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneWithoutVisitsNestedInput
@@ -342,6 +357,7 @@ export type VisitUncheckedUpdateInput = {
   type?: Prisma.EnumVisitTypeFieldUpdateOperationsInput | $Enums.VisitType
   paid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCancelled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -355,6 +371,7 @@ export type VisitCreateManyInput = {
   type: $Enums.VisitType
   paid?: boolean
   isCompleted?: boolean
+  isCancelled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -365,6 +382,7 @@ export type VisitUpdateManyMutationInput = {
   type?: Prisma.EnumVisitTypeFieldUpdateOperationsInput | $Enums.VisitType
   paid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCancelled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -378,6 +396,7 @@ export type VisitUncheckedUpdateManyInput = {
   type?: Prisma.EnumVisitTypeFieldUpdateOperationsInput | $Enums.VisitType
   paid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCancelled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -401,6 +420,7 @@ export type VisitCountOrderByAggregateInput = {
   type?: Prisma.SortOrder
   paid?: Prisma.SortOrder
   isCompleted?: Prisma.SortOrder
+  isCancelled?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -414,6 +434,7 @@ export type VisitMaxOrderByAggregateInput = {
   type?: Prisma.SortOrder
   paid?: Prisma.SortOrder
   isCompleted?: Prisma.SortOrder
+  isCancelled?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -427,6 +448,7 @@ export type VisitMinOrderByAggregateInput = {
   type?: Prisma.SortOrder
   paid?: Prisma.SortOrder
   isCompleted?: Prisma.SortOrder
+  isCancelled?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -567,6 +589,7 @@ export type VisitCreateWithoutUserInput = {
   type: $Enums.VisitType
   paid?: boolean
   isCompleted?: boolean
+  isCancelled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   agent?: Prisma.UserCreateNestedOneWithoutAgentVisitsInput
@@ -581,6 +604,7 @@ export type VisitUncheckedCreateWithoutUserInput = {
   type: $Enums.VisitType
   paid?: boolean
   isCompleted?: boolean
+  isCancelled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -601,6 +625,7 @@ export type VisitCreateWithoutAgentInput = {
   type: $Enums.VisitType
   paid?: boolean
   isCompleted?: boolean
+  isCancelled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutVisitsInput
@@ -615,6 +640,7 @@ export type VisitUncheckedCreateWithoutAgentInput = {
   type: $Enums.VisitType
   paid?: boolean
   isCompleted?: boolean
+  isCancelled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -657,6 +683,7 @@ export type VisitScalarWhereInput = {
   type?: Prisma.EnumVisitTypeFilter<"Visit"> | $Enums.VisitType
   paid?: Prisma.BoolFilter<"Visit"> | boolean
   isCompleted?: Prisma.BoolFilter<"Visit"> | boolean
+  isCancelled?: Prisma.BoolFilter<"Visit"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Visit"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Visit"> | Date | string
 }
@@ -683,6 +710,7 @@ export type VisitCreateWithoutPlotInput = {
   type: $Enums.VisitType
   paid?: boolean
   isCompleted?: boolean
+  isCancelled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutVisitsInput
@@ -697,6 +725,7 @@ export type VisitUncheckedCreateWithoutPlotInput = {
   type: $Enums.VisitType
   paid?: boolean
   isCompleted?: boolean
+  isCancelled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -735,6 +764,7 @@ export type VisitCreateManyUserInput = {
   type: $Enums.VisitType
   paid?: boolean
   isCompleted?: boolean
+  isCancelled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -747,6 +777,7 @@ export type VisitCreateManyAgentInput = {
   type: $Enums.VisitType
   paid?: boolean
   isCompleted?: boolean
+  isCancelled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -757,6 +788,7 @@ export type VisitUpdateWithoutUserInput = {
   type?: Prisma.EnumVisitTypeFieldUpdateOperationsInput | $Enums.VisitType
   paid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCancelled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   agent?: Prisma.UserUpdateOneWithoutAgentVisitsNestedInput
@@ -771,6 +803,7 @@ export type VisitUncheckedUpdateWithoutUserInput = {
   type?: Prisma.EnumVisitTypeFieldUpdateOperationsInput | $Enums.VisitType
   paid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCancelled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -783,6 +816,7 @@ export type VisitUncheckedUpdateManyWithoutUserInput = {
   type?: Prisma.EnumVisitTypeFieldUpdateOperationsInput | $Enums.VisitType
   paid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCancelled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -793,6 +827,7 @@ export type VisitUpdateWithoutAgentInput = {
   type?: Prisma.EnumVisitTypeFieldUpdateOperationsInput | $Enums.VisitType
   paid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCancelled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneWithoutVisitsNestedInput
@@ -807,6 +842,7 @@ export type VisitUncheckedUpdateWithoutAgentInput = {
   type?: Prisma.EnumVisitTypeFieldUpdateOperationsInput | $Enums.VisitType
   paid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCancelled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -819,6 +855,7 @@ export type VisitUncheckedUpdateManyWithoutAgentInput = {
   type?: Prisma.EnumVisitTypeFieldUpdateOperationsInput | $Enums.VisitType
   paid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCancelled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -831,6 +868,7 @@ export type VisitCreateManyPlotInput = {
   type: $Enums.VisitType
   paid?: boolean
   isCompleted?: boolean
+  isCancelled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -841,6 +879,7 @@ export type VisitUpdateWithoutPlotInput = {
   type?: Prisma.EnumVisitTypeFieldUpdateOperationsInput | $Enums.VisitType
   paid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCancelled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneWithoutVisitsNestedInput
@@ -855,6 +894,7 @@ export type VisitUncheckedUpdateWithoutPlotInput = {
   type?: Prisma.EnumVisitTypeFieldUpdateOperationsInput | $Enums.VisitType
   paid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCancelled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -867,6 +907,7 @@ export type VisitUncheckedUpdateManyWithoutPlotInput = {
   type?: Prisma.EnumVisitTypeFieldUpdateOperationsInput | $Enums.VisitType
   paid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isCancelled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -882,6 +923,7 @@ export type VisitSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   type?: boolean
   paid?: boolean
   isCompleted?: boolean
+  isCancelled?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.Visit$userArgs<ExtArgs>
@@ -898,6 +940,7 @@ export type VisitSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   type?: boolean
   paid?: boolean
   isCompleted?: boolean
+  isCancelled?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.Visit$userArgs<ExtArgs>
@@ -914,6 +957,7 @@ export type VisitSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   type?: boolean
   paid?: boolean
   isCompleted?: boolean
+  isCancelled?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.Visit$userArgs<ExtArgs>
@@ -930,11 +974,12 @@ export type VisitSelectScalar = {
   type?: boolean
   paid?: boolean
   isCompleted?: boolean
+  isCancelled?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type VisitOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "agentId" | "plotId" | "date" | "type" | "paid" | "isCompleted" | "createdAt" | "updatedAt", ExtArgs["result"]["visit"]>
+export type VisitOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "agentId" | "plotId" | "date" | "type" | "paid" | "isCompleted" | "isCancelled" | "createdAt" | "updatedAt", ExtArgs["result"]["visit"]>
 export type VisitInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.Visit$userArgs<ExtArgs>
   agent?: boolean | Prisma.Visit$agentArgs<ExtArgs>
@@ -967,6 +1012,7 @@ export type $VisitPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     type: $Enums.VisitType
     paid: boolean
     isCompleted: boolean
+    isCancelled: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["visit"]>
@@ -1403,6 +1449,7 @@ export interface VisitFieldRefs {
   readonly type: Prisma.FieldRef<"Visit", 'VisitType'>
   readonly paid: Prisma.FieldRef<"Visit", 'Boolean'>
   readonly isCompleted: Prisma.FieldRef<"Visit", 'Boolean'>
+  readonly isCancelled: Prisma.FieldRef<"Visit", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Visit", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Visit", 'DateTime'>
 }

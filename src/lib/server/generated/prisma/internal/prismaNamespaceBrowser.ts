@@ -54,6 +54,7 @@ export const ModelName = {
   User: 'User',
   Session: 'Session',
   Account: 'Account',
+  Verification: 'Verification',
   Plot: 'Plot',
   ImagePlot: 'ImagePlot',
   ImageDocumentPlot: 'ImageDocumentPlot',
@@ -87,6 +88,10 @@ export const UserScalarFieldEnum = {
   email: 'email',
   emailVerified: 'emailVerified',
   telephone: 'telephone',
+  dateOfBirth: 'dateOfBirth',
+  gender: 'gender',
+  country: 'country',
+  city: 'city',
   image: 'image',
   role: 'role',
   banned: 'banned',
@@ -98,7 +103,12 @@ export const UserScalarFieldEnum = {
   type: 'type',
   cardID: 'cardID',
   typeID: 'typeID',
-  pin: 'pin',
+  identityCardPhotoUrl: 'identityCardPhotoUrl',
+  portraitPhotoUrl: 'portraitPhotoUrl',
+  cardHoldingPhotoUrl: 'cardHoldingPhotoUrl',
+  kycSubmittedAt: 'kycSubmittedAt',
+  kycReviewedAt: 'kycReviewedAt',
+  kycRejectionReason: 'kycRejectionReason',
   loyaltyPoint: 'loyaltyPoint',
   certified: 'certified'
 } as const
@@ -138,18 +148,34 @@ export const AccountScalarFieldEnum = {
 export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum]
 
 
+export const VerificationScalarFieldEnum = {
+  id: 'id',
+  identifier: 'identifier',
+  value: 'value',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
+
+
 export const PlotScalarFieldEnum = {
   id: 'id',
   categoryId: 'categoryId',
+  description: 'description',
   proprioId: 'proprioId',
+  lawyerId: 'lawyerId',
   width: 'width',
   height: 'height',
   country: 'country',
   city: 'city',
   address: 'address',
+  certificationStatus: 'certificationStatus',
   certified: 'certified',
   certifStep: 'certifStep',
   price: 'price',
+  pin: 'pin',
   likes: 'likes',
   canSell: 'canSell',
   createdAt: 'createdAt',
@@ -173,6 +199,7 @@ export const ImageDocumentPlotScalarFieldEnum = {
   id: 'id',
   url: 'url',
   publicId: 'publicId',
+  name: 'name',
   plotId: 'plotId'
 } as const
 
@@ -217,6 +244,7 @@ export const VisitScalarFieldEnum = {
   type: 'type',
   paid: 'paid',
   isCompleted: 'isCompleted',
+  isCancelled: 'isCancelled',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

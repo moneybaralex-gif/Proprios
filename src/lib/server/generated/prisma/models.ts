@@ -11,6 +11,7 @@
 export type * from './models/User.ts'
 export type * from './models/Session.ts'
 export type * from './models/Account.ts'
+export type * from './models/Verification.ts'
 export type * from './models/Plot.ts'
 export type * from './models/ImagePlot.ts'
 export type * from './models/ImageDocumentPlot.ts'

@@ -28,13 +28,11 @@ export type AggregateUser = {
 
 export type UserAvgAggregateOutputType = {
   certifStep: number | null
-  pin: number | null
   loyaltyPoint: number | null
 }
 
 export type UserSumAggregateOutputType = {
   certifStep: number | null
-  pin: number | null
   loyaltyPoint: number | null
 }
 
@@ -44,6 +42,10 @@ export type UserMinAggregateOutputType = {
   email: string | null
   emailVerified: boolean | null
   telephone: string | null
+  dateOfBirth: Date | null
+  gender: $Enums.Gender | null
+  country: string | null
+  city: string | null
   image: string | null
   role: string | null
   banned: boolean | null
@@ -55,7 +57,12 @@ export type UserMinAggregateOutputType = {
   type: $Enums.UserType | null
   cardID: string | null
   typeID: $Enums.UserIDType | null
-  pin: number | null
+  identityCardPhotoUrl: string | null
+  portraitPhotoUrl: string | null
+  cardHoldingPhotoUrl: string | null
+  kycSubmittedAt: Date | null
+  kycReviewedAt: Date | null
+  kycRejectionReason: string | null
   loyaltyPoint: number | null
   certified: boolean | null
 }
@@ -66,6 +73,10 @@ export type UserMaxAggregateOutputType = {
   email: string | null
   emailVerified: boolean | null
   telephone: string | null
+  dateOfBirth: Date | null
+  gender: $Enums.Gender | null
+  country: string | null
+  city: string | null
   image: string | null
   role: string | null
   banned: boolean | null
@@ -77,7 +88,12 @@ export type UserMaxAggregateOutputType = {
   type: $Enums.UserType | null
   cardID: string | null
   typeID: $Enums.UserIDType | null
-  pin: number | null
+  identityCardPhotoUrl: string | null
+  portraitPhotoUrl: string | null
+  cardHoldingPhotoUrl: string | null
+  kycSubmittedAt: Date | null
+  kycReviewedAt: Date | null
+  kycRejectionReason: string | null
   loyaltyPoint: number | null
   certified: boolean | null
 }
@@ -88,6 +104,10 @@ export type UserCountAggregateOutputType = {
   email: number
   emailVerified: number
   telephone: number
+  dateOfBirth: number
+  gender: number
+  country: number
+  city: number
   image: number
   role: number
   banned: number
@@ -99,7 +119,12 @@ export type UserCountAggregateOutputType = {
   type: number
   cardID: number
   typeID: number
-  pin: number
+  identityCardPhotoUrl: number
+  portraitPhotoUrl: number
+  cardHoldingPhotoUrl: number
+  kycSubmittedAt: number
+  kycReviewedAt: number
+  kycRejectionReason: number
   loyaltyPoint: number
   certified: number
   _all: number
@@ -108,13 +133,11 @@ export type UserCountAggregateOutputType = {
 
 export type UserAvgAggregateInputType = {
   certifStep?: true
-  pin?: true
   loyaltyPoint?: true
 }
 
 export type UserSumAggregateInputType = {
   certifStep?: true
-  pin?: true
   loyaltyPoint?: true
 }
 
@@ -124,6 +147,10 @@ export type UserMinAggregateInputType = {
   email?: true
   emailVerified?: true
   telephone?: true
+  dateOfBirth?: true
+  gender?: true
+  country?: true
+  city?: true
   image?: true
   role?: true
   banned?: true
@@ -135,7 +162,12 @@ export type UserMinAggregateInputType = {
   type?: true
   cardID?: true
   typeID?: true
-  pin?: true
+  identityCardPhotoUrl?: true
+  portraitPhotoUrl?: true
+  cardHoldingPhotoUrl?: true
+  kycSubmittedAt?: true
+  kycReviewedAt?: true
+  kycRejectionReason?: true
   loyaltyPoint?: true
   certified?: true
 }
@@ -146,6 +178,10 @@ export type UserMaxAggregateInputType = {
   email?: true
   emailVerified?: true
   telephone?: true
+  dateOfBirth?: true
+  gender?: true
+  country?: true
+  city?: true
   image?: true
   role?: true
   banned?: true
@@ -157,7 +193,12 @@ export type UserMaxAggregateInputType = {
   type?: true
   cardID?: true
   typeID?: true
-  pin?: true
+  identityCardPhotoUrl?: true
+  portraitPhotoUrl?: true
+  cardHoldingPhotoUrl?: true
+  kycSubmittedAt?: true
+  kycReviewedAt?: true
+  kycRejectionReason?: true
   loyaltyPoint?: true
   certified?: true
 }
@@ -168,6 +209,10 @@ export type UserCountAggregateInputType = {
   email?: true
   emailVerified?: true
   telephone?: true
+  dateOfBirth?: true
+  gender?: true
+  country?: true
+  city?: true
   image?: true
   role?: true
   banned?: true
@@ -179,7 +224,12 @@ export type UserCountAggregateInputType = {
   type?: true
   cardID?: true
   typeID?: true
-  pin?: true
+  identityCardPhotoUrl?: true
+  portraitPhotoUrl?: true
+  cardHoldingPhotoUrl?: true
+  kycSubmittedAt?: true
+  kycReviewedAt?: true
+  kycRejectionReason?: true
   loyaltyPoint?: true
   certified?: true
   _all?: true
@@ -277,6 +327,10 @@ export type UserGroupByOutputType = {
   email: string
   emailVerified: boolean
   telephone: string | null
+  dateOfBirth: Date | null
+  gender: $Enums.Gender | null
+  country: string | null
+  city: string | null
   image: string | null
   role: string | null
   banned: boolean | null
@@ -288,7 +342,12 @@ export type UserGroupByOutputType = {
   type: $Enums.UserType
   cardID: string | null
   typeID: $Enums.UserIDType | null
-  pin: number | null
+  identityCardPhotoUrl: string | null
+  portraitPhotoUrl: string | null
+  cardHoldingPhotoUrl: string | null
+  kycSubmittedAt: Date | null
+  kycReviewedAt: Date | null
+  kycRejectionReason: string | null
   loyaltyPoint: number
   certified: boolean
   _count: UserCountAggregateOutputType | null
@@ -322,6 +381,10 @@ export type UserWhereInput = {
   email?: Prisma.StringFilter<"User"> | string
   emailVerified?: Prisma.BoolFilter<"User"> | boolean
   telephone?: Prisma.StringNullableFilter<"User"> | string | null
+  dateOfBirth?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  gender?: Prisma.EnumGenderNullableFilter<"User"> | $Enums.Gender | null
+  country?: Prisma.StringNullableFilter<"User"> | string | null
+  city?: Prisma.StringNullableFilter<"User"> | string | null
   image?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.StringNullableFilter<"User"> | string | null
   banned?: Prisma.BoolNullableFilter<"User"> | boolean | null
@@ -333,12 +396,18 @@ export type UserWhereInput = {
   type?: Prisma.EnumUserTypeFilter<"User"> | $Enums.UserType
   cardID?: Prisma.StringNullableFilter<"User"> | string | null
   typeID?: Prisma.EnumUserIDTypeNullableFilter<"User"> | $Enums.UserIDType | null
-  pin?: Prisma.IntNullableFilter<"User"> | number | null
+  identityCardPhotoUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  portraitPhotoUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  cardHoldingPhotoUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  kycSubmittedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  kycReviewedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  kycRejectionReason?: Prisma.StringNullableFilter<"User"> | string | null
   loyaltyPoint?: Prisma.IntFilter<"User"> | number
   certified?: Prisma.BoolFilter<"User"> | boolean
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
   plots?: Prisma.PlotListRelationFilter
+  favoritePlots?: Prisma.PlotListRelationFilter
   conversations?: Prisma.ConversationListRelationFilter
   assignedConversations?: Prisma.ConversationListRelationFilter
   messages?: Prisma.MessageListRelationFilter
@@ -348,6 +417,7 @@ export type UserWhereInput = {
   sales?: Prisma.BuyingListRelationFilter
   legalAssistance?: Prisma.BuyingListRelationFilter
   agentVisits?: Prisma.VisitListRelationFilter
+  lawyeredPlots?: Prisma.PlotListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -356,6 +426,10 @@ export type UserOrderByWithRelationInput = {
   email?: Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
   telephone?: Prisma.SortOrderInput | Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
+  gender?: Prisma.SortOrderInput | Prisma.SortOrder
+  country?: Prisma.SortOrderInput | Prisma.SortOrder
+  city?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrderInput | Prisma.SortOrder
   banned?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -367,12 +441,18 @@ export type UserOrderByWithRelationInput = {
   type?: Prisma.SortOrder
   cardID?: Prisma.SortOrderInput | Prisma.SortOrder
   typeID?: Prisma.SortOrderInput | Prisma.SortOrder
-  pin?: Prisma.SortOrderInput | Prisma.SortOrder
+  identityCardPhotoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  portraitPhotoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  cardHoldingPhotoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  kycSubmittedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  kycReviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  kycRejectionReason?: Prisma.SortOrderInput | Prisma.SortOrder
   loyaltyPoint?: Prisma.SortOrder
   certified?: Prisma.SortOrder
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   plots?: Prisma.PlotOrderByRelationAggregateInput
+  favoritePlots?: Prisma.PlotOrderByRelationAggregateInput
   conversations?: Prisma.ConversationOrderByRelationAggregateInput
   assignedConversations?: Prisma.ConversationOrderByRelationAggregateInput
   messages?: Prisma.MessageOrderByRelationAggregateInput
@@ -382,6 +462,7 @@ export type UserOrderByWithRelationInput = {
   sales?: Prisma.BuyingOrderByRelationAggregateInput
   legalAssistance?: Prisma.BuyingOrderByRelationAggregateInput
   agentVisits?: Prisma.VisitOrderByRelationAggregateInput
+  lawyeredPlots?: Prisma.PlotOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -394,6 +475,10 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   name?: Prisma.StringFilter<"User"> | string
   emailVerified?: Prisma.BoolFilter<"User"> | boolean
+  dateOfBirth?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  gender?: Prisma.EnumGenderNullableFilter<"User"> | $Enums.Gender | null
+  country?: Prisma.StringNullableFilter<"User"> | string | null
+  city?: Prisma.StringNullableFilter<"User"> | string | null
   image?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.StringNullableFilter<"User"> | string | null
   banned?: Prisma.BoolNullableFilter<"User"> | boolean | null
@@ -404,12 +489,18 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   certifStep?: Prisma.IntFilter<"User"> | number
   type?: Prisma.EnumUserTypeFilter<"User"> | $Enums.UserType
   typeID?: Prisma.EnumUserIDTypeNullableFilter<"User"> | $Enums.UserIDType | null
-  pin?: Prisma.IntNullableFilter<"User"> | number | null
+  identityCardPhotoUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  portraitPhotoUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  cardHoldingPhotoUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  kycSubmittedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  kycReviewedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  kycRejectionReason?: Prisma.StringNullableFilter<"User"> | string | null
   loyaltyPoint?: Prisma.IntFilter<"User"> | number
   certified?: Prisma.BoolFilter<"User"> | boolean
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
   plots?: Prisma.PlotListRelationFilter
+  favoritePlots?: Prisma.PlotListRelationFilter
   conversations?: Prisma.ConversationListRelationFilter
   assignedConversations?: Prisma.ConversationListRelationFilter
   messages?: Prisma.MessageListRelationFilter
@@ -419,6 +510,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   sales?: Prisma.BuyingListRelationFilter
   legalAssistance?: Prisma.BuyingListRelationFilter
   agentVisits?: Prisma.VisitListRelationFilter
+  lawyeredPlots?: Prisma.PlotListRelationFilter
 }, "id" | "email" | "telephone" | "cardID">
 
 export type UserOrderByWithAggregationInput = {
@@ -427,6 +519,10 @@ export type UserOrderByWithAggregationInput = {
   email?: Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
   telephone?: Prisma.SortOrderInput | Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
+  gender?: Prisma.SortOrderInput | Prisma.SortOrder
+  country?: Prisma.SortOrderInput | Prisma.SortOrder
+  city?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrderInput | Prisma.SortOrder
   banned?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -438,7 +534,12 @@ export type UserOrderByWithAggregationInput = {
   type?: Prisma.SortOrder
   cardID?: Prisma.SortOrderInput | Prisma.SortOrder
   typeID?: Prisma.SortOrderInput | Prisma.SortOrder
-  pin?: Prisma.SortOrderInput | Prisma.SortOrder
+  identityCardPhotoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  portraitPhotoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  cardHoldingPhotoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  kycSubmittedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  kycReviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  kycRejectionReason?: Prisma.SortOrderInput | Prisma.SortOrder
   loyaltyPoint?: Prisma.SortOrder
   certified?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -457,6 +558,10 @@ export type UserScalarWhereWithAggregatesInput = {
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
   emailVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   telephone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  dateOfBirth?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  gender?: Prisma.EnumGenderNullableWithAggregatesFilter<"User"> | $Enums.Gender | null
+  country?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  city?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   image?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   role?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   banned?: Prisma.BoolNullableWithAggregatesFilter<"User"> | boolean | null
@@ -468,7 +573,12 @@ export type UserScalarWhereWithAggregatesInput = {
   type?: Prisma.EnumUserTypeWithAggregatesFilter<"User"> | $Enums.UserType
   cardID?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   typeID?: Prisma.EnumUserIDTypeNullableWithAggregatesFilter<"User"> | $Enums.UserIDType | null
-  pin?: Prisma.IntNullableWithAggregatesFilter<"User"> | number | null
+  identityCardPhotoUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  portraitPhotoUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  cardHoldingPhotoUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  kycSubmittedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  kycReviewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  kycRejectionReason?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   loyaltyPoint?: Prisma.IntWithAggregatesFilter<"User"> | number
   certified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
 }
@@ -479,6 +589,10 @@ export type UserCreateInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -490,12 +604,18 @@ export type UserCreateInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput
   assignedConversations?: Prisma.ConversationCreateNestedManyWithoutAssignedToInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -505,6 +625,7 @@ export type UserCreateInput = {
   sales?: Prisma.BuyingCreateNestedManyWithoutProprioInput
   legalAssistance?: Prisma.BuyingCreateNestedManyWithoutLawyerInput
   agentVisits?: Prisma.VisitCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotCreateNestedManyWithoutLawyerInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -513,6 +634,10 @@ export type UserUncheckedCreateInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -524,12 +649,18 @@ export type UserUncheckedCreateInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotUncheckedCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotUncheckedCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput
   assignedConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutAssignedToInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -539,6 +670,7 @@ export type UserUncheckedCreateInput = {
   sales?: Prisma.BuyingUncheckedCreateNestedManyWithoutProprioInput
   legalAssistance?: Prisma.BuyingUncheckedCreateNestedManyWithoutLawyerInput
   agentVisits?: Prisma.VisitUncheckedCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotUncheckedCreateNestedManyWithoutLawyerInput
 }
 
 export type UserUpdateInput = {
@@ -547,6 +679,10 @@ export type UserUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -558,12 +694,18 @@ export type UserUpdateInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput
   assignedConversations?: Prisma.ConversationUpdateManyWithoutAssignedToNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -573,6 +715,7 @@ export type UserUpdateInput = {
   sales?: Prisma.BuyingUpdateManyWithoutProprioNestedInput
   legalAssistance?: Prisma.BuyingUpdateManyWithoutLawyerNestedInput
   agentVisits?: Prisma.VisitUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -581,6 +724,10 @@ export type UserUncheckedUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -592,12 +739,18 @@ export type UserUncheckedUpdateInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUncheckedUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUncheckedUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput
   assignedConversations?: Prisma.ConversationUncheckedUpdateManyWithoutAssignedToNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -607,6 +760,7 @@ export type UserUncheckedUpdateInput = {
   sales?: Prisma.BuyingUncheckedUpdateManyWithoutProprioNestedInput
   legalAssistance?: Prisma.BuyingUncheckedUpdateManyWithoutLawyerNestedInput
   agentVisits?: Prisma.VisitUncheckedUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUncheckedUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -615,6 +769,10 @@ export type UserCreateManyInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -626,7 +784,12 @@ export type UserCreateManyInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
 }
@@ -637,6 +800,10 @@ export type UserUpdateManyMutationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -648,7 +815,12 @@ export type UserUpdateManyMutationInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
@@ -659,6 +831,10 @@ export type UserUncheckedUpdateManyInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -670,7 +846,12 @@ export type UserUncheckedUpdateManyInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
@@ -681,6 +862,10 @@ export type UserCountOrderByAggregateInput = {
   email?: Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
   telephone?: Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
+  country?: Prisma.SortOrder
+  city?: Prisma.SortOrder
   image?: Prisma.SortOrder
   role?: Prisma.SortOrder
   banned?: Prisma.SortOrder
@@ -692,14 +877,18 @@ export type UserCountOrderByAggregateInput = {
   type?: Prisma.SortOrder
   cardID?: Prisma.SortOrder
   typeID?: Prisma.SortOrder
-  pin?: Prisma.SortOrder
+  identityCardPhotoUrl?: Prisma.SortOrder
+  portraitPhotoUrl?: Prisma.SortOrder
+  cardHoldingPhotoUrl?: Prisma.SortOrder
+  kycSubmittedAt?: Prisma.SortOrder
+  kycReviewedAt?: Prisma.SortOrder
+  kycRejectionReason?: Prisma.SortOrder
   loyaltyPoint?: Prisma.SortOrder
   certified?: Prisma.SortOrder
 }
 
 export type UserAvgOrderByAggregateInput = {
   certifStep?: Prisma.SortOrder
-  pin?: Prisma.SortOrder
   loyaltyPoint?: Prisma.SortOrder
 }
 
@@ -709,6 +898,10 @@ export type UserMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
   telephone?: Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
+  country?: Prisma.SortOrder
+  city?: Prisma.SortOrder
   image?: Prisma.SortOrder
   role?: Prisma.SortOrder
   banned?: Prisma.SortOrder
@@ -720,7 +913,12 @@ export type UserMaxOrderByAggregateInput = {
   type?: Prisma.SortOrder
   cardID?: Prisma.SortOrder
   typeID?: Prisma.SortOrder
-  pin?: Prisma.SortOrder
+  identityCardPhotoUrl?: Prisma.SortOrder
+  portraitPhotoUrl?: Prisma.SortOrder
+  cardHoldingPhotoUrl?: Prisma.SortOrder
+  kycSubmittedAt?: Prisma.SortOrder
+  kycReviewedAt?: Prisma.SortOrder
+  kycRejectionReason?: Prisma.SortOrder
   loyaltyPoint?: Prisma.SortOrder
   certified?: Prisma.SortOrder
 }
@@ -731,6 +929,10 @@ export type UserMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
   telephone?: Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
+  country?: Prisma.SortOrder
+  city?: Prisma.SortOrder
   image?: Prisma.SortOrder
   role?: Prisma.SortOrder
   banned?: Prisma.SortOrder
@@ -742,14 +944,18 @@ export type UserMinOrderByAggregateInput = {
   type?: Prisma.SortOrder
   cardID?: Prisma.SortOrder
   typeID?: Prisma.SortOrder
-  pin?: Prisma.SortOrder
+  identityCardPhotoUrl?: Prisma.SortOrder
+  portraitPhotoUrl?: Prisma.SortOrder
+  cardHoldingPhotoUrl?: Prisma.SortOrder
+  kycSubmittedAt?: Prisma.SortOrder
+  kycReviewedAt?: Prisma.SortOrder
+  kycRejectionReason?: Prisma.SortOrder
   loyaltyPoint?: Prisma.SortOrder
   certified?: Prisma.SortOrder
 }
 
 export type UserSumOrderByAggregateInput = {
   certifStep?: Prisma.SortOrder
-  pin?: Prisma.SortOrder
   loyaltyPoint?: Prisma.SortOrder
 }
 
@@ -761,6 +967,16 @@ export type UserScalarRelationFilter = {
 export type UserNullableScalarRelationFilter = {
   is?: Prisma.UserWhereInput | null
   isNot?: Prisma.UserWhereInput | null
+}
+
+export type UserListRelationFilter = {
+  every?: Prisma.UserWhereInput
+  some?: Prisma.UserWhereInput
+  none?: Prisma.UserWhereInput
+}
+
+export type UserOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -775,12 +991,16 @@ export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
-export type NullableBoolFieldUpdateOperationsInput = {
-  set?: boolean | null
-}
-
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
+}
+
+export type NullableEnumGenderFieldUpdateOperationsInput = {
+  set?: $Enums.Gender | null
+}
+
+export type NullableBoolFieldUpdateOperationsInput = {
+  set?: boolean | null
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -801,14 +1021,6 @@ export type EnumUserTypeFieldUpdateOperationsInput = {
 
 export type NullableEnumUserIDTypeFieldUpdateOperationsInput = {
   set?: $Enums.UserIDType | null
-}
-
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
 }
 
 export type UserCreateNestedOneWithoutSessionsInput = {
@@ -845,12 +1057,66 @@ export type UserCreateNestedOneWithoutPlotsInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
+export type UserCreateNestedOneWithoutLawyeredPlotsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLawyeredPlotsInput, Prisma.UserUncheckedCreateWithoutLawyeredPlotsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLawyeredPlotsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedManyWithoutFavoritePlotsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFavoritePlotsInput, Prisma.UserUncheckedCreateWithoutFavoritePlotsInput> | Prisma.UserCreateWithoutFavoritePlotsInput[] | Prisma.UserUncheckedCreateWithoutFavoritePlotsInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFavoritePlotsInput | Prisma.UserCreateOrConnectWithoutFavoritePlotsInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUncheckedCreateNestedManyWithoutFavoritePlotsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFavoritePlotsInput, Prisma.UserUncheckedCreateWithoutFavoritePlotsInput> | Prisma.UserCreateWithoutFavoritePlotsInput[] | Prisma.UserUncheckedCreateWithoutFavoritePlotsInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFavoritePlotsInput | Prisma.UserCreateOrConnectWithoutFavoritePlotsInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
 export type UserUpdateOneRequiredWithoutPlotsNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutPlotsInput, Prisma.UserUncheckedCreateWithoutPlotsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutPlotsInput
   upsert?: Prisma.UserUpsertWithoutPlotsInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPlotsInput, Prisma.UserUpdateWithoutPlotsInput>, Prisma.UserUncheckedUpdateWithoutPlotsInput>
+}
+
+export type UserUpdateOneWithoutLawyeredPlotsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLawyeredPlotsInput, Prisma.UserUncheckedCreateWithoutLawyeredPlotsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLawyeredPlotsInput
+  upsert?: Prisma.UserUpsertWithoutLawyeredPlotsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLawyeredPlotsInput, Prisma.UserUpdateWithoutLawyeredPlotsInput>, Prisma.UserUncheckedUpdateWithoutLawyeredPlotsInput>
+}
+
+export type UserUpdateManyWithoutFavoritePlotsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFavoritePlotsInput, Prisma.UserUncheckedCreateWithoutFavoritePlotsInput> | Prisma.UserCreateWithoutFavoritePlotsInput[] | Prisma.UserUncheckedCreateWithoutFavoritePlotsInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFavoritePlotsInput | Prisma.UserCreateOrConnectWithoutFavoritePlotsInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutFavoritePlotsInput | Prisma.UserUpsertWithWhereUniqueWithoutFavoritePlotsInput[]
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutFavoritePlotsInput | Prisma.UserUpdateWithWhereUniqueWithoutFavoritePlotsInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutFavoritePlotsInput | Prisma.UserUpdateManyWithWhereWithoutFavoritePlotsInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserUncheckedUpdateManyWithoutFavoritePlotsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFavoritePlotsInput, Prisma.UserUncheckedCreateWithoutFavoritePlotsInput> | Prisma.UserCreateWithoutFavoritePlotsInput[] | Prisma.UserUncheckedCreateWithoutFavoritePlotsInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFavoritePlotsInput | Prisma.UserCreateOrConnectWithoutFavoritePlotsInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutFavoritePlotsInput | Prisma.UserUpsertWithWhereUniqueWithoutFavoritePlotsInput[]
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutFavoritePlotsInput | Prisma.UserUpdateWithWhereUniqueWithoutFavoritePlotsInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutFavoritePlotsInput | Prisma.UserUpdateManyWithWhereWithoutFavoritePlotsInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
 }
 
 export type UserCreateNestedOneWithoutConversationsInput = {
@@ -993,6 +1259,10 @@ export type UserCreateWithoutSessionsInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -1004,11 +1274,17 @@ export type UserCreateWithoutSessionsInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput
   assignedConversations?: Prisma.ConversationCreateNestedManyWithoutAssignedToInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -1018,6 +1294,7 @@ export type UserCreateWithoutSessionsInput = {
   sales?: Prisma.BuyingCreateNestedManyWithoutProprioInput
   legalAssistance?: Prisma.BuyingCreateNestedManyWithoutLawyerInput
   agentVisits?: Prisma.VisitCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotCreateNestedManyWithoutLawyerInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -1026,6 +1303,10 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -1037,11 +1318,17 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotUncheckedCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotUncheckedCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput
   assignedConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutAssignedToInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -1051,6 +1338,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   sales?: Prisma.BuyingUncheckedCreateNestedManyWithoutProprioInput
   legalAssistance?: Prisma.BuyingUncheckedCreateNestedManyWithoutLawyerInput
   agentVisits?: Prisma.VisitUncheckedCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotUncheckedCreateNestedManyWithoutLawyerInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -1075,6 +1363,10 @@ export type UserUpdateWithoutSessionsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -1086,11 +1378,17 @@ export type UserUpdateWithoutSessionsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput
   assignedConversations?: Prisma.ConversationUpdateManyWithoutAssignedToNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -1100,6 +1398,7 @@ export type UserUpdateWithoutSessionsInput = {
   sales?: Prisma.BuyingUpdateManyWithoutProprioNestedInput
   legalAssistance?: Prisma.BuyingUpdateManyWithoutLawyerNestedInput
   agentVisits?: Prisma.VisitUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -1108,6 +1407,10 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -1119,11 +1422,17 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUncheckedUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUncheckedUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput
   assignedConversations?: Prisma.ConversationUncheckedUpdateManyWithoutAssignedToNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -1133,6 +1442,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   sales?: Prisma.BuyingUncheckedUpdateManyWithoutProprioNestedInput
   legalAssistance?: Prisma.BuyingUncheckedUpdateManyWithoutLawyerNestedInput
   agentVisits?: Prisma.VisitUncheckedUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUncheckedUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -1141,6 +1451,10 @@ export type UserCreateWithoutAccountsInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -1152,11 +1466,17 @@ export type UserCreateWithoutAccountsInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput
   assignedConversations?: Prisma.ConversationCreateNestedManyWithoutAssignedToInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -1166,6 +1486,7 @@ export type UserCreateWithoutAccountsInput = {
   sales?: Prisma.BuyingCreateNestedManyWithoutProprioInput
   legalAssistance?: Prisma.BuyingCreateNestedManyWithoutLawyerInput
   agentVisits?: Prisma.VisitCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotCreateNestedManyWithoutLawyerInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -1174,6 +1495,10 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -1185,11 +1510,17 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotUncheckedCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotUncheckedCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput
   assignedConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutAssignedToInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -1199,6 +1530,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   sales?: Prisma.BuyingUncheckedCreateNestedManyWithoutProprioInput
   legalAssistance?: Prisma.BuyingUncheckedCreateNestedManyWithoutLawyerInput
   agentVisits?: Prisma.VisitUncheckedCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotUncheckedCreateNestedManyWithoutLawyerInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -1223,6 +1555,10 @@ export type UserUpdateWithoutAccountsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -1234,11 +1570,17 @@ export type UserUpdateWithoutAccountsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput
   assignedConversations?: Prisma.ConversationUpdateManyWithoutAssignedToNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -1248,6 +1590,7 @@ export type UserUpdateWithoutAccountsInput = {
   sales?: Prisma.BuyingUpdateManyWithoutProprioNestedInput
   legalAssistance?: Prisma.BuyingUpdateManyWithoutLawyerNestedInput
   agentVisits?: Prisma.VisitUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -1256,6 +1599,10 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -1267,11 +1614,17 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUncheckedUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUncheckedUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput
   assignedConversations?: Prisma.ConversationUncheckedUpdateManyWithoutAssignedToNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -1281,6 +1634,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   sales?: Prisma.BuyingUncheckedUpdateManyWithoutProprioNestedInput
   legalAssistance?: Prisma.BuyingUncheckedUpdateManyWithoutLawyerNestedInput
   agentVisits?: Prisma.VisitUncheckedUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUncheckedUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserCreateWithoutPlotsInput = {
@@ -1289,6 +1643,10 @@ export type UserCreateWithoutPlotsInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -1300,11 +1658,111 @@ export type UserCreateWithoutPlotsInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  favoritePlots?: Prisma.PlotCreateNestedManyWithoutFavoritedByInput
+  conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput
+  assignedConversations?: Prisma.ConversationCreateNestedManyWithoutAssignedToInput
+  messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  visits?: Prisma.VisitCreateNestedManyWithoutUserInput
+  purchases?: Prisma.BuyingCreateNestedManyWithoutBuyerInput
+  sales?: Prisma.BuyingCreateNestedManyWithoutProprioInput
+  legalAssistance?: Prisma.BuyingCreateNestedManyWithoutLawyerInput
+  agentVisits?: Prisma.VisitCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotCreateNestedManyWithoutLawyerInput
+}
+
+export type UserUncheckedCreateWithoutPlotsInput = {
+  id?: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
+  image?: string | null
+  role?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  certifStep?: number
+  type?: $Enums.UserType
+  cardID?: string | null
+  typeID?: $Enums.UserIDType | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
+  loyaltyPoint?: number
+  certified?: boolean
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  favoritePlots?: Prisma.PlotUncheckedCreateNestedManyWithoutFavoritedByInput
+  conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput
+  assignedConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutAssignedToInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  visits?: Prisma.VisitUncheckedCreateNestedManyWithoutUserInput
+  purchases?: Prisma.BuyingUncheckedCreateNestedManyWithoutBuyerInput
+  sales?: Prisma.BuyingUncheckedCreateNestedManyWithoutProprioInput
+  legalAssistance?: Prisma.BuyingUncheckedCreateNestedManyWithoutLawyerInput
+  agentVisits?: Prisma.VisitUncheckedCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotUncheckedCreateNestedManyWithoutLawyerInput
+}
+
+export type UserCreateOrConnectWithoutPlotsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPlotsInput, Prisma.UserUncheckedCreateWithoutPlotsInput>
+}
+
+export type UserCreateWithoutLawyeredPlotsInput = {
+  id?: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
+  image?: string | null
+  role?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  certifStep?: number
+  type?: $Enums.UserType
+  cardID?: string | null
+  typeID?: $Enums.UserIDType | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
+  loyaltyPoint?: number
+  certified?: boolean
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  plots?: Prisma.PlotCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput
   assignedConversations?: Prisma.ConversationCreateNestedManyWithoutAssignedToInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -1316,12 +1774,16 @@ export type UserCreateWithoutPlotsInput = {
   agentVisits?: Prisma.VisitCreateNestedManyWithoutAgentInput
 }
 
-export type UserUncheckedCreateWithoutPlotsInput = {
+export type UserUncheckedCreateWithoutLawyeredPlotsInput = {
   id?: string
   name: string
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -1333,11 +1795,18 @@ export type UserUncheckedCreateWithoutPlotsInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  plots?: Prisma.PlotUncheckedCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotUncheckedCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput
   assignedConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutAssignedToInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -1349,9 +1818,102 @@ export type UserUncheckedCreateWithoutPlotsInput = {
   agentVisits?: Prisma.VisitUncheckedCreateNestedManyWithoutAgentInput
 }
 
-export type UserCreateOrConnectWithoutPlotsInput = {
+export type UserCreateOrConnectWithoutLawyeredPlotsInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutPlotsInput, Prisma.UserUncheckedCreateWithoutPlotsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutLawyeredPlotsInput, Prisma.UserUncheckedCreateWithoutLawyeredPlotsInput>
+}
+
+export type UserCreateWithoutFavoritePlotsInput = {
+  id?: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
+  image?: string | null
+  role?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  certifStep?: number
+  type?: $Enums.UserType
+  cardID?: string | null
+  typeID?: $Enums.UserIDType | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
+  loyaltyPoint?: number
+  certified?: boolean
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  plots?: Prisma.PlotCreateNestedManyWithoutProprioInput
+  conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput
+  assignedConversations?: Prisma.ConversationCreateNestedManyWithoutAssignedToInput
+  messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  visits?: Prisma.VisitCreateNestedManyWithoutUserInput
+  purchases?: Prisma.BuyingCreateNestedManyWithoutBuyerInput
+  sales?: Prisma.BuyingCreateNestedManyWithoutProprioInput
+  legalAssistance?: Prisma.BuyingCreateNestedManyWithoutLawyerInput
+  agentVisits?: Prisma.VisitCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotCreateNestedManyWithoutLawyerInput
+}
+
+export type UserUncheckedCreateWithoutFavoritePlotsInput = {
+  id?: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
+  image?: string | null
+  role?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  certifStep?: number
+  type?: $Enums.UserType
+  cardID?: string | null
+  typeID?: $Enums.UserIDType | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
+  loyaltyPoint?: number
+  certified?: boolean
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  plots?: Prisma.PlotUncheckedCreateNestedManyWithoutProprioInput
+  conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput
+  assignedConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutAssignedToInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  visits?: Prisma.VisitUncheckedCreateNestedManyWithoutUserInput
+  purchases?: Prisma.BuyingUncheckedCreateNestedManyWithoutBuyerInput
+  sales?: Prisma.BuyingUncheckedCreateNestedManyWithoutProprioInput
+  legalAssistance?: Prisma.BuyingUncheckedCreateNestedManyWithoutLawyerInput
+  agentVisits?: Prisma.VisitUncheckedCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotUncheckedCreateNestedManyWithoutLawyerInput
+}
+
+export type UserCreateOrConnectWithoutFavoritePlotsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFavoritePlotsInput, Prisma.UserUncheckedCreateWithoutFavoritePlotsInput>
 }
 
 export type UserUpsertWithoutPlotsInput = {
@@ -1371,6 +1933,10 @@ export type UserUpdateWithoutPlotsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -1382,11 +1948,117 @@ export type UserUpdateWithoutPlotsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  favoritePlots?: Prisma.PlotUpdateManyWithoutFavoritedByNestedInput
+  conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput
+  assignedConversations?: Prisma.ConversationUpdateManyWithoutAssignedToNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  visits?: Prisma.VisitUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.BuyingUpdateManyWithoutBuyerNestedInput
+  sales?: Prisma.BuyingUpdateManyWithoutProprioNestedInput
+  legalAssistance?: Prisma.BuyingUpdateManyWithoutLawyerNestedInput
+  agentVisits?: Prisma.VisitUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUpdateManyWithoutLawyerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPlotsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  certifStep?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
+  certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  favoritePlots?: Prisma.PlotUncheckedUpdateManyWithoutFavoritedByNestedInput
+  conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput
+  assignedConversations?: Prisma.ConversationUncheckedUpdateManyWithoutAssignedToNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  visits?: Prisma.VisitUncheckedUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.BuyingUncheckedUpdateManyWithoutBuyerNestedInput
+  sales?: Prisma.BuyingUncheckedUpdateManyWithoutProprioNestedInput
+  legalAssistance?: Prisma.BuyingUncheckedUpdateManyWithoutLawyerNestedInput
+  agentVisits?: Prisma.VisitUncheckedUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUncheckedUpdateManyWithoutLawyerNestedInput
+}
+
+export type UserUpsertWithoutLawyeredPlotsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutLawyeredPlotsInput, Prisma.UserUncheckedUpdateWithoutLawyeredPlotsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutLawyeredPlotsInput, Prisma.UserUncheckedCreateWithoutLawyeredPlotsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutLawyeredPlotsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutLawyeredPlotsInput, Prisma.UserUncheckedUpdateWithoutLawyeredPlotsInput>
+}
+
+export type UserUpdateWithoutLawyeredPlotsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  certifStep?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
+  certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  plots?: Prisma.PlotUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput
   assignedConversations?: Prisma.ConversationUpdateManyWithoutAssignedToNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -1398,12 +2070,16 @@ export type UserUpdateWithoutPlotsInput = {
   agentVisits?: Prisma.VisitUpdateManyWithoutAgentNestedInput
 }
 
-export type UserUncheckedUpdateWithoutPlotsInput = {
+export type UserUncheckedUpdateWithoutLawyeredPlotsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -1415,11 +2091,18 @@ export type UserUncheckedUpdateWithoutPlotsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  plots?: Prisma.PlotUncheckedUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUncheckedUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput
   assignedConversations?: Prisma.ConversationUncheckedUpdateManyWithoutAssignedToNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -1431,12 +2114,66 @@ export type UserUncheckedUpdateWithoutPlotsInput = {
   agentVisits?: Prisma.VisitUncheckedUpdateManyWithoutAgentNestedInput
 }
 
+export type UserUpsertWithWhereUniqueWithoutFavoritePlotsInput = {
+  where: Prisma.UserWhereUniqueInput
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFavoritePlotsInput, Prisma.UserUncheckedUpdateWithoutFavoritePlotsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFavoritePlotsInput, Prisma.UserUncheckedCreateWithoutFavoritePlotsInput>
+}
+
+export type UserUpdateWithWhereUniqueWithoutFavoritePlotsInput = {
+  where: Prisma.UserWhereUniqueInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFavoritePlotsInput, Prisma.UserUncheckedUpdateWithoutFavoritePlotsInput>
+}
+
+export type UserUpdateManyWithWhereWithoutFavoritePlotsInput = {
+  where: Prisma.UserScalarWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateManyMutationInput, Prisma.UserUncheckedUpdateManyWithoutFavoritePlotsInput>
+}
+
+export type UserScalarWhereInput = {
+  AND?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  OR?: Prisma.UserScalarWhereInput[]
+  NOT?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  id?: Prisma.StringFilter<"User"> | string
+  name?: Prisma.StringFilter<"User"> | string
+  email?: Prisma.StringFilter<"User"> | string
+  emailVerified?: Prisma.BoolFilter<"User"> | boolean
+  telephone?: Prisma.StringNullableFilter<"User"> | string | null
+  dateOfBirth?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  gender?: Prisma.EnumGenderNullableFilter<"User"> | $Enums.Gender | null
+  country?: Prisma.StringNullableFilter<"User"> | string | null
+  city?: Prisma.StringNullableFilter<"User"> | string | null
+  image?: Prisma.StringNullableFilter<"User"> | string | null
+  role?: Prisma.StringNullableFilter<"User"> | string | null
+  banned?: Prisma.BoolNullableFilter<"User"> | boolean | null
+  banReason?: Prisma.StringNullableFilter<"User"> | string | null
+  banExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  certifStep?: Prisma.IntFilter<"User"> | number
+  type?: Prisma.EnumUserTypeFilter<"User"> | $Enums.UserType
+  cardID?: Prisma.StringNullableFilter<"User"> | string | null
+  typeID?: Prisma.EnumUserIDTypeNullableFilter<"User"> | $Enums.UserIDType | null
+  identityCardPhotoUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  portraitPhotoUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  cardHoldingPhotoUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  kycSubmittedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  kycReviewedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  kycRejectionReason?: Prisma.StringNullableFilter<"User"> | string | null
+  loyaltyPoint?: Prisma.IntFilter<"User"> | number
+  certified?: Prisma.BoolFilter<"User"> | boolean
+}
+
 export type UserCreateWithoutConversationsInput = {
   id?: string
   name: string
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -1448,12 +2185,18 @@ export type UserCreateWithoutConversationsInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotCreateNestedManyWithoutFavoritedByInput
   assignedConversations?: Prisma.ConversationCreateNestedManyWithoutAssignedToInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -1462,6 +2205,7 @@ export type UserCreateWithoutConversationsInput = {
   sales?: Prisma.BuyingCreateNestedManyWithoutProprioInput
   legalAssistance?: Prisma.BuyingCreateNestedManyWithoutLawyerInput
   agentVisits?: Prisma.VisitCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotCreateNestedManyWithoutLawyerInput
 }
 
 export type UserUncheckedCreateWithoutConversationsInput = {
@@ -1470,6 +2214,10 @@ export type UserUncheckedCreateWithoutConversationsInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -1481,12 +2229,18 @@ export type UserUncheckedCreateWithoutConversationsInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotUncheckedCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotUncheckedCreateNestedManyWithoutFavoritedByInput
   assignedConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutAssignedToInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -1495,6 +2249,7 @@ export type UserUncheckedCreateWithoutConversationsInput = {
   sales?: Prisma.BuyingUncheckedCreateNestedManyWithoutProprioInput
   legalAssistance?: Prisma.BuyingUncheckedCreateNestedManyWithoutLawyerInput
   agentVisits?: Prisma.VisitUncheckedCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotUncheckedCreateNestedManyWithoutLawyerInput
 }
 
 export type UserCreateOrConnectWithoutConversationsInput = {
@@ -1508,6 +2263,10 @@ export type UserCreateWithoutAssignedConversationsInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -1519,12 +2278,18 @@ export type UserCreateWithoutAssignedConversationsInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -1533,6 +2298,7 @@ export type UserCreateWithoutAssignedConversationsInput = {
   sales?: Prisma.BuyingCreateNestedManyWithoutProprioInput
   legalAssistance?: Prisma.BuyingCreateNestedManyWithoutLawyerInput
   agentVisits?: Prisma.VisitCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotCreateNestedManyWithoutLawyerInput
 }
 
 export type UserUncheckedCreateWithoutAssignedConversationsInput = {
@@ -1541,6 +2307,10 @@ export type UserUncheckedCreateWithoutAssignedConversationsInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -1552,12 +2322,18 @@ export type UserUncheckedCreateWithoutAssignedConversationsInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotUncheckedCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotUncheckedCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -1566,6 +2342,7 @@ export type UserUncheckedCreateWithoutAssignedConversationsInput = {
   sales?: Prisma.BuyingUncheckedCreateNestedManyWithoutProprioInput
   legalAssistance?: Prisma.BuyingUncheckedCreateNestedManyWithoutLawyerInput
   agentVisits?: Prisma.VisitUncheckedCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotUncheckedCreateNestedManyWithoutLawyerInput
 }
 
 export type UserCreateOrConnectWithoutAssignedConversationsInput = {
@@ -1590,6 +2367,10 @@ export type UserUpdateWithoutConversationsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -1601,12 +2382,18 @@ export type UserUpdateWithoutConversationsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUpdateManyWithoutFavoritedByNestedInput
   assignedConversations?: Prisma.ConversationUpdateManyWithoutAssignedToNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -1615,6 +2402,7 @@ export type UserUpdateWithoutConversationsInput = {
   sales?: Prisma.BuyingUpdateManyWithoutProprioNestedInput
   legalAssistance?: Prisma.BuyingUpdateManyWithoutLawyerNestedInput
   agentVisits?: Prisma.VisitUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutConversationsInput = {
@@ -1623,6 +2411,10 @@ export type UserUncheckedUpdateWithoutConversationsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -1634,12 +2426,18 @@ export type UserUncheckedUpdateWithoutConversationsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUncheckedUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUncheckedUpdateManyWithoutFavoritedByNestedInput
   assignedConversations?: Prisma.ConversationUncheckedUpdateManyWithoutAssignedToNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -1648,6 +2446,7 @@ export type UserUncheckedUpdateWithoutConversationsInput = {
   sales?: Prisma.BuyingUncheckedUpdateManyWithoutProprioNestedInput
   legalAssistance?: Prisma.BuyingUncheckedUpdateManyWithoutLawyerNestedInput
   agentVisits?: Prisma.VisitUncheckedUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUncheckedUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserUpsertWithoutAssignedConversationsInput = {
@@ -1667,6 +2466,10 @@ export type UserUpdateWithoutAssignedConversationsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -1678,12 +2481,18 @@ export type UserUpdateWithoutAssignedConversationsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -1692,6 +2501,7 @@ export type UserUpdateWithoutAssignedConversationsInput = {
   sales?: Prisma.BuyingUpdateManyWithoutProprioNestedInput
   legalAssistance?: Prisma.BuyingUpdateManyWithoutLawyerNestedInput
   agentVisits?: Prisma.VisitUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedConversationsInput = {
@@ -1700,6 +2510,10 @@ export type UserUncheckedUpdateWithoutAssignedConversationsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -1711,12 +2525,18 @@ export type UserUncheckedUpdateWithoutAssignedConversationsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUncheckedUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUncheckedUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -1725,6 +2545,7 @@ export type UserUncheckedUpdateWithoutAssignedConversationsInput = {
   sales?: Prisma.BuyingUncheckedUpdateManyWithoutProprioNestedInput
   legalAssistance?: Prisma.BuyingUncheckedUpdateManyWithoutLawyerNestedInput
   agentVisits?: Prisma.VisitUncheckedUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUncheckedUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserCreateWithoutMessagesInput = {
@@ -1733,6 +2554,10 @@ export type UserCreateWithoutMessagesInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -1744,12 +2569,18 @@ export type UserCreateWithoutMessagesInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput
   assignedConversations?: Prisma.ConversationCreateNestedManyWithoutAssignedToInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -1758,6 +2589,7 @@ export type UserCreateWithoutMessagesInput = {
   sales?: Prisma.BuyingCreateNestedManyWithoutProprioInput
   legalAssistance?: Prisma.BuyingCreateNestedManyWithoutLawyerInput
   agentVisits?: Prisma.VisitCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotCreateNestedManyWithoutLawyerInput
 }
 
 export type UserUncheckedCreateWithoutMessagesInput = {
@@ -1766,6 +2598,10 @@ export type UserUncheckedCreateWithoutMessagesInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -1777,12 +2613,18 @@ export type UserUncheckedCreateWithoutMessagesInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotUncheckedCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotUncheckedCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput
   assignedConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutAssignedToInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -1791,6 +2633,7 @@ export type UserUncheckedCreateWithoutMessagesInput = {
   sales?: Prisma.BuyingUncheckedCreateNestedManyWithoutProprioInput
   legalAssistance?: Prisma.BuyingUncheckedCreateNestedManyWithoutLawyerInput
   agentVisits?: Prisma.VisitUncheckedCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotUncheckedCreateNestedManyWithoutLawyerInput
 }
 
 export type UserCreateOrConnectWithoutMessagesInput = {
@@ -1815,6 +2658,10 @@ export type UserUpdateWithoutMessagesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -1826,12 +2673,18 @@ export type UserUpdateWithoutMessagesInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput
   assignedConversations?: Prisma.ConversationUpdateManyWithoutAssignedToNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -1840,6 +2693,7 @@ export type UserUpdateWithoutMessagesInput = {
   sales?: Prisma.BuyingUpdateManyWithoutProprioNestedInput
   legalAssistance?: Prisma.BuyingUpdateManyWithoutLawyerNestedInput
   agentVisits?: Prisma.VisitUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMessagesInput = {
@@ -1848,6 +2702,10 @@ export type UserUncheckedUpdateWithoutMessagesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -1859,12 +2717,18 @@ export type UserUncheckedUpdateWithoutMessagesInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUncheckedUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUncheckedUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput
   assignedConversations?: Prisma.ConversationUncheckedUpdateManyWithoutAssignedToNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -1873,6 +2737,7 @@ export type UserUncheckedUpdateWithoutMessagesInput = {
   sales?: Prisma.BuyingUncheckedUpdateManyWithoutProprioNestedInput
   legalAssistance?: Prisma.BuyingUncheckedUpdateManyWithoutLawyerNestedInput
   agentVisits?: Prisma.VisitUncheckedUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUncheckedUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserCreateWithoutVisitsInput = {
@@ -1881,6 +2746,10 @@ export type UserCreateWithoutVisitsInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -1892,12 +2761,18 @@ export type UserCreateWithoutVisitsInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput
   assignedConversations?: Prisma.ConversationCreateNestedManyWithoutAssignedToInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -1906,6 +2781,7 @@ export type UserCreateWithoutVisitsInput = {
   sales?: Prisma.BuyingCreateNestedManyWithoutProprioInput
   legalAssistance?: Prisma.BuyingCreateNestedManyWithoutLawyerInput
   agentVisits?: Prisma.VisitCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotCreateNestedManyWithoutLawyerInput
 }
 
 export type UserUncheckedCreateWithoutVisitsInput = {
@@ -1914,6 +2790,10 @@ export type UserUncheckedCreateWithoutVisitsInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -1925,12 +2805,18 @@ export type UserUncheckedCreateWithoutVisitsInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotUncheckedCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotUncheckedCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput
   assignedConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutAssignedToInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -1939,6 +2825,7 @@ export type UserUncheckedCreateWithoutVisitsInput = {
   sales?: Prisma.BuyingUncheckedCreateNestedManyWithoutProprioInput
   legalAssistance?: Prisma.BuyingUncheckedCreateNestedManyWithoutLawyerInput
   agentVisits?: Prisma.VisitUncheckedCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotUncheckedCreateNestedManyWithoutLawyerInput
 }
 
 export type UserCreateOrConnectWithoutVisitsInput = {
@@ -1952,6 +2839,10 @@ export type UserCreateWithoutAgentVisitsInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -1963,12 +2854,18 @@ export type UserCreateWithoutAgentVisitsInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput
   assignedConversations?: Prisma.ConversationCreateNestedManyWithoutAssignedToInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -1977,6 +2874,7 @@ export type UserCreateWithoutAgentVisitsInput = {
   purchases?: Prisma.BuyingCreateNestedManyWithoutBuyerInput
   sales?: Prisma.BuyingCreateNestedManyWithoutProprioInput
   legalAssistance?: Prisma.BuyingCreateNestedManyWithoutLawyerInput
+  lawyeredPlots?: Prisma.PlotCreateNestedManyWithoutLawyerInput
 }
 
 export type UserUncheckedCreateWithoutAgentVisitsInput = {
@@ -1985,6 +2883,10 @@ export type UserUncheckedCreateWithoutAgentVisitsInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -1996,12 +2898,18 @@ export type UserUncheckedCreateWithoutAgentVisitsInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotUncheckedCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotUncheckedCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput
   assignedConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutAssignedToInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -2010,6 +2918,7 @@ export type UserUncheckedCreateWithoutAgentVisitsInput = {
   purchases?: Prisma.BuyingUncheckedCreateNestedManyWithoutBuyerInput
   sales?: Prisma.BuyingUncheckedCreateNestedManyWithoutProprioInput
   legalAssistance?: Prisma.BuyingUncheckedCreateNestedManyWithoutLawyerInput
+  lawyeredPlots?: Prisma.PlotUncheckedCreateNestedManyWithoutLawyerInput
 }
 
 export type UserCreateOrConnectWithoutAgentVisitsInput = {
@@ -2034,6 +2943,10 @@ export type UserUpdateWithoutVisitsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -2045,12 +2958,18 @@ export type UserUpdateWithoutVisitsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput
   assignedConversations?: Prisma.ConversationUpdateManyWithoutAssignedToNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -2059,6 +2978,7 @@ export type UserUpdateWithoutVisitsInput = {
   sales?: Prisma.BuyingUpdateManyWithoutProprioNestedInput
   legalAssistance?: Prisma.BuyingUpdateManyWithoutLawyerNestedInput
   agentVisits?: Prisma.VisitUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVisitsInput = {
@@ -2067,6 +2987,10 @@ export type UserUncheckedUpdateWithoutVisitsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -2078,12 +3002,18 @@ export type UserUncheckedUpdateWithoutVisitsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUncheckedUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUncheckedUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput
   assignedConversations?: Prisma.ConversationUncheckedUpdateManyWithoutAssignedToNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -2092,6 +3022,7 @@ export type UserUncheckedUpdateWithoutVisitsInput = {
   sales?: Prisma.BuyingUncheckedUpdateManyWithoutProprioNestedInput
   legalAssistance?: Prisma.BuyingUncheckedUpdateManyWithoutLawyerNestedInput
   agentVisits?: Prisma.VisitUncheckedUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUncheckedUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserUpsertWithoutAgentVisitsInput = {
@@ -2111,6 +3042,10 @@ export type UserUpdateWithoutAgentVisitsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -2122,12 +3057,18 @@ export type UserUpdateWithoutAgentVisitsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput
   assignedConversations?: Prisma.ConversationUpdateManyWithoutAssignedToNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -2136,6 +3077,7 @@ export type UserUpdateWithoutAgentVisitsInput = {
   purchases?: Prisma.BuyingUpdateManyWithoutBuyerNestedInput
   sales?: Prisma.BuyingUpdateManyWithoutProprioNestedInput
   legalAssistance?: Prisma.BuyingUpdateManyWithoutLawyerNestedInput
+  lawyeredPlots?: Prisma.PlotUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAgentVisitsInput = {
@@ -2144,6 +3086,10 @@ export type UserUncheckedUpdateWithoutAgentVisitsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -2155,12 +3101,18 @@ export type UserUncheckedUpdateWithoutAgentVisitsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUncheckedUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUncheckedUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput
   assignedConversations?: Prisma.ConversationUncheckedUpdateManyWithoutAssignedToNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -2169,6 +3121,7 @@ export type UserUncheckedUpdateWithoutAgentVisitsInput = {
   purchases?: Prisma.BuyingUncheckedUpdateManyWithoutBuyerNestedInput
   sales?: Prisma.BuyingUncheckedUpdateManyWithoutProprioNestedInput
   legalAssistance?: Prisma.BuyingUncheckedUpdateManyWithoutLawyerNestedInput
+  lawyeredPlots?: Prisma.PlotUncheckedUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserCreateWithoutSalesInput = {
@@ -2177,6 +3130,10 @@ export type UserCreateWithoutSalesInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -2188,12 +3145,18 @@ export type UserCreateWithoutSalesInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput
   assignedConversations?: Prisma.ConversationCreateNestedManyWithoutAssignedToInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -2202,6 +3165,7 @@ export type UserCreateWithoutSalesInput = {
   purchases?: Prisma.BuyingCreateNestedManyWithoutBuyerInput
   legalAssistance?: Prisma.BuyingCreateNestedManyWithoutLawyerInput
   agentVisits?: Prisma.VisitCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotCreateNestedManyWithoutLawyerInput
 }
 
 export type UserUncheckedCreateWithoutSalesInput = {
@@ -2210,6 +3174,10 @@ export type UserUncheckedCreateWithoutSalesInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -2221,12 +3189,18 @@ export type UserUncheckedCreateWithoutSalesInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotUncheckedCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotUncheckedCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput
   assignedConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutAssignedToInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -2235,6 +3209,7 @@ export type UserUncheckedCreateWithoutSalesInput = {
   purchases?: Prisma.BuyingUncheckedCreateNestedManyWithoutBuyerInput
   legalAssistance?: Prisma.BuyingUncheckedCreateNestedManyWithoutLawyerInput
   agentVisits?: Prisma.VisitUncheckedCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotUncheckedCreateNestedManyWithoutLawyerInput
 }
 
 export type UserCreateOrConnectWithoutSalesInput = {
@@ -2248,6 +3223,10 @@ export type UserCreateWithoutPurchasesInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -2259,12 +3238,18 @@ export type UserCreateWithoutPurchasesInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput
   assignedConversations?: Prisma.ConversationCreateNestedManyWithoutAssignedToInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -2273,6 +3258,7 @@ export type UserCreateWithoutPurchasesInput = {
   sales?: Prisma.BuyingCreateNestedManyWithoutProprioInput
   legalAssistance?: Prisma.BuyingCreateNestedManyWithoutLawyerInput
   agentVisits?: Prisma.VisitCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotCreateNestedManyWithoutLawyerInput
 }
 
 export type UserUncheckedCreateWithoutPurchasesInput = {
@@ -2281,6 +3267,10 @@ export type UserUncheckedCreateWithoutPurchasesInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -2292,12 +3282,18 @@ export type UserUncheckedCreateWithoutPurchasesInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotUncheckedCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotUncheckedCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput
   assignedConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutAssignedToInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -2306,6 +3302,7 @@ export type UserUncheckedCreateWithoutPurchasesInput = {
   sales?: Prisma.BuyingUncheckedCreateNestedManyWithoutProprioInput
   legalAssistance?: Prisma.BuyingUncheckedCreateNestedManyWithoutLawyerInput
   agentVisits?: Prisma.VisitUncheckedCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotUncheckedCreateNestedManyWithoutLawyerInput
 }
 
 export type UserCreateOrConnectWithoutPurchasesInput = {
@@ -2319,6 +3316,10 @@ export type UserCreateWithoutLegalAssistanceInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -2330,12 +3331,18 @@ export type UserCreateWithoutLegalAssistanceInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput
   assignedConversations?: Prisma.ConversationCreateNestedManyWithoutAssignedToInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -2344,6 +3351,7 @@ export type UserCreateWithoutLegalAssistanceInput = {
   purchases?: Prisma.BuyingCreateNestedManyWithoutBuyerInput
   sales?: Prisma.BuyingCreateNestedManyWithoutProprioInput
   agentVisits?: Prisma.VisitCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotCreateNestedManyWithoutLawyerInput
 }
 
 export type UserUncheckedCreateWithoutLegalAssistanceInput = {
@@ -2352,6 +3360,10 @@ export type UserUncheckedCreateWithoutLegalAssistanceInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -2363,12 +3375,18 @@ export type UserUncheckedCreateWithoutLegalAssistanceInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotUncheckedCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotUncheckedCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput
   assignedConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutAssignedToInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -2377,6 +3395,7 @@ export type UserUncheckedCreateWithoutLegalAssistanceInput = {
   purchases?: Prisma.BuyingUncheckedCreateNestedManyWithoutBuyerInput
   sales?: Prisma.BuyingUncheckedCreateNestedManyWithoutProprioInput
   agentVisits?: Prisma.VisitUncheckedCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotUncheckedCreateNestedManyWithoutLawyerInput
 }
 
 export type UserCreateOrConnectWithoutLegalAssistanceInput = {
@@ -2401,6 +3420,10 @@ export type UserUpdateWithoutSalesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -2412,12 +3435,18 @@ export type UserUpdateWithoutSalesInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput
   assignedConversations?: Prisma.ConversationUpdateManyWithoutAssignedToNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -2426,6 +3455,7 @@ export type UserUpdateWithoutSalesInput = {
   purchases?: Prisma.BuyingUpdateManyWithoutBuyerNestedInput
   legalAssistance?: Prisma.BuyingUpdateManyWithoutLawyerNestedInput
   agentVisits?: Prisma.VisitUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSalesInput = {
@@ -2434,6 +3464,10 @@ export type UserUncheckedUpdateWithoutSalesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -2445,12 +3479,18 @@ export type UserUncheckedUpdateWithoutSalesInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUncheckedUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUncheckedUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput
   assignedConversations?: Prisma.ConversationUncheckedUpdateManyWithoutAssignedToNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -2459,6 +3499,7 @@ export type UserUncheckedUpdateWithoutSalesInput = {
   purchases?: Prisma.BuyingUncheckedUpdateManyWithoutBuyerNestedInput
   legalAssistance?: Prisma.BuyingUncheckedUpdateManyWithoutLawyerNestedInput
   agentVisits?: Prisma.VisitUncheckedUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUncheckedUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserUpsertWithoutPurchasesInput = {
@@ -2478,6 +3519,10 @@ export type UserUpdateWithoutPurchasesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -2489,12 +3534,18 @@ export type UserUpdateWithoutPurchasesInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput
   assignedConversations?: Prisma.ConversationUpdateManyWithoutAssignedToNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -2503,6 +3554,7 @@ export type UserUpdateWithoutPurchasesInput = {
   sales?: Prisma.BuyingUpdateManyWithoutProprioNestedInput
   legalAssistance?: Prisma.BuyingUpdateManyWithoutLawyerNestedInput
   agentVisits?: Prisma.VisitUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPurchasesInput = {
@@ -2511,6 +3563,10 @@ export type UserUncheckedUpdateWithoutPurchasesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -2522,12 +3578,18 @@ export type UserUncheckedUpdateWithoutPurchasesInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUncheckedUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUncheckedUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput
   assignedConversations?: Prisma.ConversationUncheckedUpdateManyWithoutAssignedToNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -2536,6 +3598,7 @@ export type UserUncheckedUpdateWithoutPurchasesInput = {
   sales?: Prisma.BuyingUncheckedUpdateManyWithoutProprioNestedInput
   legalAssistance?: Prisma.BuyingUncheckedUpdateManyWithoutLawyerNestedInput
   agentVisits?: Prisma.VisitUncheckedUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUncheckedUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserUpsertWithoutLegalAssistanceInput = {
@@ -2555,6 +3618,10 @@ export type UserUpdateWithoutLegalAssistanceInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -2566,12 +3633,18 @@ export type UserUpdateWithoutLegalAssistanceInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput
   assignedConversations?: Prisma.ConversationUpdateManyWithoutAssignedToNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -2580,6 +3653,7 @@ export type UserUpdateWithoutLegalAssistanceInput = {
   purchases?: Prisma.BuyingUpdateManyWithoutBuyerNestedInput
   sales?: Prisma.BuyingUpdateManyWithoutProprioNestedInput
   agentVisits?: Prisma.VisitUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLegalAssistanceInput = {
@@ -2588,6 +3662,10 @@ export type UserUncheckedUpdateWithoutLegalAssistanceInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -2599,12 +3677,18 @@ export type UserUncheckedUpdateWithoutLegalAssistanceInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUncheckedUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUncheckedUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput
   assignedConversations?: Prisma.ConversationUncheckedUpdateManyWithoutAssignedToNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -2613,6 +3697,7 @@ export type UserUncheckedUpdateWithoutLegalAssistanceInput = {
   purchases?: Prisma.BuyingUncheckedUpdateManyWithoutBuyerNestedInput
   sales?: Prisma.BuyingUncheckedUpdateManyWithoutProprioNestedInput
   agentVisits?: Prisma.VisitUncheckedUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUncheckedUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -2621,6 +3706,10 @@ export type UserCreateWithoutNotificationsInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -2632,12 +3721,18 @@ export type UserCreateWithoutNotificationsInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutUserInput
   assignedConversations?: Prisma.ConversationCreateNestedManyWithoutAssignedToInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -2646,6 +3741,7 @@ export type UserCreateWithoutNotificationsInput = {
   sales?: Prisma.BuyingCreateNestedManyWithoutProprioInput
   legalAssistance?: Prisma.BuyingCreateNestedManyWithoutLawyerInput
   agentVisits?: Prisma.VisitCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotCreateNestedManyWithoutLawyerInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -2654,6 +3750,10 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   email: string
   emailVerified?: boolean
   telephone?: string | null
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string | null
+  city?: string | null
   image?: string | null
   role?: string | null
   banned?: boolean | null
@@ -2665,12 +3765,18 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   type?: $Enums.UserType
   cardID?: string | null
   typeID?: $Enums.UserIDType | null
-  pin?: number | null
+  identityCardPhotoUrl?: string | null
+  portraitPhotoUrl?: string | null
+  cardHoldingPhotoUrl?: string | null
+  kycSubmittedAt?: Date | string | null
+  kycReviewedAt?: Date | string | null
+  kycRejectionReason?: string | null
   loyaltyPoint?: number
   certified?: boolean
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   plots?: Prisma.PlotUncheckedCreateNestedManyWithoutProprioInput
+  favoritePlots?: Prisma.PlotUncheckedCreateNestedManyWithoutFavoritedByInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutUserInput
   assignedConversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutAssignedToInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -2679,6 +3785,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   sales?: Prisma.BuyingUncheckedCreateNestedManyWithoutProprioInput
   legalAssistance?: Prisma.BuyingUncheckedCreateNestedManyWithoutLawyerInput
   agentVisits?: Prisma.VisitUncheckedCreateNestedManyWithoutAgentInput
+  lawyeredPlots?: Prisma.PlotUncheckedCreateNestedManyWithoutLawyerInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -2703,6 +3810,10 @@ export type UserUpdateWithoutNotificationsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -2714,12 +3825,18 @@ export type UserUpdateWithoutNotificationsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput
   assignedConversations?: Prisma.ConversationUpdateManyWithoutAssignedToNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -2728,6 +3845,7 @@ export type UserUpdateWithoutNotificationsInput = {
   sales?: Prisma.BuyingUpdateManyWithoutProprioNestedInput
   legalAssistance?: Prisma.BuyingUpdateManyWithoutLawyerNestedInput
   agentVisits?: Prisma.VisitUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUpdateManyWithoutLawyerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -2736,6 +3854,10 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -2747,12 +3869,18 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
-  pin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
   certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   plots?: Prisma.PlotUncheckedUpdateManyWithoutProprioNestedInput
+  favoritePlots?: Prisma.PlotUncheckedUpdateManyWithoutFavoritedByNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput
   assignedConversations?: Prisma.ConversationUncheckedUpdateManyWithoutAssignedToNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -2761,6 +3889,126 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   sales?: Prisma.BuyingUncheckedUpdateManyWithoutProprioNestedInput
   legalAssistance?: Prisma.BuyingUncheckedUpdateManyWithoutLawyerNestedInput
   agentVisits?: Prisma.VisitUncheckedUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUncheckedUpdateManyWithoutLawyerNestedInput
+}
+
+export type UserUpdateWithoutFavoritePlotsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  certifStep?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
+  certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  plots?: Prisma.PlotUpdateManyWithoutProprioNestedInput
+  conversations?: Prisma.ConversationUpdateManyWithoutUserNestedInput
+  assignedConversations?: Prisma.ConversationUpdateManyWithoutAssignedToNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  visits?: Prisma.VisitUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.BuyingUpdateManyWithoutBuyerNestedInput
+  sales?: Prisma.BuyingUpdateManyWithoutProprioNestedInput
+  legalAssistance?: Prisma.BuyingUpdateManyWithoutLawyerNestedInput
+  agentVisits?: Prisma.VisitUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUpdateManyWithoutLawyerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFavoritePlotsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  certifStep?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
+  certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  plots?: Prisma.PlotUncheckedUpdateManyWithoutProprioNestedInput
+  conversations?: Prisma.ConversationUncheckedUpdateManyWithoutUserNestedInput
+  assignedConversations?: Prisma.ConversationUncheckedUpdateManyWithoutAssignedToNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  visits?: Prisma.VisitUncheckedUpdateManyWithoutUserNestedInput
+  purchases?: Prisma.BuyingUncheckedUpdateManyWithoutBuyerNestedInput
+  sales?: Prisma.BuyingUncheckedUpdateManyWithoutProprioNestedInput
+  legalAssistance?: Prisma.BuyingUncheckedUpdateManyWithoutLawyerNestedInput
+  agentVisits?: Prisma.VisitUncheckedUpdateManyWithoutAgentNestedInput
+  lawyeredPlots?: Prisma.PlotUncheckedUpdateManyWithoutLawyerNestedInput
+}
+
+export type UserUncheckedUpdateManyWithoutFavoritePlotsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  certifStep?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  cardID?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  typeID?: Prisma.NullableEnumUserIDTypeFieldUpdateOperationsInput | $Enums.UserIDType | null
+  identityCardPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  portraitPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cardHoldingPhotoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  kycRejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  loyaltyPoint?: Prisma.IntFieldUpdateOperationsInput | number
+  certified?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 
@@ -2772,6 +4020,7 @@ export type UserCountOutputType = {
   sessions: number
   accounts: number
   plots: number
+  favoritePlots: number
   conversations: number
   assignedConversations: number
   messages: number
@@ -2781,12 +4030,14 @@ export type UserCountOutputType = {
   sales: number
   legalAssistance: number
   agentVisits: number
+  lawyeredPlots: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs
   plots?: boolean | UserCountOutputTypeCountPlotsArgs
+  favoritePlots?: boolean | UserCountOutputTypeCountFavoritePlotsArgs
   conversations?: boolean | UserCountOutputTypeCountConversationsArgs
   assignedConversations?: boolean | UserCountOutputTypeCountAssignedConversationsArgs
   messages?: boolean | UserCountOutputTypeCountMessagesArgs
@@ -2796,6 +4047,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   sales?: boolean | UserCountOutputTypeCountSalesArgs
   legalAssistance?: boolean | UserCountOutputTypeCountLegalAssistanceArgs
   agentVisits?: boolean | UserCountOutputTypeCountAgentVisitsArgs
+  lawyeredPlots?: boolean | UserCountOutputTypeCountLawyeredPlotsArgs
 }
 
 /**
@@ -2826,6 +4078,13 @@ export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends runtime.Types.E
  * UserCountOutputType without action
  */
 export type UserCountOutputTypeCountPlotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PlotWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFavoritePlotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PlotWhereInput
 }
 
@@ -2892,6 +4151,13 @@ export type UserCountOutputTypeCountAgentVisitsArgs<ExtArgs extends runtime.Type
   where?: Prisma.VisitWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountLawyeredPlotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PlotWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2899,6 +4165,10 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   email?: boolean
   emailVerified?: boolean
   telephone?: boolean
+  dateOfBirth?: boolean
+  gender?: boolean
+  country?: boolean
+  city?: boolean
   image?: boolean
   role?: boolean
   banned?: boolean
@@ -2910,12 +4180,18 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   type?: boolean
   cardID?: boolean
   typeID?: boolean
-  pin?: boolean
+  identityCardPhotoUrl?: boolean
+  portraitPhotoUrl?: boolean
+  cardHoldingPhotoUrl?: boolean
+  kycSubmittedAt?: boolean
+  kycReviewedAt?: boolean
+  kycRejectionReason?: boolean
   loyaltyPoint?: boolean
   certified?: boolean
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   plots?: boolean | Prisma.User$plotsArgs<ExtArgs>
+  favoritePlots?: boolean | Prisma.User$favoritePlotsArgs<ExtArgs>
   conversations?: boolean | Prisma.User$conversationsArgs<ExtArgs>
   assignedConversations?: boolean | Prisma.User$assignedConversationsArgs<ExtArgs>
   messages?: boolean | Prisma.User$messagesArgs<ExtArgs>
@@ -2925,6 +4201,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   sales?: boolean | Prisma.User$salesArgs<ExtArgs>
   legalAssistance?: boolean | Prisma.User$legalAssistanceArgs<ExtArgs>
   agentVisits?: boolean | Prisma.User$agentVisitsArgs<ExtArgs>
+  lawyeredPlots?: boolean | Prisma.User$lawyeredPlotsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -2934,6 +4211,10 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   email?: boolean
   emailVerified?: boolean
   telephone?: boolean
+  dateOfBirth?: boolean
+  gender?: boolean
+  country?: boolean
+  city?: boolean
   image?: boolean
   role?: boolean
   banned?: boolean
@@ -2945,7 +4226,12 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   type?: boolean
   cardID?: boolean
   typeID?: boolean
-  pin?: boolean
+  identityCardPhotoUrl?: boolean
+  portraitPhotoUrl?: boolean
+  cardHoldingPhotoUrl?: boolean
+  kycSubmittedAt?: boolean
+  kycReviewedAt?: boolean
+  kycRejectionReason?: boolean
   loyaltyPoint?: boolean
   certified?: boolean
 }, ExtArgs["result"]["user"]>
@@ -2956,6 +4242,10 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   email?: boolean
   emailVerified?: boolean
   telephone?: boolean
+  dateOfBirth?: boolean
+  gender?: boolean
+  country?: boolean
+  city?: boolean
   image?: boolean
   role?: boolean
   banned?: boolean
@@ -2967,7 +4257,12 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   type?: boolean
   cardID?: boolean
   typeID?: boolean
-  pin?: boolean
+  identityCardPhotoUrl?: boolean
+  portraitPhotoUrl?: boolean
+  cardHoldingPhotoUrl?: boolean
+  kycSubmittedAt?: boolean
+  kycReviewedAt?: boolean
+  kycRejectionReason?: boolean
   loyaltyPoint?: boolean
   certified?: boolean
 }, ExtArgs["result"]["user"]>
@@ -2978,6 +4273,10 @@ export type UserSelectScalar = {
   email?: boolean
   emailVerified?: boolean
   telephone?: boolean
+  dateOfBirth?: boolean
+  gender?: boolean
+  country?: boolean
+  city?: boolean
   image?: boolean
   role?: boolean
   banned?: boolean
@@ -2989,16 +4288,22 @@ export type UserSelectScalar = {
   type?: boolean
   cardID?: boolean
   typeID?: boolean
-  pin?: boolean
+  identityCardPhotoUrl?: boolean
+  portraitPhotoUrl?: boolean
+  cardHoldingPhotoUrl?: boolean
+  kycSubmittedAt?: boolean
+  kycReviewedAt?: boolean
+  kycRejectionReason?: boolean
   loyaltyPoint?: boolean
   certified?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "telephone" | "image" | "role" | "banned" | "banReason" | "banExpires" | "createdAt" | "updatedAt" | "certifStep" | "type" | "cardID" | "typeID" | "pin" | "loyaltyPoint" | "certified", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "telephone" | "dateOfBirth" | "gender" | "country" | "city" | "image" | "role" | "banned" | "banReason" | "banExpires" | "createdAt" | "updatedAt" | "certifStep" | "type" | "cardID" | "typeID" | "identityCardPhotoUrl" | "portraitPhotoUrl" | "cardHoldingPhotoUrl" | "kycSubmittedAt" | "kycReviewedAt" | "kycRejectionReason" | "loyaltyPoint" | "certified", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   plots?: boolean | Prisma.User$plotsArgs<ExtArgs>
+  favoritePlots?: boolean | Prisma.User$favoritePlotsArgs<ExtArgs>
   conversations?: boolean | Prisma.User$conversationsArgs<ExtArgs>
   assignedConversations?: boolean | Prisma.User$assignedConversationsArgs<ExtArgs>
   messages?: boolean | Prisma.User$messagesArgs<ExtArgs>
@@ -3008,6 +4313,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   sales?: boolean | Prisma.User$salesArgs<ExtArgs>
   legalAssistance?: boolean | Prisma.User$legalAssistanceArgs<ExtArgs>
   agentVisits?: boolean | Prisma.User$agentVisitsArgs<ExtArgs>
+  lawyeredPlots?: boolean | Prisma.User$lawyeredPlotsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -3019,6 +4325,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     sessions: Prisma.$SessionPayload<ExtArgs>[]
     accounts: Prisma.$AccountPayload<ExtArgs>[]
     plots: Prisma.$PlotPayload<ExtArgs>[]
+    favoritePlots: Prisma.$PlotPayload<ExtArgs>[]
     conversations: Prisma.$ConversationPayload<ExtArgs>[]
     assignedConversations: Prisma.$ConversationPayload<ExtArgs>[]
     messages: Prisma.$MessagePayload<ExtArgs>[]
@@ -3028,6 +4335,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     sales: Prisma.$BuyingPayload<ExtArgs>[]
     legalAssistance: Prisma.$BuyingPayload<ExtArgs>[]
     agentVisits: Prisma.$VisitPayload<ExtArgs>[]
+    lawyeredPlots: Prisma.$PlotPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3035,6 +4343,10 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     email: string
     emailVerified: boolean
     telephone: string | null
+    dateOfBirth: Date | null
+    gender: $Enums.Gender | null
+    country: string | null
+    city: string | null
     image: string | null
     role: string | null
     banned: boolean | null
@@ -3046,7 +4358,12 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     type: $Enums.UserType
     cardID: string | null
     typeID: $Enums.UserIDType | null
-    pin: number | null
+    identityCardPhotoUrl: string | null
+    portraitPhotoUrl: string | null
+    cardHoldingPhotoUrl: string | null
+    kycSubmittedAt: Date | null
+    kycReviewedAt: Date | null
+    kycRejectionReason: string | null
     loyaltyPoint: number
     certified: boolean
   }, ExtArgs["result"]["user"]>
@@ -3446,6 +4763,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   plots<T extends Prisma.User$plotsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$plotsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  favoritePlots<T extends Prisma.User$favoritePlotsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$favoritePlotsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   conversations<T extends Prisma.User$conversationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$conversationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assignedConversations<T extends Prisma.User$assignedConversationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedConversationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   messages<T extends Prisma.User$messagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3455,6 +4773,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   sales<T extends Prisma.User$salesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$salesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BuyingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   legalAssistance<T extends Prisma.User$legalAssistanceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$legalAssistanceArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BuyingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   agentVisits<T extends Prisma.User$agentVisitsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$agentVisitsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VisitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  lawyeredPlots<T extends Prisma.User$lawyeredPlotsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$lawyeredPlotsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3489,6 +4808,10 @@ export interface UserFieldRefs {
   readonly email: Prisma.FieldRef<"User", 'String'>
   readonly emailVerified: Prisma.FieldRef<"User", 'Boolean'>
   readonly telephone: Prisma.FieldRef<"User", 'String'>
+  readonly dateOfBirth: Prisma.FieldRef<"User", 'DateTime'>
+  readonly gender: Prisma.FieldRef<"User", 'Gender'>
+  readonly country: Prisma.FieldRef<"User", 'String'>
+  readonly city: Prisma.FieldRef<"User", 'String'>
   readonly image: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'String'>
   readonly banned: Prisma.FieldRef<"User", 'Boolean'>
@@ -3500,7 +4823,12 @@ export interface UserFieldRefs {
   readonly type: Prisma.FieldRef<"User", 'UserType'>
   readonly cardID: Prisma.FieldRef<"User", 'String'>
   readonly typeID: Prisma.FieldRef<"User", 'UserIDType'>
-  readonly pin: Prisma.FieldRef<"User", 'Int'>
+  readonly identityCardPhotoUrl: Prisma.FieldRef<"User", 'String'>
+  readonly portraitPhotoUrl: Prisma.FieldRef<"User", 'String'>
+  readonly cardHoldingPhotoUrl: Prisma.FieldRef<"User", 'String'>
+  readonly kycSubmittedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly kycReviewedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly kycRejectionReason: Prisma.FieldRef<"User", 'String'>
   readonly loyaltyPoint: Prisma.FieldRef<"User", 'Int'>
   readonly certified: Prisma.FieldRef<"User", 'Boolean'>
 }
@@ -3968,6 +5296,30 @@ export type User$plotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
 }
 
 /**
+ * User.favoritePlots
+ */
+export type User$favoritePlotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Plot
+   */
+  select?: Prisma.PlotSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Plot
+   */
+  omit?: Prisma.PlotOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PlotInclude<ExtArgs> | null
+  where?: Prisma.PlotWhereInput
+  orderBy?: Prisma.PlotOrderByWithRelationInput | Prisma.PlotOrderByWithRelationInput[]
+  cursor?: Prisma.PlotWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PlotScalarFieldEnum | Prisma.PlotScalarFieldEnum[]
+}
+
+/**
  * User.conversations
  */
 export type User$conversationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4181,6 +5533,30 @@ export type User$agentVisitsArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.VisitScalarFieldEnum | Prisma.VisitScalarFieldEnum[]
+}
+
+/**
+ * User.lawyeredPlots
+ */
+export type User$lawyeredPlotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Plot
+   */
+  select?: Prisma.PlotSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Plot
+   */
+  omit?: Prisma.PlotOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PlotInclude<ExtArgs> | null
+  where?: Prisma.PlotWhereInput
+  orderBy?: Prisma.PlotOrderByWithRelationInput | Prisma.PlotOrderByWithRelationInput[]
+  cursor?: Prisma.PlotWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PlotScalarFieldEnum | Prisma.PlotScalarFieldEnum[]
 }
 
 /**
