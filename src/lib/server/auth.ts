@@ -28,6 +28,7 @@ export const auth = betterAuth({
 	trustedOrigins: [
         'http://localhost:5173',
         'http://172.20.10.6:5173',
+		BETTER_AUTH_URL
         // Si tu changes de réseau Wi-Fi, tu peux aussi utiliser une fonction dynamique :
         // (origin) => origin.startsWith('http://172.20.') || origin.startsWith('http://192.168.')
     ],

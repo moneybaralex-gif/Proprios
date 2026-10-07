@@ -32,7 +32,7 @@ The content is organized as follows:
 <notes>
 - Some files may have been excluded based on .gitignore rules and Repomix's configuration
 - Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
-- Only files matching these patterns are included: prisma/schema.prisma, package.json, .env
+- Only files matching these patterns are included: server/**/*, .env, src/lib/server/auth.ts, svelte.config.js, vite.config.js, package.json, .env
 - Files matching patterns in .gitignore are excluded
 - Files matching default ignore patterns are excluded
 - Files are sorted by Git change count (files with more changes are at the bottom)
@@ -41,330 +41,404 @@ The content is organized as follows:
 </file_summary>
 
 <directory_structure>
-prisma/
-  schema.prisma
+server/
+  ws.ts
+src/
+  lib/
+    server/
+      auth.ts
 package.json
+svelte.config.js
 </directory_structure>
 
 <files>
 This section contains the contents of the repository's files.
 
-<file path="prisma/schema.prisma">
-// filepath: prisma/schema.prisma
-generator client {
-  provider = "prisma-client"
-  output   = "../src/lib/server/generated/prisma"
+<file path="server/ws.ts">
+// server/ws.ts
+import 'dotenv/config';
+import pg from 'pg';
+import type { ServerWebSocket } from 'bun';
+
+const PORT = Number(process.env.PORT ?? process.env.WS_PORT ?? 3001);
+const SECRET = process.env.REALTIME_SECRET ?? '';
+const DATABASE_URL = process.env.DATABASE_URL ?? '';
+
+if (!DATABASE_URL) {
+	throw new Error('DATABASE_URL est manquant dans les variables d\'environnement.');
 }
 
-datasource db {
-  provider = "postgres"
+const pool = new pg.Pool({
+	connectionString: DATABASE_URL,
+	max: 10
+});
+
+interface WebSocketData {
+	userId: string;
+	role: string | null;
 }
 
-model User {
-  id                   String      @id @default(cuid())
-  name                 String
-  email                String      @unique
-  emailVerified        Boolean     @default(false)
-  telephone            String?     @unique
-  dateOfBirth          DateTime?
-  gender               Gender?
-  country              String?
-  city                 String?
-  image                String?
-  role                 String?     @default("user")
-  banned               Boolean?    @default(false)
-  banReason            String?
-  banExpires           DateTime?
-  createdAt            DateTime    @default(now())
-  updatedAt            DateTime    @updatedAt
-  certifStep           Int         @default(0)
-  type                 UserType    @default(GUEST)
-  cardID               String?     @unique
-  typeID               UserIDType?
-  identityCardPhotoUrl String?
-  portraitPhotoUrl     String?
-  cardHoldingPhotoUrl  String?
-  kycSubmittedAt       DateTime?
-  kycReviewedAt        DateTime?
-  kycRejectionReason   String?
-  loyaltyPoint         Int         @default(0)
-  certified            Boolean     @default(false)
+type WSMessage =
+	| {
+			type: 'typing';
+			conversationId: string;
+			isTyping: boolean;
+	  }
+	| {
+			type: 'subscribe';
+			conversationId: string;
+	  }
+	| {
+			type: 'unsubscribe';
+			conversationId: string;
+	  };
 
-  // Relations
-  sessions              Session[]
-  accounts              Account[]
-  plots                 Plot[]
-  favoritePlots         Plot[]         @relation("FavoritePlots")
-  conversations         Conversation[] @relation("UserConversations")
-  assignedConversations Conversation[] @relation("AssignedAdmin")
-  messages              Message[]      @relation("SentMessages")
-  notifications         Notification[]
-  visits                Visit[]        @relation("UserVisits")
-  purchases             Buying[]       @relation("BuyerRelation")
-  sales                 Buying[]       @relation("ProprioRelation")
-  legalAssistance       Buying[]       @relation("LawyerRelation")
-  agentVisits           Visit[]        @relation("AssignedVisits")
-  lawyeredPlots         Plot[]         @relation("PlotLawyer")
+/**
+ * 1. Extraction du cookie brut depuis les en-têtes HTTP
+ */
+function getRawCookie(cookieHeader: string, possibleNames: string[]): string | null {
+	const cookies = cookieHeader
+		.split(';')
+		.map((value) => value.trim())
+		.filter(Boolean);
 
-  @@map("users")
+	for (const cookie of cookies) {
+		const separator = cookie.indexOf('=');
+		if (separator === -1) continue;
+
+		const name = cookie.slice(0, separator).trim();
+		const value = cookie.slice(separator + 1).trim();
+
+		if (possibleNames.includes(name)) {
+			return decodeURIComponent(value);
+		}
+	}
+
+	return null;
 }
 
-model Session {
-  id        String   @id @default(cuid())
-  userId    String
-  token     String   @unique
-  expiresAt DateTime
-  ipAddress String?
-  userAgent String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+/**
+ * 2. Extraction du token de session Better-Auth
+ * Gère les cookies signés (format "TOKEN.SIGNATURE") et supprime les préfixes éventuels.
+ */
+function extractSessionToken(cookieHeader: string): string | null {
+	const rawCookie = getRawCookie(cookieHeader, [
+		'better-auth.session_token',
+		'__Secure-better-auth.session_token',
+		'session_token'
+	]);
 
-  @@map("sessions")
+	if (!rawCookie) return null;
+
+	// Nettoyage d'un éventuel préfixe "s:" parfois injecté par des parsers de cookies
+	const cleanCookie = rawCookie.startsWith('s:') ? rawCookie.slice(2) : rawCookie;
+
+	// Dans Better-Auth, un cookie signé est sous la forme `token.signature`.
+	// On extrait uniquement la première partie qui correspond au token en base de données.
+	const token = cleanCookie.split('.')[0];
+
+	return token || null;
 }
 
-model Account {
-  id                    String    @id @default(cuid())
-  userId                String
-  accountId             String
-  providerId            String
-  accessToken           String?
-  refreshToken          String?
-  accessTokenExpiresAt  DateTime?
-  refreshTokenExpiresAt DateTime?
-  scope                 String?
-  password              String?
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+/**
+ * 3. Récupération de l'utilisateur et de son rôle depuis la session PostgreSQL
+ */
+async function getUserFromSession(req: Request): Promise<{ userId: string; role: string | null } | null> {
+	const cookieHeader = req.headers.get('cookie') ?? '';
+	const token = extractSessionToken(cookieHeader);
 
-  @@map("accounts")
+	if (!token) {
+		return null;
+	}
+
+	try {
+		const result = await pool.query<{ userId: string; role: string | null }>(
+			`
+			SELECT s."userId", u."role"
+			FROM "sessions" s
+			INNER JOIN "users" u ON u."id" = s."userId"
+			WHERE s."token" = $1
+			  AND s."expiresAt" > NOW()
+			LIMIT 1
+			`,
+			[token]
+		);
+
+		return result.rows[0] ?? null;
+	} catch (error) {
+		console.error('Erreur DB session:', error);
+		return null;
+	}
 }
 
-model Verification {
-  id         String    @id @default(cuid())
-  identifier String
-  value      String
-  expiresAt  DateTime
-  createdAt  DateTime? @default(now())
-  updatedAt  DateTime? @updatedAt
+/**
+ * 4. Vérification d'accès à une conversation
+ * - Les admins et employés ont accès à tout
+ * - Un client n'a accès qu'à sa propre conversation
+ */
+async function canAccessConversation(
+	userId: string,
+	role: string | null,
+	conversationId: string
+): Promise<boolean> {
+	if (role === 'admin' || role === 'employee') {
+		return true;
+	}
 
-  @@index([identifier])
-  @@map("verifications")
+	try {
+		const result = await pool.query(
+			`
+			SELECT 1
+			FROM "conversations"
+			WHERE "id" = $1
+			  AND "user_id" = $2
+			LIMIT 1
+			`,
+			[conversationId, userId]
+		);
+
+		return (result.rowCount ?? 0) > 0;
+	} catch (error) {
+		console.error(`Erreur vérification conversation ${conversationId}:`, error);
+		return false;
+	}
 }
 
-model Plot {
-  id                  String              @id @default(cuid())
-  categoryId          PlotCategories
-  description         String?             @db.Text
-  proprioId           String
-  proprio             User                @relation(fields: [proprioId], references: [id])
-  lawyerId            String?
-  lawyer              User?               @relation("PlotLawyer", fields: [lawyerId], references: [id])
-  width               Int?
-  height              Int?
-  country             String?
-  city                String?
-  address             String?
-  certificationStatus CertificationStatus @default(ATTENTE)
-  certified           Boolean             @default(false)
-  certifStep          Int                 @default(0)
-  price               Int?
-  pin                 Int?                @unique
-  likes               Int                 @default(0)
-  canSell             Boolean             @default(false)
-  favoritedBy         User[]              @relation("FavoritePlots")
-  createdAt           DateTime            @default(now())
-  updatedAt           DateTime            @updatedAt
+const server = Bun.serve<WebSocketData>({
+	hostname: '0.0.0.0',
+	port: PORT,
 
-  images    ImagePlot[]
-  documents ImageDocumentPlot[]
-  visits    Visit[]
-  messages  Message[]
+	async fetch(req, server) {
+		const url = new URL(req.url);
 
-  @@index([proprioId])
-  @@index([certified, certifStep])
-  @@map("plots")
+		/**
+		 * Health Check
+		 */
+		if (url.pathname === '/health') {
+			return Response.json({ ok: true });
+		}
+
+		/**
+		 * Endpoint HTTP de publication appelé par SvelteKit (+page.server.ts)
+		 */
+		if (url.pathname === '/publish' && req.method === 'POST') {
+			if (SECRET && req.headers.get('x-realtime-secret') !== SECRET) {
+				return new Response('Forbidden', { status: 403 });
+			}
+
+			try {
+				const event = await req.json();
+
+				if (event.conversationId) {
+					// Diffuse au salon spécifique de la conversation
+					server.publish(`chat:${event.conversationId}`, JSON.stringify(event));
+
+					// Diffuse également à tous les administrateurs connectés (pour actualiser leur sidebar)
+					server.publish('admin:conversations', JSON.stringify(event));
+				}
+
+				if (event.targetUserId) {
+					// Diffuse sur le canal personnel d'un utilisateur cible
+					server.publish(`user:${event.targetUserId}`, JSON.stringify(event));
+				}
+
+				return Response.json({ ok: true });
+			} catch (error) {
+				console.error('Erreur publication realtime:', error);
+				return Response.json({ ok: false, error: 'Invalid event' }, { status: 400 });
+			}
+		}
+
+		/**
+		 * Route WebSocket
+		 */
+		if (url.pathname !== '/ws') {
+			return new Response('Not found', { status: 404 });
+		}
+
+		// Authentification de la connexion WebSocket
+		const authUser = await getUserFromSession(req);
+
+		if (!authUser) {
+			return new Response('Unauthorized', { status: 401 });
+		}
+
+		// Upgrade HTTP vers WebSocket en attachant les métadonnées de l'utilisateur
+		const upgraded = server.upgrade(req, {
+			data: {
+				userId: authUser.userId,
+				role: authUser.role
+			}
+		});
+
+		if (!upgraded) {
+			return new Response('Upgrade failed', { status: 400 });
+		}
+
+		return undefined;
+	},
+
+	websocket: {
+		open(ws: ServerWebSocket<WebSocketData>) {
+			// Canal privé de l'utilisateur
+			ws.subscribe(`user:${ws.data.userId}`);
+
+			// Si l'utilisateur est un admin ou un employé, on l'abonne automatiquement au flux global des conversations
+			if (ws.data.role === 'admin' || ws.data.role === 'employee') {
+				ws.subscribe('admin:conversations');
+			}
+
+			ws.send(
+				JSON.stringify({
+					type: 'connected',
+					userId: ws.data.userId
+				})
+			);
+		},
+
+		async message(ws: ServerWebSocket<WebSocketData>, rawMessage: string) {
+			try {
+				const event = JSON.parse(rawMessage) as WSMessage;
+
+				/**
+				 * Souscription à une conversation spécifique
+				 */
+				if (event.type === 'subscribe' && event.conversationId) {
+					const allowed = await canAccessConversation(
+						ws.data.userId,
+						ws.data.role,
+						event.conversationId
+					);
+
+					if (!allowed) {
+						ws.send(
+							JSON.stringify({
+								type: 'error',
+								code: 'FORBIDDEN_CONVERSATION'
+							})
+						);
+						return;
+					}
+
+					ws.subscribe(`chat:${event.conversationId}`);
+					ws.send(
+						JSON.stringify({
+							type: 'subscribed',
+							conversationId: event.conversationId
+						})
+					);
+					return;
+				}
+
+				/**
+				 * Désabonnement d'une conversation
+				 */
+				if (event.type === 'unsubscribe' && event.conversationId) {
+					ws.unsubscribe(`chat:${event.conversationId}`);
+					return;
+				}
+
+				/**
+				 * Indicateur de frappe ("en train d'écrire...")
+				 */
+				if (event.type === 'typing' && event.conversationId) {
+					const allowed = await canAccessConversation(
+						ws.data.userId,
+						ws.data.role,
+						event.conversationId
+					);
+
+					if (!allowed) return;
+
+					server.publish(
+						`chat:${event.conversationId}`,
+						JSON.stringify({
+							type: 'typing',
+							conversationId: event.conversationId,
+							userId: ws.data.userId,
+							isTyping: Boolean(event.isTyping)
+						})
+					);
+				}
+			} catch (error) {
+				console.error('Invalid WebSocket message:', error);
+				ws.send(
+					JSON.stringify({
+						type: 'error',
+						code: 'INVALID_MESSAGE'
+					})
+				);
+			}
+		},
+
+		close() {
+			// Bun nettoie automatiquement les souscriptions lors de la déconnexion
+		}
+	}
+});
+
+console.log(`🚀 Proprios WebSocket Server listening on :${server.port}`);
+</file>
+
+<file path="src/lib/server/auth.ts">
+// src/lib/server/auth.ts
+import { betterAuth } from 'better-auth/minimal';
+import { prismaAdapter } from 'better-auth/adapters/prisma';
+import { scryptSync, randomBytes, timingSafeEqual } from 'crypto';
+import prisma from './prisma';
+import { BETTER_AUTH_URL, GOOGLE_CLIENT_SECRET,BETTER_AUTH_SECRET } from '$env/static/private';
+import { PUBLIC_GOOGLE_CLIENT_ID } from "$env/static/public";
+import { admin, oneTap } from 'better-auth/plugins';
+
+export function hashPassword(password: string): string {
+	const salt = randomBytes(16).toString('hex');
+	const hash = scryptSync(password, salt, 64).toString('hex');
+	return `${salt}:${hash}`;
 }
 
-model ImagePlot {
-  id       String @id @default(uuid())
-  url      String
-  publicId String
-  plotId   String
-  plot     Plot   @relation(fields: [plotId], references: [id], onDelete: Cascade)
+export function verifyPassword(password: string, storedHash: string): boolean {
+	const [salt, hash] = storedHash.split(':');
+	const targetHash = scryptSync(password, salt, 64).toString('hex');
+
+	return timingSafeEqual(Buffer.from(hash, 'hex'), Buffer.from(targetHash, 'hex'));
 }
 
-model ImageDocumentPlot {
-  id       String  @id @default(uuid())
-  url      String
-  publicId String
-  name     String?
-  plotId   String
-  plot     Plot    @relation(fields: [plotId], references: [id], onDelete: Cascade)
-}
+export const auth = betterAuth({
 
-model Conversation {
-  id               String             @id @default(cuid())
-  userId           String             @map("user_id")
-  assignedToId     String?            @map("assigned_to_id")
-  status           ConversationStatus @default(UNASSIGNED)
-  lastMessageAt    DateTime           @default(now())
-  unreadAdminCount Int                @default(0)
-  unreadUserCount  Int                @default(0)
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
+    baseURL: BETTER_AUTH_URL,
+	secret: BETTER_AUTH_SECRET,
 
-  user       User      @relation("UserConversations", fields: [userId], references: [id], onDelete: Cascade)
-  assignedTo User?     @relation("AssignedAdmin", fields: [assignedToId], references: [id], onDelete: SetNull)
-  messages   Message[]
+	trustedOrigins: [
+        'http://localhost:5173',
+        'http://172.20.10.6:5173',
+        // Si tu changes de réseau Wi-Fi, tu peux aussi utiliser une fonction dynamique :
+        // (origin) => origin.startsWith('http://172.20.') || origin.startsWith('http://192.168.')
+    ],
 
-  @@index([userId])
-  @@index([lastMessageAt])
-  @@index([userId, lastMessageAt])
-  @@map("conversations")
-}
+	database: prismaAdapter(prisma, {
+		provider: 'postgresql'
+	}),
 
-model Message {
-  id             String      @id @default(cuid())
-  conversationId String
-  senderId       String
-  type           MessageType @default(TEXT)
-  content        String      @db.Text
-  plotId         String? 
-  plot           Plot?       @relation(fields: [plotId], references: [id], onDelete: SetNull)
-  isRead         Boolean     @default(false)
-  createdAt      DateTime    @default(now())
+	emailAndPassword: {
+		enabled: true,
+		autoSignIn: true
+	},
 
-  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  sender       User         @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
-
-  @@index([conversationId, createdAt])
-  @@map("messages")
-}
-
-model Visit {
-  id          String    @id @default(cuid())
-  userId      String?
-  user        User?     @relation("UserVisits", fields: [userId], references: [id])
-  agentId     String? 
-  agent       User?     @relation("AssignedVisits", fields: [agentId], references: [id])
-  plotId      String
-  plot        Plot      @relation(fields: [plotId], references: [id])
-  date        DateTime?
-  type        VisitType
-  paid        Boolean   @default(false)
-  isCompleted Boolean   @default(false)
-  isCancelled Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@index([plotId])
-  @@index([agentId])
-  @@map("visits")
-}
-
-model Buying {
-  id               String   @id @default(cuid())
-  proprioId        String
-  proprio          User     @relation("ProprioRelation", fields: [proprioId], references: [id])
-  buyerId          String
-  buyer            User     @relation("BuyerRelation", fields: [buyerId], references: [id])
-  amount           Int
-  amountCommission Int
-  legalLawyerId    String?
-  lawyer           User?    @relation("LawyerRelation", fields: [legalLawyerId], references: [id])
-  comment          String?  @db.Text
-  witnessA         String?
-  witnessB         String?
-  createdAt        DateTime @default(now())
-
-  @@map("buyings")
-}
-
-model FinanceTransaction {
-  id         String          @id @default(cuid())
-  type       TransactionType
-  amount     Int
-  motif      String
-  recordedBy String 
-  createdAt  DateTime        @default(now())
-
-  @@map("finance_transactions")
-}
-
-model Notification {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title     String
-  content   String   @db.Text
-  isRead    Boolean  @default(false)
-  createdAt DateTime @default(now())
-
-  @@map("notifications")
-}
-
-enum CertificationStatus {
-  ATTENTE
-  EN_COURS
-  CERTIFIE
-  REJETE
-}
-
-enum PlotCategories {
-  HOUSE
-  COMPANY
-  GROUND
-  OTHER
-}
-
-enum UserIDType {
-  PASSPORT
-  NATIONAL
-  DRIVING
-}
-
-enum Gender {
-  MALE
-  FEMALE
-  OTHER
-}
-
-enum UserType {
-  AGENT
-  GUEST
-  PROPRIO
-  LAWYER
-  EMPLOYEE
-}
-
-enum ConversationStatus {
-  UNASSIGNED
-  IN_PROGRESS
-  WAITING_USER
-  RESOLVED
-  CLOSED
-}
-
-enum MessageType {
-  TEXT
-  IMAGE
-  FILE
-  SYSTEM
-  INTERNAL_NOTE
-  VALIDATION
-}
-
-enum VisitType {
-  CERTIFICATION
-  FORCLIENT
-}
-
-enum TransactionType {
-  INCOME
-  EXPENSE
-}
+	socialProviders: {
+		google: {
+			clientId: PUBLIC_GOOGLE_CLIENT_ID,
+			clientSecret: GOOGLE_CLIENT_SECRET,
+			scopes: ['profile', 'email']
+		}
+	},
+	plugins: [
+		admin({
+			defaultRole: 'user', // Rôle par défaut à l'inscription
+			adminRole: ['admin'] // Rôles considérés comme administrateurs
+		}),
+        oneTap(), // Active le support du jeton ID token transmis par Google One Tap
+	]
+});
 </file>
 
 <file path="package.json">
@@ -383,13 +457,15 @@ enum TransactionType {
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"start": "bun ./build"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^2.0.4",
 		"@eslint/js": "^10.0.1",
 		"@fontsource-variable/geist": "^5.2.9",
 		"@sveltejs/adapter-auto": "^7.0.1",
+		"@sveltejs/adapter-bun": "^1.0.0",
 		"@sveltejs/kit": "^2.57.0",
 		"@sveltejs/vite-plugin-svelte": "^7.0.0",
 		"@tailwindcss/vite": "^4.2.2",
@@ -397,6 +473,7 @@ enum TransactionType {
 		"@types/node": "^24",
 		"@types/pg": "^8.20.0",
 		"clsx": "^2.1.1",
+		"concurrently": "^9.2.1",
 		"eslint": "^10.2.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.17.0",
@@ -406,12 +483,12 @@ enum TransactionType {
 		"prettier-plugin-tailwindcss": "^0.7.2",
 		"prisma": "^7.8.0",
 		"svelte": "^5.55.2",
+		"svelte-adapter-bun": "^1.0.1",
 		"svelte-check": "^4.4.6",
 		"tailwind-merge": "^3.6.0",
 		"tailwind-variants": "^3.2.2",
 		"tailwindcss": "^4.2.2",
 		"tsx": "^4.22.3",
-		"concurrently": "^9.2.1",
 		"tw-animate-css": "^1.4.0",
 		"typescript": "^6.0.2",
 		"typescript-eslint": "^8.58.1",
@@ -431,6 +508,26 @@ enum TransactionType {
 		"resend": "^6.18.1"
 	}
 }
+</file>
+
+<file path="svelte.config.js">
+import adapter from 'svelte-adapter-bun'; // <-- sans le @sveltejs/
+
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+	compilerOptions: {
+		// Force runes mode for the project, except for libraries. Can be removed in svelte 6.
+		runes: ({ filename }) => (filename.split(/[/\\]/).includes('node_modules') ? undefined : true)
+	},
+	kit: {
+		// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
+		// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
+		// See https://svelte.dev/docs/kit/adapters for more information about adapters.
+		adapter: adapter()
+	}
+};
+
+export default config;
 </file>
 
 </files>

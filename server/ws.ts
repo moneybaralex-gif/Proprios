@@ -3,7 +3,7 @@ import 'dotenv/config';
 import pg from 'pg';
 import type { ServerWebSocket } from 'bun';
 
-const PORT = Number(process.env.WS_PORT ?? 3001);
+const PORT = Number(process.env.PORT ?? process.env.WS_PORT ?? 3001);
 const SECRET = process.env.REALTIME_SECRET ?? '';
 const DATABASE_URL = process.env.DATABASE_URL ?? '';
 
@@ -148,6 +148,7 @@ async function canAccessConversation(
 }
 
 const server = Bun.serve<WebSocketData>({
+	hostname: '0.0.0.0',
 	port: PORT,
 
 	async fetch(req, server) {
