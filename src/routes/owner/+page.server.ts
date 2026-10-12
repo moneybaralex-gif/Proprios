@@ -14,6 +14,7 @@ interface CloudinaryUploadResult {
 }
 
 // Fonction générique d'upload vers Cloudinary (images et documents .pdf/.docx)
+// Fonction générique d'upload sécurisée par Stream
 async function uploadToCloudinary(
 	file: File,
 	folder: string,
@@ -21,24 +22,34 @@ async function uploadToCloudinary(
 ): Promise<CloudinaryUploadResult | null> {
 	if (!file || !(file instanceof File) || file.size === 0) return null;
 
-	const arrayBuffer = await file.arrayBuffer();
-	const base64 = Buffer.from(arrayBuffer).toString('base64');
-	const mimeType = file.type || 'application/octet-stream';
-	const dataUri = `data:${mimeType};base64,${base64}`;
-
 	try {
-		const result = await cloudinary.uploader.upload(dataUri, {
-			folder,
-			resource_type: resourceType
+		const arrayBuffer = await file.arrayBuffer();
+		const buffer = Buffer.from(arrayBuffer);
+
+		// Utilisation d'une Promesse avec upload_stream pour éviter les timeouts et la surcharge mémoire
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const result: any = await new Promise((resolve, reject) => {
+			const uploadStream = cloudinary.uploader.upload_stream(
+				{
+					folder,
+					resource_type: resourceType
+				},
+				(error, uploadResult) => {
+					if (error) reject(error);
+					else resolve(uploadResult);
+				}
+			);
+			uploadStream.end(buffer);
 		});
+
 		return {
 			url: result.secure_url,
 			publicId: result.public_id,
 			name: file.name
 		};
 	} catch (error) {
-		console.error(`[Cloudinary Error] Impossible d'uploader dans ${folder}:`, error);
-		throw error;
+		console.error(`[Cloudinary Error] Échec de l'upload dans ${folder}:`, error);
+		throw error; // L'erreur sera attrapée par le try/catch de l'action
 	}
 }
 
